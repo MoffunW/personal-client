@@ -1,0 +1,53 @@
+{
+  "name": "cabinet",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "lint": "vue-cli-service lint",
+    "build-mirtek": "vue-cli-service build --mode prod.mirtek",
+    "build-oek": "vue-cli-service build --mode prod.oek",
+    "serve-mirtek": "vue-cli-service serve --mode mirtek",
+    "serve-oek": "vue-cli-service serve --mode oek"
+  },
+  "dependencies": {
+    "axios": "0.21.1",
+    "core-js": "^3.6.5",
+    "echarts": "5.3.3",
+    "mapbox-gl": "^1.3.1",
+    "pdfmake": "^0.1.54",
+    "register-service-worker": "^1.7.1",
+    "vue": "^2.6.14",
+    "vue-carousel": "^0.18.0",
+    "vue-grid-layout": "^2.3.12",
+    "vue-loading": "^0.1.4",
+    "vue-router": "^3.2.0",
+    "vuetify": "^2.6.4",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "@mdi/font": "^7.0.96",
+    "@vue/cli-plugin-babel": "^4.5.0",
+    "@vue/cli-plugin-eslint": "^4.5.0",
+    "@vue/cli-plugin-pwa": "~4.5.15",
+    "@vue/cli-plugin-router": "~4.5.15",
+    "@vue/cli-plugin-vuex": "~4.5.15",
+    "@vue/cli-service": "^4.5.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-promise": "^5.2.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "nodemon": "^1.11.0",
+    "prettier": "^1.19.1",
+    "sass": "1.32",
+    "sass-loader": "10",
+    "vue-cli-plugin-vuetify": "~2.0.5",
+    "vue-svg-loader": "^0.16.0",
+    "vue-template-compiler": "^2.6.11",
+    "vuetify-loader": "^1.3.0"
+  }
+}

@@ -1,0 +1,1066 @@
+@font-face {
+  font-family: "Digital-7";
+  src: url("fonts/Digital7Mono.woff2") format("woff2"),
+       url("fonts/Digital7Mono.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Vars */
+$main: #5f5f5f;
+$darkMain: #cecece;
+$active: #eff8ff;
+$darkBackground: #333;
+$darkActive: #4a4a4a;
+$error: #ff5252;
+$primary: #008abf;
+$even: #eff8ff;
+$borderDefault: #dcdfe6;
+$borderDark: #cecece;
+$treeLink: #cecece;
+$treeSelectedColor: #7e7e7e;
+$treeSelectedBackground: #f7f7f7;
+$fontWeight: 500;
+$textTransform: "none";
+
+* {
+  will-change: auto !important;
+}
+
+*, ::after, ::before {
+  box-sizing: inherit;
+  font-weight: $fontWeight !important;
+  text-transform: $textTransform !important;
+}
+
+.v-application {
+  color: inherit !important;
+  background-color: transparent !important;
+}
+
+.logo-ru {
+  background-position: 0 0;
+}
+
+.logo-en {
+  background-position: 0 -39px;
+}
+
+body.dark .logo-ru {
+  background-position: -197px 0;
+}
+
+body.dark .logo-en {
+  background-position: -197px -39px;
+}
+
+body * {
+  scrollbar-width: thin;
+  scrollbar-color: $primary $darkMain;
+}
+
+body *::-webkit-scrollbar {
+  height: 3px;
+  width: 3px;
+}
+
+body *::-webkit-scrollbar-track {
+  background: $darkMain;
+}
+
+body *::-webkit-scrollbar-thumb {
+  background-color: $primary;
+  border-radius: 5px;
+  border: 1px solid $darkMain;
+}
+
+/* Seals */
+.Chart_MagnetConst-off {
+  background-position: -482px -72px;
+}
+
+.Chart_MagnetConst-on {
+  background-position: -458px -72px;
+}
+
+.Chart_MagnetVar-off {
+  background-position: -434px -72px;
+}
+
+.Chart_MagnetVar-on {
+  background-position: -410px -72px;
+}
+
+.Chart_ReleOnOff-off {
+  background-position: -506px -48px;
+}
+
+.Chart_ReleOnOff-on {
+  background-position: -482px -48px;
+}
+
+.Chart_SealBox-off {
+  background-position: -410px -48px;
+}
+
+.Chart_SealBox-on {
+  background-position: -506px -24px;
+}
+
+.Chart_SealClamps-off {
+  background-position: -458px -48px;
+}
+
+.Chart_SealClamps-on {
+  background-position: -434px -48px;
+}
+
+.Chart_SealModule-off {
+  background-position: -482px -24px;
+}
+
+.Chart_SealModule-on {
+  background-position: -458px -24px;
+}
+
+.Chart_ValveOnOff-off {
+  background-position: -434px -24px;
+}
+
+.Chart_ValveOnOff-on {
+  background-position: -410px -24px;
+}
+
+.formResult {
+  padding: 10px;
+  background-color: #67c23a !important;
+  color: #fff !important;
+  font-weight: bold !important;
+  border-radius: 5px;
+}
+
+/* Vuetify */
+/*.innerComponents .v-input {
+  font-size: 0.8em;
+}*/
+
+.v-progress-circular__overlay {
+  stroke: $primary;
+}
+
+.v-text-field .v-input__slot::before,
+.v-text-field .v-input__slot::after {
+  border-color: $primary !important;
+}
+
+.v-application .primary--text {
+  color: $primary !important;
+  caret-color: $primary !important;
+}
+
+.v-application .primary--text .v-input__slot::before,
+.v-application .primary--text .v-input__slot::after {
+  border-color: $primary !important;
+}
+
+.error--text {
+  color: $error !important;
+  caret-color: $error !important;
+}
+
+.error--text .v-input__slot::before,
+.error--text .v-input__slot::after {
+  border-color: $error !important;
+}
+
+.v-btn {
+  height: 28px !important;
+  text-transform: none;
+}
+
+.v-input *,
+.v-btn * {
+  font-size: 1em !important;
+}
+
+.v-btn .v-btn__content,
+.v-input .v-label,
+.v-text-field__slot input,
+.v-select__selection,
+.v-select-list .v-list-item__content .v-list-item__title {
+  font-size: 0.9em !important;
+}
+
+.v-list-item--active::before {
+  background-color: $primary;
+}
+
+.v-input--checkbox .v-icon.primary--text {
+  color: $primary !important;
+}
+
+.v-input .v-messages__message {
+  font-size: 0.7em !important;
+}
+
+.v-input--switch .v-input--selection-controls__ripple {
+  left: -16px !important;
+}
+
+.v-input--switch .v-input--switch__track {
+  height: 10px;
+  top: calc(50% - 5px);
+}
+
+.v-input--switch .v-input--switch__thumb {
+  height: 15px;
+  width: 15px;
+  top: calc(50% - 8px);
+}
+
+.v-application .v-date-picker-table__current {
+  color: $primary !important;
+  caret-color: $primary !important;
+}
+
+.v-application .v-date-picker-table__current.v-btn--active {
+  color: $darkMain !important;
+  caret-color: $darkMain !important;
+}
+
+.v-application .accent {
+  background-color: $primary !important;
+  border-color: $primary !important;
+}
+
+.v-menu__content {
+  background-color: #fff;
+}
+
+.v-btn--loading {
+  background-color: transparent !important;
+}
+
+.v-input__slider {
+  max-width: 100px;
+}
+
+.v-input__slider .v-slider__track-fill,
+.v-input__slider .v-slider__thumb {
+  background-color: $primary !important;
+  border-color: $primary !important;
+}
+
+.v-input__slider .v-slider--disabled .v-slider__track-fill,
+.v-input__slider .v-slider--disabled .v-slider__thumb {
+  background-color: rgba(0, 0, 0, 0.26) !important;
+  border-color: rgba(0, 0, 0, 0.26) !important;
+}
+
+.v-input__slider .v-input__slot {
+  margin: 0;
+}
+
+.v-input__slider .v-messages {
+  display: none;
+}
+
+.v-slide-group__content {
+  justify-content: center;
+}
+
+.v-slide-group__prev > * {
+  height: 24px !important;
+  width: 24px !important;
+  background-image: url('icons.png');
+  background-position: -578px 0px;
+}
+
+.v-slide-group__next > * {
+  height: 24px !important;
+  width: 24px !important;
+  background-image: url('icons.png');
+  background-position: -602px 0px;
+}
+
+.v-slide-group__prev > *::before,
+.v-slide-group__prev > *::after,
+.v-slide-group__next > *::before,
+.v-slide-group__next > *::after {
+  display: none;
+}
+
+.numberInput .v-input__icon--prepend button::before,
+.numberInput .v-input__append-outer button::before {
+  color: $primary;
+}
+
+.v-slide-group__prev.v-slide-group__prev--disabled > *,
+.v-slide-group__next.v-slide-group__next--disabled > *,
+.disableMinus .v-input__icon--prepend button::before,
+.disablePlus .v-input__append-outer button::before {
+  filter: grayscale(1);
+  cursor: not-allowed;
+}
+
+.primaryBtn {
+  color: #fff !important;
+  background-color: $primary !important;
+}
+
+.primaryBtnOutline {
+  border: $primary 1px solid !important;
+  background-color: transparent !important;
+  transition: background-color 0.3s ease-in-out 0s,
+              color 0.3s ease-in-out 0s !important;
+}
+
+.primaryBtnOutline:hover {
+  color: #fff !important;
+  background-color: $primary !important;
+}
+
+.deleteBtn {
+  color: #fff !important;
+  background-color: $error !important;
+}
+
+.deleteBtnOutline {
+  border: $error 1px solid !important;
+  background-color: transparent !important;
+  transition: background-color 0.3s ease-in-out 0s,
+              color 0.3s ease-in-out 0s !important;
+}
+
+.deleteBtnOutline:hover {
+  color: #fff !important;
+  background-color: $error !important;
+}
+
+.cancelBtn {
+  background-color: transparent !important;
+  border: $borderDefault 1px solid !important;
+}
+
+.primaryBtn.v-btn--loading {
+  background-color: transparent !important;
+  outline: $primary 1px solid !important;
+}
+
+.deleteBtn.v-btn--loading {
+  background-color: transparent !important;
+  outline: $error 1px solid !important;
+}
+
+.modeSelectorActive::before {
+  color: $primary !important;
+}
+
+/* GRID */
+.vue-grid-item.vue-grid-placeholder {
+  background-color: #67c23a !important;
+  background-image: linear-gradient(
+    45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%,
+    transparent 50%, rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.2) 75%, transparent 75%,
+    transparent) !important;
+  background-size: 40px 40px !important;
+  animation: stripes 0.5s linear infinite;
+  opacity: 0.3 !important;
+}
+
+@keyframes stripes {
+  from {
+    background-position: 40px 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+
+/* Main */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 360px;
+  height: 100%;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  background-color: $even;
+}
+
+body {
+  color: $main;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+a,
+.navItem {
+  color: $main !important;
+  transition: all 0.2 ease-in-out 0s;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.navItem {
+  text-decoration: none;
+}
+
+a *,
+.navItem * {
+  transition: all 0.2s ease-in-out 0s !important;
+}
+
+a:hover {
+  color: $primary !important;
+}
+
+.navItem:hover > *,
+.navItem.active > * {
+  color: $primary !important;
+}
+
+h4 {
+  text-align: center;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.digital {
+  font-family: "Digital-7";
+}
+
+.digital > span:last-child {
+  color: #f3a848;
+}
+
+.indicator {
+  background-color: #e9a247;
+}
+
+.badge {
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  position: absolute;
+  top: 80px;
+  left: 10px;
+  right: 10px;
+  padding: 10px;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+              0 2px 2px 0 rgba(0, 0, 0, 0.14),
+              0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  background-color: #fff;
+  z-index: 1;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.tableWrap > *:nth-child(odd) {
+  background-color: $even;
+}
+
+.settings {
+  display: inline-flex;
+  align-items: center;
+}
+
+.settings > * + * {
+  margin-left: 10px;
+}
+
+.icons {
+  background-image: url('icons.png');
+}
+
+.tD {
+  font-family: "digital-webfont";
+}
+
+.card {
+  width: 100%;
+  max-width: 360px;
+  padding: 15px 0;
+  background-color: #fff;
+  border: $treeSelectedBackground 1px solid;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+              0 2px 2px 0 rgba(0, 0, 0, 0.14),
+              0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.card > div:first-child {
+  padding: 0 15px 15px;
+  text-align: center;
+  font-weight: bold !important;
+  border-bottom: #eee 1px solid;
+}
+
+.card > div:last-child {
+  padding: 0 15px;
+}
+
+.card .cbxWrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9em;
+}
+
+.card button {
+  display: block;
+  margin: 0 auto;
+}
+
+.adjustmentsWrap {
+  position: sticky;
+  top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 10px 0;
+  padding: 10px;
+  border: #fff 1px solid;
+  background-color: #fff;
+  border-bottom: $darkMain 1px solid;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+              0 2px 2px 0 rgba(0, 0, 0, 0.14),
+              0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  z-index: 1;
+}
+
+.adjustmentsWrap > *:last-child {
+  display: flex;
+  align-items: center;
+}
+
+.adjustmentsWrap > *:last-child > *:last-child {
+  min-width: 100px;
+}
+
+.adjustmentsWrap > * + * {
+  margin-left: 20px;
+}
+
+.adjustmentsWrap .v-input,
+.adjustmentsWrap .v-input__slot {
+  margin: 0;
+  padding: 0;
+}
+
+.adjustmentsWrap .v-text-field__details,
+.adjustmentsWrap .v-messages {
+  display: none;
+}
+
+/* TREE */
+.treeWrap {
+  padding: 10px 0;
+}
+
+.treeWrap > * {
+  border: $treeSelectedBackground 1px solid;
+  background: #fff;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+              0 2px 2px 0 rgba(0, 0, 0, 0.14),
+              0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.treeItem {
+  position: relative;
+  display: flex;
+  height: 34px;
+  align-items: center;
+  font-size: .875rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 0 1rem 0 calc(1.25rem - 5px);
+  border-left: 5px solid transparent;
+}
+
+.treeMarker {
+  display: flex;
+  height: 34px;
+}
+
+.treeLink {
+  position: relative;
+  height: 34px;
+  width: 16px;
+}
+
+.treeLink::before {
+  position: absolute;
+  content: "";
+  display: block;
+  height: 34px;
+  width: 2px;
+  top: 0;
+  left: 0;
+  background-color: $treeLink;
+}
+
+.treeLink::after {
+  position: absolute;
+  content: "";
+  display: block;
+  height: 2px;
+  width: 16px;
+  top: 50%;
+  margin-top: -1px;
+  left: 0;
+  background-color: $treeLink;
+}
+
+.treeLink.treeLinkEmpty::before,
+.treeLink.treeLinkEmpty::after {
+  display: none;
+}
+
+.treeLink.treeLinkInner::after {
+  display: none;
+}
+
+.treeLink.treeLastChild::before {
+  height: 50%;
+}
+
+.treeItem:hover {
+  background-color: $treeSelectedBackground;
+}
+
+.treeItem.treeSelected {
+  background-color: $treeSelectedBackground;
+  color: $treeSelectedColor;
+  border-left-color: $primary;
+}
+
+.treeItem.treeSelected * {
+  font-weight: 700 !important;
+}
+
+.treeItem {
+  display: flex;
+  align-items: center;
+}
+
+.treeItem img {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+
+.treeText {
+  flex: 1;
+  display: inline-block;
+  margin: 0 5px;
+  position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.treeExpand {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.treeExpand > * {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  background: url('icons.png') -394px 0 no-repeat;
+  cursor: pointer;
+}
+
+.treeItem.treeExpanded .treeExpand > * {
+  background-position: -394px -16px;
+}
+
+.treeItem.treeLoading .treeExpand > * {
+  border-radius: 50%;
+  border: $primary 2px solid;
+  border-top-color: transparent;
+  background: none;
+  animation: loader 3s linear infinite;
+}
+
+.widget {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex-direction: column;
+  font-size: 12px;
+}
+
+.widget > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  min-height: 4rem;
+  align-items: center;
+  font-size: 15px;
+}
+
+.widget > div:first-child > div:first-child > div:first-child {
+  font-weight: bold !important;
+}
+
+.widget > div:first-child > div:first-child > div:last-child {
+  font-size: 12px;
+}
+
+.widget > div:last-child {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.mirtTableHead > *,
+.mirtTableRow > *:first-child {
+  background-color: $even;
+}
+
+.compareTooltipTable {
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.compareTooltipTable td {
+  vertical-align: middle;
+  font-size: 0.75rem;
+  padding: 1px 5px;
+  font-weight: normal;
+  border: 1px solid #eee;
+}
+
+.compareTooltipTable tr:first-child td {
+  text-align: center;
+  background-color: #eee;
+  color: #999;
+}
+
+/* Report */
+.reportItemSelected::before {
+  background-color: $active;
+}
+
+.reportItemSelected > div:last-child > *::before {
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.reportItemSelected > div:last-child:hover > *::before {
+  color: $primary !important;
+}
+
+/* Vector Diagram */
+.vectorColor {
+  stroke: #5f5f5f;
+}
+
+.vectorColorText {
+  fill: #5f5f5f;
+}
+
+.vectorToolTip {
+  background-color: #fff;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+              0 2px 2px 0 rgba(0, 0, 0, 0.14),
+              0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.vectorToolTip td {
+  outline: 1px solid #eee;
+}
+
+.vectorToolTip th {
+  outline: 1px solid #eee;
+  background-color: #eee;
+}
+
+/* TABS */
+.tabsWrap > *,
+.tabsItems {
+  background-color: transparent !important;
+}
+
+/* DIALOG */
+.dialogWrap {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+.dialogWrap > *:first-child {
+  flex: 0;
+}
+
+.dialogWrap > *:last-child {
+  flex: 1;
+}
+
+.dialogHeader {
+  background-color: $primary !important;
+}
+
+/* FILE */
+.fileWrapActive {
+  border-color: $darkActive !important;
+  background-color: #67c23a;
+  background-image: linear-gradient(
+    45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%,
+    transparent 50%, rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.2) 75%, transparent 75%,
+    transparent);
+  background-size: 40px 40px;
+  background-repeat: repeat;
+  animation: stripes 0.5s linear infinite;
+  opacity: 0.3;
+}
+
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* DARK */
+html.dark,
+body.dark,
+body.dark .card,
+body.dark .mainHeader,
+body.dark .vue-grid-item,
+body.dark .v-menu__content,
+body.dark .v-menu__content > div,
+body.dark .adjustmentsWrap,
+body.dark .v-card,
+body.dark .v-picker__body,
+body.dark .MirtChart *,
+body.dark .badge,
+body.dark .indicator,
+body.dark .compareTooltipTable,
+body.dark .v-chip {
+  background-color: $darkBackground !important;
+}
+
+body.dark .MirtChart canvas {
+  background-color: transparent !important;
+}
+
+body.dark .v-chip {
+  border: $darkMain 1px solid !important;
+}
+
+body.dark * {
+  color: $darkMain !important;
+}
+
+body.dark * {
+  scrollbar-width: thin;
+  scrollbar-color: $primary $darkBackground;
+}
+
+body.dark *::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+
+body.dark *::-webkit-scrollbar-track {
+  background: $darkBackground;
+}
+
+body.dark *::-webkit-scrollbar-thumb {
+  background-color: $primary;
+  border-radius: 5px;
+  border: 1px solid $darkBackground;
+}
+
+body.dark .treeWrap > * {
+  border-color: $darkBackground;
+  background: $darkBackground !important;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+              0 2px 2px 0 rgba(0, 0, 0, 0.14),
+              0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+body.dark .treeItem:hover,
+body.dark .treeItem:hover * {
+  background-color: $treeSelectedColor !important;
+  color: #fff !important;
+}
+
+body.dark .treeItem.treeSelected,
+body.dark .treeItem.treeSelected * {
+  background-color: $treeSelectedColor !important;
+  color: #fff !important;
+  border-left-color: $primary;
+}
+
+body.dark .card,
+body.dark .vue-grid-item {
+  border: $darkMain 1px solid;
+}
+
+body.dark .v-tooltip__content {
+  background-color: $darkBackground;
+  color: $darkMain !important;
+  border: $darkMain 1px solid;
+}
+
+body.dark .tableWrap > *:nth-child(odd) {
+  background-color: $darkActive !important;
+}
+
+body.dark .noData,
+body.dark .noData * {
+  background-color: #cf5b45;
+}
+
+body.dark .mainFooter {
+  color: #000 !important;
+}
+
+body.dark .v-input--is-disabled.v-input--switch * .v-icon,
+body.dark .v-input--is-disabled.v-input__slider * .v-icon {
+  color: #808080 !important;
+}
+
+body.dark .v-input--is-disabled.v-input__slider .v-slider__track-fill,
+body.dark .v-input--is-disabled.v-input__slider .v-slider__thumb {
+  background-color: #808080 !important;
+}
+
+body.dark .v-input .v-messages__message {
+  color: $error !important;
+}
+
+body.dark .mirtTableHead > *,
+body.dark .mirtTableRow > *:first-child {
+  background-color: $darkActive;
+}
+
+body.dark .digital > span:last-child {
+  color: $darkActive !important;
+}
+
+body.dark .compareTooltipTable td,
+body.dark .compareTooltipTable tr:first-child td {
+  background-color: $darkActive;
+}
+
+body.dark .reportItemSelected::before {
+  background-color: $darkActive;
+}
+
+/* Vector Diagram */
+body.dark .vectorColor {
+  stroke: $darkMain;
+}
+
+body.dark .vectorColorText {
+  fill: $darkMain;
+}
+
+body.dark .vectorToolTip,
+body.dark .vectorToolTip th {
+  background-color: $darkBackground;
+}
+
+/* DIALOG */
+body.dark .dialogWrap {
+  background-color: $darkBackground;
+}
+
+body.dark .dialogHeader {
+  background-color: $darkActive !important;
+}
+
+/* FILE */
+body.dark .fileWrapActive {
+  border-color: $darkMain !important;
+  background-color: transparent;
+}
+
+/* CONTRAST */
+body.contrast * {
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  color: #000 !important;
+}
+
+body.contrast .treeItem:hover,
+body.contrast .treeItem:hover * {
+  background-color: $treeSelectedColor !important;
+  color: #fff !important;
+}
+
+body.contrast .treeItem.treeSelected,
+body.contrast .treeItem.treeSelected * {
+  background-color: $treeSelectedColor !important;
+  color: #fff !important;
+  border-left-color: $primary;
+}
+
+body.contrast .noData,
+body.contrast .noData *,
+body.contrast .v-tooltip__content * {
+  color: #fff !important;
+}
+
+body.contrast .navigationWrapActive *,
+body.contrast .navigationWrapActive + * {
+  color: #fff !important;
+}
+
+body.contrast .navigationWrapActive .navItem:hover * {
+  color: #000 !important;
+}
+
+body.contrast .navigationWrapActive .navItem.active * {
+  color: $primary !important;
+}
+
+body.contrast .primaryBtn *,
+body.contrast .deleteBtn *,
+body.contrast .v-snack__content,
+body.contrast .v-picker .v-btn--active .v-btn__content {
+  color: #fff !important;
+}
+
+body.contrast .digital > span:first-child {
+  font-weight: normal !important;
+}
+
+body.contrast .digital > span:last-child {
+  color: #f3a848 !important;
+}
+
+/* Vector Diagram */
+.body.contrast .vectorColor,
+body.contrast .vectorColorText {
+  fill: #000;
+}

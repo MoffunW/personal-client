@@ -1,0 +1,436 @@
+<template>
+  <div :class="$style.root">
+    <v-overlay v-if="!showTree">
+      <v-progress-circular indeterminate size="64" />
+    </v-overlay>
+    <div v-else :class="$style.tree">
+      <div :class="$style.wrapper" ref="wrapper" @click="e => handleClick(e)">
+        <div ref="viewport"></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+
+export default {
+  props: {
+    width: {
+      type: String,
+      default: () => "200px"
+    },
+    renderItem: {
+      type: Function,
+      default: (arg, index) => {
+        const el = document.createElement("div");
+        el.setAttribute("data-index", index);
+        el.innerHTML = arg.text;
+        return el;
+      }
+    }
+  },
+  data() {
+    return {
+      data: null,
+      items: null,
+      itemHeight: 0,
+      contentHeight: 0,
+      capacity: 0,
+      maxHeight: 6000000,
+      mode: "simple",
+      viewport: null,
+      wrapper: null,
+      el: null,
+      observer: null,
+      showTree: false,
+      childsCache: null,
+      scalableStart: 0
+    };
+  },
+  computed: {
+    auth() {
+      return this.$store.state.auth;
+    }
+  },
+  watch: {
+    "$store.state.auth": {
+      handler(arg) {
+        if (arg) this.start();
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    setPath(arg) {
+      localStorage.setItem("selected", arg);
+      const arr = [];
+      const cache = this.$options.childsCache;
+      let _ = "🔔";
+      while (_) {
+        _ = Object.keys(cache).find(x =>
+          cache[x].find(y => y.id == (arg ? arg : _)) ? x : null
+        );
+        arg = null;
+        if (_) arr.push(_);
+      }
+      localStorage.setItem("path", JSON.stringify(arr.reverse()));
+    },
+
+    async restoreTree(arg) {
+      if (!arg) {
+        const firstNode = this.viewport.querySelector(".treeItem");
+        if (firstNode) this.handleClick({ target: firstNode }, true);
+        return;
+      }
+      for (let x of arg) {
+        try {
+          let el = document.createElement("span");
+          el.dataset.index = x;
+          await this.getChilds(el);
+          el.remove();
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      const selected = localStorage.getItem("selected");
+      if (!selected) return;
+      const item = this.$options.items.findIndex(x => x.id == selected);
+      if (!item) return;
+      this.restoreItem(item, selected);
+    },
+
+    restoreItem(arg, id) {
+      let scrollTop = 0;
+      switch (this.mode) {
+        case "scalable":
+          scrollTop =
+            arg * (this.itemHeight / (this.contentHeight / this.maxHeight));
+          break;
+        default:
+          scrollTop = arg * this.itemHeight;
+      }
+      this.el.scrollTop = scrollTop;
+      const node = this.viewport.querySelector(`[data-index="${id}"]`);
+      this.$store.state.selectedTreeNode && node
+        ? node.classList.add("treeSelected")
+        : this.handleClick({ target: node });
+    },
+
+    setRowSelected(arg) {
+      if (arg.closest(".treeSelected")) return;
+      const el = this.el.querySelector(".treeItem.treeSelected");
+      if (el) el.classList.remove("treeSelected");
+      arg.classList.add("treeSelected");
+      if (!arg && !arg.dataset.index) return;
+      this.setPath(arg.dataset.index);
+      this.$emit(
+        "change",
+        this.$options.items.find(x => x.id === arg.dataset.index)
+      );
+    },
+
+    expandNode(arg) {
+      const index = this.$options.items.findIndex(x => x.id === arg);
+      this.$options.childsCache[arg][
+        this.$options.childsCache[arg].length - 1
+      ].lastChild = true;
+      this.$options.items.splice(
+        index + 1,
+        0,
+        ...this.$options.childsCache[arg]
+      );
+      this.refreshTree();
+    },
+
+    collapseNode(arg) {
+      const index = this.$options.items.findIndex(x => x.id === arg);
+      const level = this.$options.items[index].level
+        ? +this.$options.items[index].level
+        : 0;
+      let i = index + 1;
+      let counter = 0;
+      while (
+        this.$options.items[i] &&
+        (this.$options.items[i].level ? +this.$options.items[i].level : 0) >
+          level
+      ) {
+        this.$options.items[i].expanded = false;
+        i++;
+        counter++;
+      }
+      this.$options.items.splice(index + 1, counter);
+      this.refreshTree();
+    },
+
+    async getChilds(arg) {
+      if (arg.classList.contains("treeLoading")) return;
+      try {
+        const index = this.$options.items.findIndex(
+          x => x.id === arg.dataset.index
+        );
+        let obj = this.$options.items[index];
+        let lastParents = obj.lastParents ? [...obj.lastParents] : [];
+        if (obj.level) lastParents.push(!!obj.lastChild);
+        if (!obj.expanded) {
+          setTimeout(() => arg.classList.add("treeLoading"), 500);
+          obj.expanded = true;
+          if (!this.$options.childsCache[obj.id]) {
+            const { data } = await axios.get(
+              `Device/DeviceList?node=${obj.id}`
+            );
+            const key = data.parent;
+            data.values.map(x => {
+              x.level = obj.level ? obj.level + 1 : 1;
+              x.lastParents = lastParents;
+            });
+            this.$options.childsCache[key] = data.values;
+          }
+          this.expandNode(obj.id);
+        } else {
+          obj.expanded = false;
+          this.collapseNode(obj.id);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    handleClick(e, notSelectItem = false) {
+      this.scalableStart =
+        (this.el.scrollTop / (this.el.scrollHeight - this.el.clientHeight)) *
+        (this.$options.items.length - this.capacity);
+      const expand = e.target.closest(".treeExpand");
+      const el = e.target.closest(".treeItem");
+      if (!el) return;
+      if (expand) {
+        this.getChilds(el);
+        return;
+      }
+      if (!notSelectItem) this.setRowSelected(el);
+      setTimeout(() => {
+        const index = this.$options.items.findIndex(
+          x => x.id === el.dataset.index
+        );
+        let obj = this.$options.items[index];
+        if (obj.selected) return;
+        this.$options.items.forEach(x => (x.selected = false));
+        obj.selected = true;
+        this.refreshTree();
+      }, 0);
+    },
+
+    destroy() {
+      if (this.mode === "scalable")
+        this.el.removeEventListener("scroll", this.renderScalableTree);
+      if (this.mode === "virtual")
+        this.el.removeEventListener("scroll", this.renderTree);
+      if (this.viewport) {
+        while (this.viewport.firstChild) {
+          this.viewport.removeChild(this.viewport.firstChild);
+        }
+      }
+      if (this.observer)
+        this.observer.unobserve(this.$el.querySelector(`.${this.$style.tree}`));
+    },
+
+    /*
+    const offset =
+        (this.el.scrollTop / (this.el.scrollHeight - this.el.clientHeight)) *
+        (this.$options.items.length - this.capacity);
+      const start = Math.floor(offset);
+      const end = Math.ceil(offset + this.capacity);
+      this.viewport.style.top = firstRow * this.itemHeight + "px";
+      this.redrawViewport(this.$options.items.slice(start, end), start);
+    */
+
+    refreshTree() {
+      if (!this.el) return;
+      const scrollOffset = this.el.scrollTop;
+      let scrollTop = 0;
+      let start = 0;
+      let end = 0;
+      if (this.mode === "scalable") {
+        const itemsDiff =
+          Math.floor(
+            (this.el.scrollTop /
+              (this.el.scrollHeight - this.el.clientHeight)) *
+              (this.$options.items.length - this.capacity)
+          ) - Math.floor(this.scalableStart);
+        scrollTop =
+          Math.round(itemsDiff / (this.contentHeight / this.maxHeight)) *
+          this.itemHeight;
+        start = Math.floor(this.scalableStart);
+        end = Math.ceil(this.scalableStart + this.capacity);
+
+        this.destroy();
+        this.init();
+        this.el.scrollTop = scrollOffset - scrollTop;
+        setTimeout(
+          () =>
+            this.redrawViewport(this.$options.items.slice(start, end), start),
+          0
+        );
+      } else {
+        this.destroy();
+        this.init();
+        this.el.scrollTop = scrollOffset - scrollTop;
+      }
+    },
+
+    handleResize() {
+      this.capacity = this.el.clientHeight / this.itemHeight;
+      if (this.mode === "scalable") this.renderScalableTree();
+      if (this.mode === "virtual") this.renderTree();
+    },
+
+    setItemHeight() {
+      if (!this.viewport) return;
+      const el = this.renderItem(this.$options.items[0], 0);
+      this.viewport.appendChild(el);
+      this.itemHeight = el.clientHeight;
+      el.remove();
+    },
+
+    getMode() {
+      if (
+        this.$options.items.length <= 500 &&
+        this.contentHeight <= this.maxHeight
+      ) {
+        return "simple";
+      }
+      if (this.contentHeight <= this.maxHeight) {
+        return "virtual";
+      }
+      return "scalable";
+    },
+
+    renderTree() {
+      const offset = this.el.scrollTop / this.itemHeight;
+      const start = Math.floor(offset);
+      const end = Math.ceil(offset + this.capacity);
+      this.viewport.style.top = start * this.itemHeight + "px";
+      this.redrawViewport(this.$options.items.slice(start, end), start);
+    },
+
+    renderScalableTree() {
+      const rowsOffset = this.el.scrollTop / this.itemHeight;
+      const firstRow = Math.floor(rowsOffset);
+      const offset =
+        (this.el.scrollTop / (this.el.scrollHeight - this.el.clientHeight)) *
+        (this.$options.items.length - this.capacity);
+      const start = Math.floor(offset);
+      const end = Math.ceil(offset + this.capacity);
+      this.viewport.style.top = firstRow * this.itemHeight + "px";
+      this.redrawViewport(this.$options.items.slice(start, end), start);
+    },
+
+    redrawViewport(items) {
+      while (this.viewport.firstChild) {
+        this.viewport.removeChild(this.viewport.firstChild);
+      }
+      items.forEach(item => {
+        const row = this.renderItem(item);
+        this.viewport.appendChild(row);
+      });
+    },
+
+    init() {
+      this.$el.style.width = `${this.width}`;
+      this.el = this.$el.querySelector(`.${this.$style.tree}`);
+      if (!this.el) return;
+      this.viewport = this.$refs.viewport;
+      this.wrapper = this.$refs.wrapper;
+      this.setItemHeight();
+      this.capacity = this.el.clientHeight / this.itemHeight;
+      this.contentHeight = this.itemHeight * this.$options.items.length;
+      this.mode = this.getMode();
+      switch (this.mode) {
+        case "scalable":
+          this.wrapper.style.height = `${this.maxHeight}px`;
+          this.renderScalableTree();
+          this.el.addEventListener("scroll", this.renderScalableTree);
+          break;
+        case "virtual":
+          this.wrapper.style.height = `${this.contentHeight}px`;
+          this.renderTree();
+          this.el.addEventListener("scroll", this.renderTree);
+          break;
+        default:
+          this.$options.items.forEach(item => {
+            const row = this.renderItem(item);
+            this.viewport.appendChild(row);
+          });
+      }
+    },
+
+    async start() {
+      if (!this.auth) {
+        this.showTree = true;
+        this.$message.error(`Error: Unauthorized`);
+        return;
+      }
+      let result = null;
+      try {
+        result = await axios.get("Device/GetAllTreeImageNode");
+        if (!result || !result.data) return;
+        if (result.data) {
+          const obj = {};
+          result.data.forEach(x => (obj[x.typeName] = x.ico));
+          this.$store.commit("setdevicesImgs", obj);
+        }
+      } catch (e) {
+        this.$store.commit("setdevicesImgs", {});
+        this.$message.error(`API Error: Can't get tree images`);
+      }
+      try {
+        result = await axios.get("Device/DeviceList?node");
+        if (!result || !result.data || !result.data.values.length) return;
+        this.showTree = true;
+        await this.$nextTick();
+        const el = this.$el.querySelector(`.${this.$style.tree}`);
+        if (el)
+          this.observer = new ResizeObserver(this.handleResize).observe(el);
+        this.$options.items = result.data.values;
+        this.$options.childsCache = {};
+        this.init();
+        await this.$nextTick();
+        if (!this.viewport) return;
+        const arr = JSON.parse(localStorage.getItem("path"));
+        !arr ? localStorage.setItem("selected", null) : this.restoreTree(arr);
+      } catch (e) {
+        this.showTree = true;
+        this.$message.error(`API Error: Can't get first tree node`);
+      }
+    }
+  },
+  beforeDestroy() {
+    this.destroy();
+  }
+};
+</script>
+
+<style module>
+.root {
+  height: 100%;
+  position: relative;
+}
+
+.tree {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.wrapper > div {
+  position: absolute;
+  width: 100%;
+}
+</style>
