@@ -96,7 +96,7 @@ import axios from "axios";
 export default {
   components: {
     WidgetWrapper: () => import("@/components/WidgetWrapper"),
-    MirtVectorDiagram: () => import("@/components/charts/MirtVectorDiagram")
+    MirtVectorDiagram: () => import("@/components/Charts/MirtVectorDiagram")
   },
   props: {
     params: {

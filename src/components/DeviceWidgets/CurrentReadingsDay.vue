@@ -115,7 +115,7 @@ export default {
     WidgetWrapper: () => import("@/components/WidgetWrapper"),
     numberInput: () => import("@/components/MirtNumberInput"),
     slicedDateIntervals: () => import("@/components/SlicedDateIntervals"),
-    mirtChart: () => import("@/components/charts/MirtChart"),
+    mirtChart: () => import("@/components/Charts/MirtChart"),
     mirtTable: () => import("@/components/MirtTable"),
     ExportSelector: () => import("@/components/ExportSelector")
   },

@@ -109,7 +109,7 @@ export default {
   components: {
     WidgetWrapper: () => import("@/components/WidgetWrapper"),
     numberInput: () => import("@/components/MirtNumberInput"),
-    mirtGaugeChart: () => import("@/components/charts/MirtGaugeChart")
+    mirtGaugeChart: () => import("@/components/Charts/MirtGaugeChart")
   },
   props: {
     params: {
