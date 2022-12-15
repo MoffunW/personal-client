@@ -2,6 +2,7 @@
   <div :class="`MirtChart ${$style.root}`" ref="chart"></div>
 </template>
 
+
 <script>
 import * as echarts from "echarts";
 
