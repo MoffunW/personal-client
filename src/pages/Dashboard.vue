@@ -1,5 +1,6 @@
 <template>
   <div :class="$style.root">
+    <welcome v-if="$store.state.serverSettings.showWelcome" />
     <v-dialog
       transition="dialog-top-transition"
       max-width="500"
@@ -158,6 +159,7 @@ import VueGridLayout from "vue-grid-layout";
 
 export default {
   components: {
+    Welcome: () => import("@/components/Welcome/Welcome"),
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
     VirtualTree: () => import("@/components/VirtualTree"),

@@ -292,25 +292,67 @@ body *::-webkit-scrollbar-thumb {
   justify-content: center;
 }
 
-.v-slide-group__prev > * {
-  height: 24px !important;
-  width: 24px !important;
-  background-image: url('icons.png');
-  background-position: -578px 0px;
+.v-window__prev,
+.v-window__next {
+  background-color: transparent !important;
 }
 
-.v-slide-group__next > * {
+.v-slide-group__prev > *,
+.v-window__prev > *,
+.v-window__prev:hover > * {
   height: 24px !important;
   width: 24px !important;
-  background-image: url('icons.png');
-  background-position: -602px 0px;
+  background-image: url('icons.png') !important;
+  background-position: -578px 0px !important;
+}
+
+.v-slide-group__next > *,
+.v-window__next > *,
+.v-window__next:hover > * {
+  height: 24px !important;
+  width: 24px !important;
+  background-image: url('icons.png') !important;
+  background-position: -602px 0px !important;
 }
 
 .v-slide-group__prev > *::before,
 .v-slide-group__prev > *::after,
 .v-slide-group__next > *::before,
-.v-slide-group__next > *::after {
+.v-slide-group__next > *::after,
+.v-window__prev > * span,
+.v-window__next > * span {
   display: none;
+}
+
+.carousel .v-carousel__controls .v-carousel__controls__item::before,
+.carousel .v-carousel__controls .v-carousel__controls__item > *:nth-child(2) {
+  display: none !important;
+}
+
+.carousel .v-carousel__controls .v-carousel__controls__item i {
+  color: $primary !important;
+}
+
+.carousel .v-carousel__controls .v-carousel__controls__item.v-item--active::before {
+  background-color: $primary !important;
+}
+
+.carousel .v-carousel__controls .v-carousel__controls__item.v-item--active i {
+  color: $primary !important;
+}
+
+.carousel .v-carousel__controls .v-carousel__controls__item i::before {
+  width: 10px;
+  transition: width 0.2s ease-in-out 0s;
+}
+
+.carousel .v-carousel__controls .v-carousel__controls__item.v-item--active i::before {
+  font-size: 2px;
+  display: inline-block;
+  width: 26px;
+  height: 7px;
+  border-radius: 3px;
+  background-color: $primary;
 }
 
 .numberInput .v-input__icon--prepend button::before,

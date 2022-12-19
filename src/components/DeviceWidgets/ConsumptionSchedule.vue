@@ -59,6 +59,7 @@
         </v-select>
         <div>
           <sliced-date-intervals
+            ref="dateSelector"
             v-model="widgetParams.date"
             sliced
             :range="widgetParams.date.range"
@@ -76,10 +77,20 @@
             @change="handleSettingsChanged(true)"
           />
         </div>
+        <export-selector
+          :data="$options.data"
+          :params="widgetParams"
+          :energyTypes="energyTypes"
+          :device="device"
+          :name="name"
+          :widget="params.name"
+          :link="$refs"
+          noChart
+        />
       </template>
       <template slot="content" v-if="isData">
         <!-- Content -->
-        <div v-if="widgetParams.type != 'table'">
+        <div v-show="widgetParams.type != 'table'">
           <mirt-chart
             ref="chart"
             :data="$options.data"
@@ -88,7 +99,7 @@
             isDailyChart
           />
         </div>
-        <div v-else>
+        <div v-if="widgetParams.type === 'table'">
           <mirt-table v-model="$options.table" />
         </div>
       </template>
@@ -106,7 +117,8 @@ export default {
     slicedDateIntervals: () => import("@/components/SlicedDateIntervals"),
     mirtChart: () => import("@/components/Charts/MirtChart"),
     numberInput: () => import("@/components/MirtNumberInput"),
-    mirtTable: () => import("@/components/VirtualMirtTable")
+    mirtTable: () => import("@/components/VirtualMirtTable"),
+    ExportSelector: () => import("@/components/ExportSelector")
   },
   props: {
     params: {

@@ -44,7 +44,7 @@ export default {
       default: () => []
     },
     data: {
-      type: Object,
+      type: [Object, Function],
       default: () => {}
     },
     device: {
@@ -62,6 +62,10 @@ export default {
     link: {
       type: Object,
       default: () => {}
+    },
+    noChart: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -109,6 +113,18 @@ export default {
             dateEnd: this.link.dateSelector.rangedDate[1]
           }
         : { dateStart: this.link.dateSelector.date, dateEnd: null };
+    },
+    slice() {
+      if (
+        !this.link.dateSelector._props.sliced ||
+        !this.$store.state.serverSettings.slices ||
+        !this.params.date.slice
+      )
+        return null;
+      const _ = this.$store.state.serverSettings.slices.find(
+        x => x.value === this.params.date.slice
+      );
+      return _ ? _.key : null;
     }
   },
   data() {
@@ -127,21 +143,23 @@ export default {
           DateFrom: this.dates.dateStart,
           EnergyType: this.energyType,
           Testimony: this.params.isTestimony,
+          Step: this.step,
           x_axis: this.data.x_axis,
           options: this.data.options
         };
         if (this.dates.dateEnd) obj.DateTo = this.dates.dateEnd;
         //if (this.chart) obj.ImgBase64 = this.chart.exportChart();
-        obj.ImgBase64 = this.chart.exportChart();
+        obj.ImgBase64 = this.noChart ? null : this.chart.exportChart();
         this.loading = true;
         const { data } = await axios.post("ChartToFile/GetReportWidget", obj, {
           headers: { "Content-Type": "application/json" }
         });
         let a = document.createElement("a");
         a.href = data;
-        a.download = this.dates.dateEnd
-          ? `${this.dates.dateStart}-${this.dates.dateEnd}.${arg}`
-          : `${this.dates.dateStart}.${arg}`;
+        a.download = `Report ${new Date()
+          .toLocaleString("RU-ru")
+          .replace(/,/g, "")
+          .replace(/[/:]/g, "-")}.${arg}`;
         a.click();
         a.remove();
       } catch (e) {

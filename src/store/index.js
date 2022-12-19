@@ -25,6 +25,7 @@ export default new Vuex.Store({
     },
 
     setServerSettings(state, arg) {
+      //arg.showWelcome = true; // HARDCODE
       state.serverSettings = arg;
       let l = window.location.hash ? window.location.hash.split("/") : [];
       l = !l[1] ? null : l[1];
