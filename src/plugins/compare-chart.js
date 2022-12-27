@@ -557,7 +557,6 @@ class __Chart {
       .getZr()
       .on("mouseout", () => this.parent.style.removeProperty("z-index"));
     this._.chart.on("legendselectchanged", params => {
-      alert();
       if (!params.name.includes(":")) return;
       this._.chart.dispatchAction({
         type: "legendSelect",

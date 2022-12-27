@@ -330,7 +330,6 @@ export default {
           this.tariffs = this.dataBefore.options.map(x => x.name);
         }
       } catch (e) {
-        console.log(e);
         this.fail = "err_bad_request_api";
       } finally {
         this.loading = false;

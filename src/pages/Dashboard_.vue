@@ -1,5 +1,6 @@
 <template>
   <div :class="$style.root">
+    <welcome v-if="$store.state.serverSettings.showWelcome" />
     <v-dialog
       transition="dialog-top-transition"
       max-width="500"
@@ -100,6 +101,58 @@
             v-if="layout"
             ref="grid"
             :class="$style.gridWrap"
+            :style="
+              `transform: scale(${scale}); zoom: ${scale}; transform-origin: center top;`
+            "
+            :layout.sync="layout"
+            :col-num="3"
+            :row-height="490"
+            :cols="breakPoints"
+            :is-resizable="false"
+            :is-draggable="edit"
+            :responsive="!edit"
+            :vertical-compact="false"
+            :use-css-transforms="true"
+            :transformScale="scale"
+            :key="gridKey"
+          >
+            <!-- :transformScale="1.5" -->
+            <grid-item
+              :class="$style.gridItem"
+              v-for="item in layout"
+              :ref="`item-${item.id}`"
+              :x="item.x"
+              :y="item.y"
+              :w="item.w"
+              :h="item.h"
+              :i="item.i"
+              :key="item.i"
+              @moved="arg => handleGridChanged(arg, false)"
+            >
+              <div v-if="edit" :class="$style.contentOverlay">
+                <v-icon :style="`transform: scale(${scale}); zoom: ${scale};`">
+                  mdi-cursor-move
+                </v-icon>
+              </div>
+              <div :class="$style.contentWrap">
+                <component
+                  v-bind:is="item.widgetParams ? item.widgetParams.name : ''"
+                  :params="item.widgetParams ? item.widgetParams : {}"
+                  @change="
+                    arg => {
+                      handleWidgetChange(arg, item.i);
+                    }
+                  "
+                  @delete="handleDelete(item)"
+                />
+              </div>
+            </grid-item>
+          </grid-layout>
+
+          <!--grid-layout
+            v-if="layout"
+            ref="grid"
+            :class="$style.gridWrap"
             :style="`width: ${scaledParams.width}`"
             :layout.sync="layout"
             :col-num="3"
@@ -112,6 +165,7 @@
             :use-css-transforms="true"
             :key="gridKey"
           >
+            <:transformScale="1.5">
             <grid-item
               :class="$style.gridItem"
               v-for="item in layout"
@@ -145,7 +199,7 @@
                 />
               </div>
             </grid-item>
-          </grid-layout>
+          </grid-layout-->
         </div>
       </div>
     </div>
@@ -158,6 +212,7 @@ import VueGridLayout from "vue-grid-layout";
 
 export default {
   components: {
+    Welcome: () => import("@/components/Welcome/Welcome"),
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
     VirtualTree: () => import("@/components/VirtualTree"),
@@ -178,8 +233,10 @@ export default {
       import("@/components/DeviceWidgets/ConsumptionSchedule"),
     CalendarChart: () => import("@/components/DeviceWidgets/CalendarChart"),
     InstantValues: () => import("@/components/DeviceWidgets/InstantValues"),
+    EventLog: () => import("@/components/DeviceWidgets/EventLog"),
     /* NodeWidgets */
-    Report: () => import("@/components/NodeWidgets/Report")
+    Report: () => import("@/components/NodeWidgets/Report"),
+    NodeInfo: () => import("@/components/NodeWidgets/NodeInfo")
   },
   data() {
     return {
@@ -448,13 +505,94 @@ export default {
         let { data } = await axios.get(
           `Device/GetWidgetTypes?isFolder=${this.$store.state.selectedTreeNode.isFolder}`
         );
+        // Feature
+        data = [
+          /*{
+            name: "group1",
+            isGroup: true,
+            childrens: [
+              {
+                id: 118,
+                nodeType: "D",
+                name: "item1",
+                description: "Лимит потребления",
+                maxWidth: 1,
+                minWidth: 1,
+                maxHeight: 1,
+                minHeight: 1
+              },
+              {
+                id: 119,
+                nodeType: "D",
+                name: "item2",
+                description: "Мгновенные значения",
+                maxWidth: 2,
+                minWidth: 2,
+                maxHeight: 1,
+                minHeight: 1
+              }
+            ]
+          },*/
+          {
+            name: "group2",
+            isGroup: false,
+            childrens: data
+          }
+          /*{
+            name: "group3",
+            isGroup: true,
+            childrens: [
+              {
+                id: 220,
+                nodeType: "D",
+                name: "item1",
+                description: "Лимит потребления",
+                maxWidth: 1,
+                minWidth: 1,
+                maxHeight: 1,
+                minHeight: 1
+              },
+              {
+                id: 221,
+                nodeType: "D",
+                name: "item2",
+                description: "Мгновенные значения",
+                maxWidth: 2,
+                minWidth: 2,
+                maxHeight: 1,
+                minHeight: 1
+              },
+              {
+                id: 222,
+                nodeType: "D",
+                name: "item3",
+                description: "Мгновенные значения",
+                maxWidth: 2,
+                minWidth: 2,
+                maxHeight: 1,
+                minHeight: 1
+              }
+            ]
+          }*/
+        ];
+        const _ = data.findIndex(x => x.isGroup === false);
+        if (_ || _ === 0) {
+          const tmp = data[_].childrens;
+          data.splice(_, 1);
+          data = [...tmp, ...data];
+        }
+        data.map(x => {
+          if (x.name) x.trueName = this.$t(x.name);
+          if (x.isGroup && x.childrens.length) {
+            x.childrens.map(y => (y.trueName = this.$t(y.name)));
+          }
+          return x;
+        });
 
         //data.map(x => console.log(x.id, x.description));
 
-        const inc = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11];
-        data = data.filter(x => inc.includes(x.id));
-
-        data.map(x => (x.trueName = this.$t(x.name)));
+        /*const inc = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11];
+        data = data.filter(x => inc.includes(x.id));*/
         this.widgetsList = data;
       } catch (e) {
         if (e.response) this.$message.error(this.$t(e.response.data));
@@ -547,7 +685,7 @@ export default {
 }
 
 .gridWrap {
-  user-select: none;
+  user-select: text;
   margin: 0 auto;
 }
 
@@ -556,7 +694,7 @@ export default {
   height: 100%;
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 .contentWrap {

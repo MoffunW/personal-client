@@ -43,30 +43,6 @@
       />
     </div>
     <div>
-      <!--div v-if="$store.state.editMode" class="adjustmentsWrap">
-        <v-select
-          :class="$style.widgetSelect"
-          v-model="selectedWidget"
-          item-text="trueName"
-          item-value="id"
-          :items="widgetsList"
-          :label="$t('addWidget')"
-          :loading="addingWidget"
-          :disabled="addingWidget"
-          @change="handleAddWidget"
-        />
-        <div v-if="canDrag">
-          <v-switch v-model="edit" prepend-icon="mdi-pencil-outline" />
-          <v-slider
-            v-model="scale"
-            prepend-icon="mdi-fullscreen-exit"
-            max="1"
-            min="0.5"
-            step="0.01"
-            :disabled="!edit"
-          />
-        </div>
-      </div-->
       <div ref="container">
         <v-overlay v-if="loading" :class="$style.overlay">
           <v-progress-circular indeterminate size="64" />
@@ -96,21 +72,21 @@
               />
             </div>
           </div>
-
           <grid-layout
             v-if="layout"
             ref="grid"
             :class="$style.gridWrap"
-            :style="`width: ${scaledParams.width}`"
+            :style="`transform: scale(${scale}); zoom: ${scale};`"
             :layout.sync="layout"
             :col-num="3"
+            :row-height="490"
             :cols="breakPoints"
-            :row-height="scaledParams.rowHeight"
             :is-resizable="false"
             :is-draggable="edit"
             :responsive="!edit"
             :vertical-compact="false"
             :use-css-transforms="true"
+            :transformScale="scale"
             :key="gridKey"
           >
             <grid-item
@@ -130,10 +106,7 @@
                   mdi-cursor-move
                 </v-icon>
               </div>
-              <div
-                :class="$style.contentWrap"
-                :style="`transform: scale(${scale}); zoom: ${scale};`"
-              >
+              <div :class="$style.contentWrap">
                 <component
                   v-bind:is="item.widgetParams ? item.widgetParams.name : ''"
                   :params="item.widgetParams ? item.widgetParams : {}"
@@ -182,7 +155,8 @@ export default {
     InstantValues: () => import("@/components/DeviceWidgets/InstantValues"),
     EventLog: () => import("@/components/DeviceWidgets/EventLog"),
     /* NodeWidgets */
-    Report: () => import("@/components/NodeWidgets/Report")
+    Report: () => import("@/components/NodeWidgets/Report"),
+    NodeInfo: () => import("@/components/NodeWidgets/NodeInfo")
   },
   data() {
     return {
@@ -212,16 +186,6 @@ export default {
   computed: {
     canDrag() {
       return this.containerWidth > 1200;
-    },
-    scaledParams() {
-      let obj = {
-        rowHeight: this.rowHeight,
-        width: "auto"
-      };
-      if (!this.edit || !this.containerWidth) return obj;
-      obj.rowHeight = Math.round(this.rowHeight * this.scale);
-      obj.width = `${Math.round(this.containerWidth * this.scale)}px`;
-      return obj;
     }
   },
   watch: {
@@ -451,75 +415,12 @@ export default {
         let { data } = await axios.get(
           `Device/GetWidgetTypes?isFolder=${this.$store.state.selectedTreeNode.isFolder}`
         );
-        // Feature
         data = [
-          /*{
-            name: "group1",
-            isGroup: true,
-            childrens: [
-              {
-                id: 118,
-                nodeType: "D",
-                name: "item1",
-                description: "Лимит потребления",
-                maxWidth: 1,
-                minWidth: 1,
-                maxHeight: 1,
-                minHeight: 1
-              },
-              {
-                id: 119,
-                nodeType: "D",
-                name: "item2",
-                description: "Мгновенные значения",
-                maxWidth: 2,
-                minWidth: 2,
-                maxHeight: 1,
-                minHeight: 1
-              }
-            ]
-          },*/
           {
             name: "group2",
             isGroup: false,
             childrens: data
           }
-          /*{
-            name: "group3",
-            isGroup: true,
-            childrens: [
-              {
-                id: 220,
-                nodeType: "D",
-                name: "item1",
-                description: "Лимит потребления",
-                maxWidth: 1,
-                minWidth: 1,
-                maxHeight: 1,
-                minHeight: 1
-              },
-              {
-                id: 221,
-                nodeType: "D",
-                name: "item2",
-                description: "Мгновенные значения",
-                maxWidth: 2,
-                minWidth: 2,
-                maxHeight: 1,
-                minHeight: 1
-              },
-              {
-                id: 222,
-                nodeType: "D",
-                name: "item3",
-                description: "Мгновенные значения",
-                maxWidth: 2,
-                minWidth: 2,
-                maxHeight: 1,
-                minHeight: 1
-              }
-            ]
-          }*/
         ];
         const _ = data.findIndex(x => x.isGroup === false);
         if (_ || _ === 0) {
@@ -534,11 +435,6 @@ export default {
           }
           return x;
         });
-
-        //data.map(x => console.log(x.id, x.description));
-
-        /*const inc = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11];
-        data = data.filter(x => inc.includes(x.id));*/
         this.widgetsList = data;
       } catch (e) {
         if (e.response) this.$message.error(this.$t(e.response.data));
@@ -633,6 +529,7 @@ export default {
 .gridWrap {
   user-select: text;
   margin: 0 auto;
+  transform-origin: center top;
 }
 
 .gridItem {
@@ -640,7 +537,6 @@ export default {
   height: 100%;
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
-  /*overflow: hidden;*/
 }
 
 .contentWrap {

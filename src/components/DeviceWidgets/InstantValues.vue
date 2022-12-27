@@ -184,7 +184,6 @@ export default {
         });
         this.tableData = obj;
       } catch (e) {
-        console.log(e);
         this.fail = e === "err_no_data" ? e : "err_bad_request_api";
       } finally {
         this.loading = false;
