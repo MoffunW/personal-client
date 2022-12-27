@@ -96,60 +96,7 @@
               />
             </div>
           </div>
-
           <grid-layout
-            v-if="layout"
-            ref="grid"
-            :class="$style.gridWrap"
-            :style="
-              `transform: scale(${scale}); zoom: ${scale}; transform-origin: center top;`
-            "
-            :layout.sync="layout"
-            :col-num="3"
-            :row-height="490"
-            :cols="breakPoints"
-            :is-resizable="false"
-            :is-draggable="edit"
-            :responsive="!edit"
-            :vertical-compact="false"
-            :use-css-transforms="true"
-            :transformScale="scale"
-            :key="gridKey"
-          >
-            <!-- :transformScale="1.5" -->
-            <grid-item
-              :class="$style.gridItem"
-              v-for="item in layout"
-              :ref="`item-${item.id}`"
-              :x="item.x"
-              :y="item.y"
-              :w="item.w"
-              :h="item.h"
-              :i="item.i"
-              :key="item.i"
-              @moved="arg => handleGridChanged(arg, false)"
-            >
-              <div v-if="edit" :class="$style.contentOverlay">
-                <v-icon :style="`transform: scale(${scale}); zoom: ${scale};`">
-                  mdi-cursor-move
-                </v-icon>
-              </div>
-              <div :class="$style.contentWrap">
-                <component
-                  v-bind:is="item.widgetParams ? item.widgetParams.name : ''"
-                  :params="item.widgetParams ? item.widgetParams : {}"
-                  @change="
-                    arg => {
-                      handleWidgetChange(arg, item.i);
-                    }
-                  "
-                  @delete="handleDelete(item)"
-                />
-              </div>
-            </grid-item>
-          </grid-layout>
-
-          <!--grid-layout
             v-if="layout"
             ref="grid"
             :class="$style.gridWrap"
@@ -165,7 +112,6 @@
             :use-css-transforms="true"
             :key="gridKey"
           >
-            <:transformScale="1.5">
             <grid-item
               :class="$style.gridItem"
               v-for="item in layout"
@@ -199,7 +145,7 @@
                 />
               </div>
             </grid-item>
-          </grid-layout-->
+          </grid-layout>
         </div>
       </div>
     </div>

@@ -76,7 +76,9 @@
             v-if="layout"
             ref="grid"
             :class="$style.gridWrap"
-            :style="`transform: scale(${scale}); zoom: ${scale};`"
+            :style="
+              `transform: scale(${scale}); -webkit-transform: scale(${scale});`
+            "
             :layout.sync="layout"
             :col-num="3"
             :row-height="rowHeight"
