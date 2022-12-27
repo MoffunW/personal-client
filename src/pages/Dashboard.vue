@@ -79,7 +79,7 @@
             :style="`transform: scale(${scale}); zoom: ${scale};`"
             :layout.sync="layout"
             :col-num="3"
-            :row-height="490"
+            :row-height="rowHeight"
             :cols="breakPoints"
             :is-resizable="false"
             :is-draggable="edit"
@@ -554,7 +554,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 99;
   background: rgba(0, 0, 0, 0.5) !important;
 }
 
