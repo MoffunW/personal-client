@@ -269,7 +269,8 @@ body *::-webkit-scrollbar-thumb {
 }
 
 .v-input__slider .v-slider__track-fill,
-.v-input__slider .v-slider__thumb {
+.v-input__slider .v-slider__thumb,
+.v-input__slider .v-slider__track-background.primary {
   background-color: $primary !important;
   border-color: $primary !important;
 }

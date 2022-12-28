@@ -293,7 +293,7 @@ export default {
       this.getGrid();
     },
 
-    async getGrid() {
+    async getGrid(arg = true) {
       try {
         const { data } = await axios.get(
           `Device/GetUserWidgets?nodeId=${this.$store.state.selectedTreeNode.id}`
@@ -309,7 +309,7 @@ export default {
         });
         this.layout = arr;
         await this.$nextTick();
-        this.gridKey = Date.now();
+        if (arg) this.gridKey = Date.now();
       } catch (e) {
         if (e.response) this.$message.error(this.$t(e.response.data));
       }
@@ -453,7 +453,7 @@ export default {
         return;
       this.$store.commit("setSelectedTreeNode", arg);
       this.getTypes();
-      this.getGrid();
+      this.getGrid(false);
     },
 
     handleScroll(e) {
