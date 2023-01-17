@@ -245,7 +245,6 @@ export default {
           this.isData = true;
         }
       } catch (e) {
-        console.log(e);
         this.fail = "err_bad_request_api";
       } finally {
         this.loading = false;

@@ -1,130 +1,145 @@
 <template>
   <div :class="$style.root">
-    <div class="card" :class="$style.wrapper">
+    <div class="card" :class="$style.wrapper" v-click-outside="handleHide">
       <div>
         <v-carousel
           class="carousel"
-          v-if="items.length"
-          height="auto"
+          ref="carousel"
+          height="100%"
           hide-delimiter-background
           :touch="{
-            left: () => activeSlide--,
-            right: () => activeSlide++
+            left: () => handleSetSlide(false),
+            right: () => handleSetSlide(true)
           }"
         >
-          <v-carousel-item v-for="item in items" :key="item.id">
+          <template v-slot:prev="{ on, attrs }">
+            <v-btn :class="$style.prev" v-bind="attrs" v-on="on"></v-btn>
+          </template>
+          <template v-slot:next="{ on, attrs }">
+            <v-btn :class="$style.next" v-bind="attrs" v-on="on"></v-btn>
+          </template>
+          <v-carousel-item v-for="item in items" :key="item.id" eager>
             <div :class="$style.item">
-              <div v-text="item.text"></div>
+              <div :class="$style.itemText" v-text="item.text"></div>
               <div>
-                <img :src="item.images[0]" alt="" />
+                <v-img :src="item.images[0]" alt="" eager />
               </div>
             </div>
           </v-carousel-item>
         </v-carousel>
       </div>
-      <div>CBX</div>
+      <div :class="$style.buttonsWrap">
+        <v-checkbox
+          :class="$style.checkbox"
+          :label="$t('trans__welcomeDontShow')"
+          @change="handleShow"
+        />
+        <v-btn
+          class="primaryBtn"
+          :class="$style.field"
+          depressed
+          tile
+          @click="handleHide"
+        >
+          {{ $t("trans__welcomeClose") }}
+        </v-btn>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-//import axios from "axios";
+import axios from "axios";
 
 export default {
   data() {
     return {
-      items: []
+      items: [],
+      offset: 0
     };
   },
   methods: {
+    setListeners(arg) {
+      arg.addEventListener("mousedown", this.handleDown);
+      document.addEventListener("mouseup", this.handleUp);
+    },
+
+    handleDown(arg) {
+      if (!arg.target.closest(`.${this.$style.item}`) || arg.button != 0)
+        return;
+      arg.preventDefault();
+      arg.stopPropagation();
+      this.offset = arg.x;
+    },
+
+    handleUp(arg) {
+      if (!arg.target.closest(`.${this.$style.item}`) || arg.button != 0)
+        return;
+      arg.preventDefault();
+      arg.stopPropagation();
+      if (this.offset !== arg.x) this.handleSetSlide(this.offset < arg.x);
+    },
+
+    handleSetSlide(arg) {
+      const _ = this.$refs.carousel.$el;
+      if (
+        !_.querySelector(`.${this.$style.prev}`) ||
+        !_.querySelector(`.${this.$style.next}`)
+      )
+        return;
+      arg
+        ? _.querySelector(`.${this.$style.prev}`).click()
+        : _.querySelector(`.${this.$style.next}`).click();
+    },
+
+    removeEvs(arg) {
+      arg.removeEventListener("mousedown", this.handleDown);
+      document.removeEventListener("mouseup", this.handleUp);
+    },
+
+    async handleShow(arg) {
+      try {
+        await axios.post("ServerSettings/SetShowWelcome", { Show: !arg });
+      } catch (e) {
+        this.$message.error("err_some_error");
+      }
+    },
+
+    handleHide() {
+      this.$store.commit("setShowWelcome", false);
+    },
+
     setData() {
       const _ = [];
       _.push({
         id: 0,
-        text: "123",
-        images: [require("@/assets/WelcomeImgs/01.jpg")]
+        text: this.$t("trans__welcomeText1"),
+        images: [require("@/assets/WelcomeImgs/01.gif")]
       });
       _.push({
         id: 1,
-        text: "555",
-        images: [require("@/assets/WelcomeImgs/01.jpg")]
+        text: this.$t("trans__welcomeText2"),
+        images: [require("@/assets/WelcomeImgs/02.gif")]
       });
       _.push({
         id: 3,
-        text: "123",
-        images: [require("@/assets/WelcomeImgs/01.jpg")]
+        text: this.$t("trans__welcomeText3"),
+        images: [require("@/assets/WelcomeImgs/03.gif")]
       });
-      /*_.push({
+      _.push({
         id: 4,
-        text: "555",
-        images: []
+        text: this.$t("trans__welcomeText4"),
+        images: [require("@/assets/WelcomeImgs/04.gif")]
       });
-      _.push({
-        id: 5,
-        text: "123",
-        images: []
-      });
-      _.push({
-        id: 6,
-        text: "555",
-        images: []
-      });
-      _.push({
-        id: 7,
-        text: "123",
-        images: []
-      });
-      _.push({
-        id: 8,
-        text: "555",
-        images: []
-      });
-      _.push({
-        id: 9,
-        text: "123",
-        images: []
-      });
-      _.push({
-        id: 10,
-        text: "555",
-        images: []
-      });
-      _.push({
-        id: 11,
-        text: "123",
-        images: []
-      });
-      _.push({
-        id: 12,
-        text: "555",
-        images: []
-      });
-      _.push({
-        id: 13,
-        text: "123",
-        images: []
-      });
-      _.push({
-        id: 14,
-        text: "555",
-        images: []
-      });
-      _.push({
-        id: 15,
-        text: "123",
-        images: []
-      });
-      _.push({
-        id: 16,
-        text: "555",
-        images: []
-      });*/
       this.items = _;
     }
   },
   mounted() {
     this.setData();
-    //https://codepen.io/tomis03/pen/dyMOVqb
+    this.setListeners(this.$refs.carousel.$el);
+  },
+  beforeDestroy() {
+    this.removeEvs(this.$refs.carousel.$el);
   }
 };
 </script>
@@ -175,10 +190,34 @@ export default {
 }
 
 .item > *:last-child {
-  margin: 20px 0 0;
+  margin: 10px 0 0;
 }
 
 .item > *:last-child img {
   width: 100%;
+}
+
+.itemText {
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+
+.prev {
+  display: none !important;
+}
+
+.next {
+  display: none !important;
+}
+
+.buttonsWrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buttonsWrap > *:last-child {
+  margin: 0 !important;
 }
 </style>

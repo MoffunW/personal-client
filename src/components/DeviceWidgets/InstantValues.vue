@@ -24,7 +24,7 @@
         <!-- Content -->
         <div :class="$style.content">
           <div>
-            <div v-text="fixDate(data.date)">Date</div>
+            <div v-text="fixDate(data.date)"></div>
             <div>
               <span v-text="$t('widgetChartView')"></span
               ><v-switch v-model="widgetParams.showChart" />
@@ -184,7 +184,6 @@ export default {
         });
         this.tableData = obj;
       } catch (e) {
-        console.log(e);
         this.fail = e === "err_no_data" ? e : "err_bad_request_api";
       } finally {
         this.loading = false;

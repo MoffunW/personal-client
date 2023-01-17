@@ -24,13 +24,13 @@
           autocomplete="off"
           @click:append="showPass = !showPass"
         />
-        <div class="cbxWrap">
-          <v-checkbox
+        <div class="cbxWrap" :class="$style.cbxWrap">
+          <!--v-checkbox
             v-model="remember"
             small
             :label="$t('rememberMe')"
             @change="arg => $store.commit('setRememberMe', arg)"
-          />
+          /-->
           <a
             :href="`#/${$store.state.lang}/restore`"
             v-text="$t('forgotPassword')"
@@ -114,5 +114,10 @@ export default {
 
 .buttonsWrap > * {
   margin: 0 !important;
+}
+
+.cbxWrap {
+  min-height: 66px;
+  justify-content: flex-end !important;
 }
 </style>

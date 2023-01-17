@@ -123,7 +123,7 @@ export default {
         name: this.params.settings.name ? this.params.settings.name : null
       },
       origWidgetParams: {},
-      data: [],
+      data: null,
       seals: [],
       toolTips: {},
       loading: false,
