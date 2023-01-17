@@ -17,7 +17,8 @@ export default new Vuex.Store({
     loading: true,
     editMode: false,
     showEditWidgets: true,
-    exportsSettings: {}
+    exportsSettings: {},
+    showWelcome: false
   },
   mutations: {
     setRememberMe(state, arg) {
@@ -25,7 +26,6 @@ export default new Vuex.Store({
     },
 
     setServerSettings(state, arg) {
-      //arg.showWelcome = true; // HARDCODE
       state.serverSettings = arg;
       let l = window.location.hash ? window.location.hash.split("/") : [];
       l = !l[1] ? null : l[1];
@@ -79,6 +79,10 @@ export default new Vuex.Store({
 
     setExportsSettings(state, arg) {
       state.exportsSettings = arg;
+    },
+
+    setShowWelcome(state, arg) {
+      state.showWelcome = arg;
     }
   }
 });

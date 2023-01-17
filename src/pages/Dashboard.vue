@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.root">
-    <welcome v-if="$store.state.serverSettings.showWelcome" />
+    <welcome v-if="$store.state.showWelcome" />
     <v-dialog
       transition="dialog-top-transition"
       max-width="500"
@@ -462,6 +462,12 @@ export default {
     }
   },
   async mounted() {
+    try {
+      const { data } = await axios.get("ServerSettings/GetShowWelcome");
+      this.$store.commit("setShowWelcome", data);
+    } catch (e) {
+      this.$message.error("err_some_error");
+    }
     await this.$nextTick();
     const _ = document.querySelector(`.gridWrap`);
     if (_) _.addEventListener("scroll", this.handleScroll);

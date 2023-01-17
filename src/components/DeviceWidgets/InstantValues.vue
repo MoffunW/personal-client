@@ -24,7 +24,7 @@
         <!-- Content -->
         <div :class="$style.content">
           <div>
-            <div v-text="fixDate(data.date)">Date</div>
+            <div v-text="fixDate(data.date)"></div>
             <div>
               <span v-text="$t('widgetChartView')"></span
               ><v-switch v-model="widgetParams.showChart" />

@@ -129,9 +129,10 @@ export default {
         for (let i = 0; i < obj.length; i++) obj[i].parentNode.remove();
     },
 
-    handleClick({ mouseenter }, e) {
+    async handleClick({ mouseenter }, e) {
       if (e.type === "click") {
         this.removeAllTooltips();
+        await this.$nextTick();
         setTimeout(() => mouseenter(e), 250);
       }
     },
