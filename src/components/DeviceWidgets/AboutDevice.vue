@@ -75,6 +75,12 @@
                   <div v-text="data.mRID"></div>
                 </div>
               </div>
+              <div :class="$style.table">
+                <div><div v-text="$t('trans__DivergenceTime')"></div></div>
+                <div>
+                  <div v-text="data.divergenceTime"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
