@@ -40,6 +40,7 @@
         width="250"
         :renderItem="renderItem"
         @change="handleChange"
+        @restored="getTypes"
       />
     </div>
     <div>

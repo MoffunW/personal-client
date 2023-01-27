@@ -62,14 +62,6 @@
                 <div><div v-text="data.serialNumber"></div></div>
               </div>
               <div :class="$style.table">
-                <div><div v-text="$t('Chart_DateCreate')"></div></div>
-                <div><div v-text="data.manufacturedDate"></div></div>
-              </div>
-              <div :class="$style.table">
-                <div><div v-text="$t('Chart_Manufacturer')"></div></div>
-                <div><div v-text="data.manufacturer"></div></div>
-              </div>
-              <div :class="$style.table">
                 <div><div v-text="$t('Chart_DeviceID')"></div></div>
                 <div>
                   <div v-text="data.mRID"></div>
@@ -80,6 +72,14 @@
                 <div>
                   <div v-text="data.divergenceTime"></div>
                 </div>
+              </div>
+              <div :class="$style.table">
+                <div><div v-text="$t('Chart_Manufacturer')"></div></div>
+                <div><div v-text="data.manufacturer"></div></div>
+              </div>
+              <div :class="$style.table">
+                <div><div v-text="$t('Chart_DateCreate')"></div></div>
+                <div><div v-text="data.manufacturedDate"></div></div>
               </div>
             </div>
           </div>

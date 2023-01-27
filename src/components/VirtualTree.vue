@@ -98,6 +98,8 @@ export default {
       const item = this.$options.items.findIndex(x => x.id == selected);
       if (!item) return;
       this.restoreItem(item, selected);
+      if (this.$store.state.selectedTreeNode)
+        this.$emit("restored", this.$store.state.selectedTreeNode);
     },
 
     restoreItem(arg, id) {

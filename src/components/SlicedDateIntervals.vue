@@ -104,12 +104,17 @@
         <div v-else>
           <div :class="$style.timeTitle" v-text="$t('trans__selectYear')"></div>
           <div :class="$style.timeWrap">
-            <v-select v-model="startYear" :items="componentsData.years" />
+            <v-select
+              v-model="startYear"
+              :items="componentsData.years"
+              menu-props="auto"
+            />
             <div v-if="useRange">-</div>
             <v-select
               v-if="useRange"
               v-model="endYear"
               :items="componentsData.years"
+              menu-props="auto"
             />
           </div>
           <div :class="$style.buttonsWrap">
