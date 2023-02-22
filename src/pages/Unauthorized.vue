@@ -68,6 +68,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -88,10 +90,37 @@ export default {
       });
       this.loading = false;
       return;
+    },
+
+    async makeAuthByToken(arg, canAuth) {
+      const _ = this.$user;
+      if (!canAuth) _.go("404");
+      try {
+        const { data } = await axios.post("Integration/IntegratedUser", {
+          Token: arg ? arg : null
+        });
+        if (data && data.token) {
+          _.setToken(data.token);
+          this.$store.commit("setUser", data.role);
+          _.go("dashboard");
+        }
+      } catch (e) {
+        _.logout();
+      }
     }
   },
   mounted() {
-    //console.log(this.$router.currentRoute.params.token);
+    if (
+      this.$router &&
+      this.$router.currentRoute &&
+      this.$router.currentRoute.params &&
+      this.$router.currentRoute.params.token
+    ) {
+      this.makeAuthByToken(
+        this.$router.currentRoute.params.token,
+        this.$store.state.serverSettings.registrationbyToken
+      );
+    }
     this.$dummyField();
   }
 };

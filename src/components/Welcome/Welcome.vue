@@ -113,6 +113,62 @@ export default {
       const _ = [];
       _.push({
         id: 0,
+        text: this.$t("trans__welcomeText01"),
+        images: [require("@/assets/WelcomeImgs/01.png")]
+      });
+      _.push({
+        id: 1,
+        text: this.$t("trans__welcomeText02"),
+        images: [require("@/assets/WelcomeImgs/02.png")]
+      });
+      _.push({
+        id: 2,
+        text: this.$t("trans__welcomeText03"),
+        images: [require("@/assets/WelcomeImgs/03.png")]
+      });
+      _.push({
+        id: 3,
+        text: this.$t("trans__welcomeText04"),
+        images: [require("@/assets/WelcomeImgs/04.png")]
+      });
+      _.push({
+        id: 4,
+        text: this.$t("trans__welcomeText05"),
+        images: [require("@/assets/WelcomeImgs/05.png")]
+      });
+      _.push({
+        id: 5,
+        text: this.$t("trans__welcomeText06"),
+        images: [require("@/assets/WelcomeImgs/06.png")]
+      });
+      _.push({
+        id: 6,
+        text: this.$t("trans__welcomeText07"),
+        images: [require("@/assets/WelcomeImgs/07.png")]
+      });
+      _.push({
+        id: 7,
+        text: this.$t("trans__welcomeText08"),
+        images: [require("@/assets/WelcomeImgs/08.png")]
+      });
+      _.push({
+        id: 8,
+        text: this.$t("trans__welcomeText09"),
+        images: [require("@/assets/WelcomeImgs/09.png")]
+      });
+      _.push({
+        id: 9,
+        text: this.$t("trans__welcomeText10"),
+        images: [require("@/assets/WelcomeImgs/10.png")]
+      });
+      _.push({
+        id: 10,
+        text: this.$t("trans__welcomeText11"),
+        images: [require("@/assets/WelcomeImgs/11.png")]
+      });
+
+      /*_.push({
+        id: 0,
         text: this.$t("trans__welcomeText1"),
         images: [require("@/assets/WelcomeImgs/01.gif")]
       });
@@ -130,7 +186,7 @@ export default {
         id: 4,
         text: this.$t("trans__welcomeText4"),
         images: [require("@/assets/WelcomeImgs/04.gif")]
-      });
+      });*/
       this.items = _;
     }
   },

@@ -157,6 +157,7 @@ export default {
     CalendarChart: () => import("@/components/DeviceWidgets/CalendarChart"),
     InstantValues: () => import("@/components/DeviceWidgets/InstantValues"),
     EventLog: () => import("@/components/DeviceWidgets/EventLog"),
+    TransformersKey: () => import("@/components/DeviceWidgets/TransformersKey"),
     /* NodeWidgets */
     Report: () => import("@/components/NodeWidgets/Report"),
     NodeInfo: () => import("@/components/NodeWidgets/NodeInfo")

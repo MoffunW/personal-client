@@ -1,6 +1,6 @@
-//export const SERVER_URL = "http://192.168.1.164:81/api/v1/";
+export const SERVER_URL = "http://192.168.1.164:81/api/v1/";
 
-export const SERVER_URL = "/api/v1/";
+//export const SERVER_URL = "/api/v1/";
 
 export const TOKEN_KEY = "auth.access";
 

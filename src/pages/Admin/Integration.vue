@@ -5,46 +5,32 @@
     </v-overlay>
     <div :class="$style.wrapper">
       <v-form ref="form" v-model="valid" lazy-validation>
-        <v-text-field
+        <v-textarea
           :label="$t('trans__IntegrationGUID')"
-          :rules="rules"
+          :rules="
+            fields.TokenRegistration
+              ? [arg => !!arg || $t('fieldIsRequired')]
+              : []
+          "
           :small="true"
-          v-model="fields.GUID"
+          no-resize
+          rows="8"
+          v-model="fields.PubKey"
           hide-details="auto"
           prepend-icon="mdi mdi-lock"
         />
-        <v-btn
-          class="primaryBtn"
-          :class="$style.addButton"
-          depressed
-          tile
-          @click="addItem(index)"
-        >
-          {{ $t("trans__AddIntegrationIPRow") }}
-        </v-btn>
-        <div
-          :class="$style.fieldWrap"
-          v-for="(item, index) in fields.IP"
-          :key="index"
-        >
-          <v-text-field
-            :label="$t('trans__IntegrationIP')"
-            :rules="ipRules"
-            :small="true"
-            v-model="fields.IP[index]"
-            hide-details="auto"
-            prepend-icon="mdi mdi-server"
-          />
-          <v-btn
-            v-if="fields.IP.length > 1"
-            class="primaryBtn"
-            depressed
-            tile
-            @click="removeItem(index)"
-          >
-            <span class="mdi mdi-minus-thick"></span>
-          </v-btn>
-        </div>
+
+        <v-switch
+          v-model="fields.FormRegistration"
+          prepend-icon="mdi-form-select"
+          :label="$t('trans__FormRegistration')"
+        />
+
+        <v-switch
+          v-model="fields.TokenRegistration"
+          prepend-icon="mdi-code-json"
+          :label="$t('trans__TokenRegistration')"
+        />
         <v-btn
           class="primaryBtn"
           :class="$style.button"
@@ -76,37 +62,22 @@ export default {
   },
   data() {
     return {
-      rules: [arg => !!arg || this.$t("fieldIsRequired")],
-      ipRules: [
-        arg => !!arg || this.$t("fieldIsRequired"),
-        arg =>
-          !arg ||
-          /^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/.test(arg) ||
-          this.$t("fieldInvalidIP")
-      ],
       fields: {
-        GUID: null,
-        IP: ["0.0.0.0"]
+        PubKey: "",
+        FormRegistration: false,
+        TokenRegistration: false
       },
       valid: true,
       loading: false
     };
   },
   methods: {
-    addItem() {
-      this.fields.IP = [...this.fields.IP, null];
-    },
-
-    removeItem(arg) {
-      this.fields.IP.splice(arg, 1);
-    },
-
     async saveData() {
       if (!this.$refs.form.validate()) return;
-      this.fields.IP = this.fields.IP.filter(x => !!x);
       let formData = new FormData();
-      formData.append("GUID", this.fields.GUID);
-      this.fields.IP.forEach(x => formData.append("IP", x));
+      formData.append("PubKey", this.fields.PubKey);
+      formData.append("FormRegistration", this.fields.FormRegistration);
+      formData.append("TokenRegistration", this.fields.TokenRegistration);
       this.loading = true;
       try {
         await axios.post("Integration/SetParams", formData, {
@@ -124,8 +95,7 @@ export default {
       this.loading = true;
       try {
         const { data } = await axios.get("Integration/GetParams");
-        this.fields.GUID = data.GUID;
-        if (data.IP.length) this.fields.IP = data.IP;
+        this.fields = data;
       } catch (e) {
         this.$message.error("err_some_error");
         return;
@@ -149,7 +119,7 @@ export default {
 
 .wrapper {
   height: 100%;
-  max-width: 400px;
+  max-width: 700px;
   padding: 10px;
   margin: 0 auto;
   overflow: auto;
