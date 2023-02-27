@@ -256,7 +256,7 @@ export default {
 .itemText {
   display: flex;
   align-items: center;
-  height: 50px;
+  height: 98px;
 }
 
 .prev {

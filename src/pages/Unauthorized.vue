@@ -110,14 +110,13 @@ export default {
     }
   },
   mounted() {
-    if (
-      this.$router &&
-      this.$router.currentRoute &&
-      this.$router.currentRoute.params &&
-      this.$router.currentRoute.params.token
-    ) {
+    let _ = new Proxy(new URLSearchParams(window.location.hash), {
+      get: (searchParams, prop) => searchParams.get(prop)
+    });
+    _ = _["#/ru/login?token"];
+    if (_) {
       this.makeAuthByToken(
-        this.$router.currentRoute.params.token,
+        _,
         this.$store.state.serverSettings.registrationbyToken
       );
     }

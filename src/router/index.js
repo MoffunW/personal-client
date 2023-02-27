@@ -11,13 +11,13 @@ const routes = [
     meta: { title: "authorization" },
     unAuth: true
   },
-  {
+  /*{
     path: "/:lang/login/:token",
-    name: "login",
+    name: "loginauth",
     component: () => import("../pages/Unauthorized.vue"),
     meta: { title: "authorization" },
     unAuth: true
-  },
+  },*/
   {
     path: "/:lang/registration",
     name: "registration",
