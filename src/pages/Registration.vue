@@ -134,6 +134,8 @@ export default {
     }
   },
   mounted() {
+    if (!this.$store.state.serverSettings.registration)
+      this.$router.push("404");
     this.$dummyField();
   }
 };

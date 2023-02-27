@@ -58,10 +58,11 @@ export class __User {
     }
   }
 
-  logout() {
+  async logout() {
     store.commit("unsetUser");
     this.setToken();
-    this.go("login");
+    await router.push("login");
+    router.go();
   }
 
   async register({ snp, account, serialNumber, email, password }) {
