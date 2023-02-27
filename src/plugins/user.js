@@ -59,9 +59,13 @@ export class __User {
   }
 
   async logout() {
+    let lang = navigator.language || navigator.userLanguage;
+    lang = lang.split("-")[0];
     store.commit("unsetUser");
     this.setToken();
-    await router.push("login");
+    await router.push({
+      path: `/${lang}/login`
+    });
     router.go();
   }
 
