@@ -63,10 +63,16 @@ export class __User {
     lang = lang.split("-")[0];
     store.commit("unsetUser");
     this.setToken();
-    await router.push({
-      path: `/${lang}/login`
-    });
-    router.go();
+    const _ = "https://itp.uneco.ru/";
+    // TODO modify logic
+    if (_) {
+      window.location.replace(_);
+    } else {
+      await router.push({
+        path: `/${lang}/login`
+      });
+      router.go();
+    }
   }
 
   async register({ snp, account, serialNumber, email, password }) {

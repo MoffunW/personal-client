@@ -14,15 +14,11 @@ Vue.prototype.$checkRoute = async () => {
     .find(
       x => x.path === `/:lang/${path}` || x.path === `/:lang/${path}/:token`
     );
-  let _ = new Proxy(new URLSearchParams(window.location.hash), {
-    get: (searchParams, prop) => searchParams.get(prop)
-  });
-  _ = _["#/ru/login?token"];
   if (!path) {
     user.go(loggedIn ? "dashboard" : "login");
     return;
   }
-  if (path && !loggedIn && path != "login" && !unAuth && !_) {
+  if (path && !loggedIn && path != "login" && !unAuth) {
     if (path != "404") user.go("404");
     return;
   } else if (path && loggedIn && unAuth) {

@@ -5,19 +5,19 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: "/:lang/login/:token",
+    name: "loginauth",
+    component: () => import("../plugins/authByToken.js"),
+    meta: { title: "authorization" },
+    unAuth: true
+  },
+  {
     path: "/:lang/login",
     name: "login",
     component: () => import("../pages/Unauthorized.vue"),
     meta: { title: "authorization" },
     unAuth: true
   },
-  /*{
-    path: "/:lang/login/:token",
-    name: "loginauth",
-    component: () => import("../pages/Unauthorized.vue"),
-    meta: { title: "authorization" },
-    unAuth: true
-  },*/
   {
     path: "/:lang/registration",
     name: "registration",
