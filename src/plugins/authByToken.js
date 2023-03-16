@@ -7,17 +7,18 @@ import { TOKEN_KEY } from "@/config";
   const user = Vue.prototype.$user;
   if (!localStorage.getItem(TOKEN_KEY)) {
     const token = window.location.hash.split("/")[3];
+    let _ = null;
     if (token) {
-      const { data } = await axios.get("ServerSettings/Info");
+      _ = await axios.get("ServerSettings/Info");
       try {
-        if (data && data.registrationbyToken) {
-          store.commit("setServerSettings", data);
-          const { data } = await axios.post("Integration/IntegratedUser", {
+        if (_.data && _.data.registrationbyToken) {
+          store.commit("setServerSettings", _.data);
+          _ = await axios.post("Integration/IntegratedUser", {
             Token: token ? token : null
           });
-          if (data && data.token) {
-            user.setToken(data.token);
-            store.commit("setUser", data.role);
+          if (_.data && _.data.token) {
+            user.setToken(_.data.token);
+            store.commit("setUser", _.data.role);
             user.go("dashboard");
           } else {
             user.logout();
