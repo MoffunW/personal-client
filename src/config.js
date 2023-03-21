@@ -2,8 +2,6 @@
 
 export const SERVER_URL = "/api/v1/";
 
-// TEST COMMENT
-
 export const TOKEN_KEY = "auth.access";
 
 export const THEMES = [

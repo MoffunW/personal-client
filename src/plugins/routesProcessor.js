@@ -22,7 +22,7 @@ Vue.prototype.$checkRoute = async () => {
     if (path != "404") user.go("404");
     return;
   } else if (path && loggedIn && unAuth) {
-    if (path != "404") user.go("404");
+    if (path != "404") user.go("dashboard");
     return;
   }
 };

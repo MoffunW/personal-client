@@ -30,6 +30,6 @@ import { TOKEN_KEY } from "@/config";
       }
     }
   } else {
-    user.go("404");
+    user.go("dashboard");
   }
 })();

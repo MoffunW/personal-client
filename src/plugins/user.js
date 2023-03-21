@@ -63,8 +63,10 @@ export class __User {
     lang = lang.split("-")[0];
     store.commit("unsetUser");
     this.setToken();
-    const _ = "https://itp.uneco.ru/";
-    // TODO modify logic
+    const _ =
+      store.state.serverSettings && store.state.serverSettings.redirectAddress
+        ? store.state.serverSettings.redirectAddress
+        : null;
     if (_) {
       window.location.replace(_);
     } else {

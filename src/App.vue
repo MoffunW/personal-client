@@ -202,7 +202,6 @@ export default {
       const themes = obj.themes.find(x => x.id === this.$store.state.theme);
       this.theme = themes && themes.id ? themes.id : obj.themes[0].id;
       this.$selectTheme(this.$store.state.theme);
-      document.title = this.$t("trans__appTitle");
     } catch (e) {
       return;
     }

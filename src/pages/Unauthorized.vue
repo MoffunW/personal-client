@@ -91,6 +91,12 @@ export default {
     }
   },
   mounted() {
+    const _ =
+      this.$store.state.serverSettings &&
+      this.$store.state.serverSettings.redirectAddress
+        ? this.$store.state.serverSettings.redirectAddress
+        : null;
+    if (_) window.location.replace(_);
     this.$dummyField();
   }
 };

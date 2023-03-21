@@ -19,18 +19,25 @@
           hide-details="auto"
           prepend-icon="mdi mdi-lock"
         />
-
         <v-switch
           v-model="fields.FormRegistration"
           prepend-icon="mdi-form-select"
           :label="$t('trans__FormRegistration')"
         />
-
-        <v-switch
-          v-model="fields.TokenRegistration"
-          prepend-icon="mdi-code-json"
-          :label="$t('trans__TokenRegistration')"
-        />
+        <v-card>
+          <div :class="$style.cardWrap">
+            <v-switch
+              v-model="fields.TokenRegistration"
+              prepend-icon="mdi-code-json"
+              :label="$t('trans__TokenRegistration')"
+            />
+            <v-text-field
+              v-model="fields.redirectAddress"
+              :label="$t('trans__RedirectLink')"
+              prepend-icon="mdi mdi-link-variant"
+              :disabled="!fields.TokenRegistration"
+            /></div
+        ></v-card>
         <v-btn
           class="primaryBtn"
           :class="$style.button"
@@ -78,6 +85,7 @@ export default {
       formData.append("PubKey", this.fields.PubKey);
       formData.append("FormRegistration", this.fields.FormRegistration);
       formData.append("TokenRegistration", this.fields.TokenRegistration);
+      formData.append("redirectAddress", this.fields.redirectAddress);
       this.loading = true;
       try {
         await axios.post("Integration/SetParams", formData, {
@@ -105,6 +113,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$store.state.serverSettings.redirectAddress);
     this.getData();
   }
 };
@@ -123,6 +132,11 @@ export default {
   padding: 10px;
   margin: 0 auto;
   overflow: auto;
+}
+
+.cardWrap {
+  margin: 0 20px 0 0;
+  padding-top: 1px;
 }
 
 .fieldWrap {
