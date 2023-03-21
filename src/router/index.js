@@ -7,7 +7,7 @@ const routes = [
   {
     path: "/:lang/login/:token",
     name: "loginauth",
-    component: () => import("../plugins/authByToken.js"),
+    component: () => import("../pages/AuthByToken.vue"),
     meta: { title: "authorization" },
     unAuth: true
   },
