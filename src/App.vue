@@ -54,6 +54,42 @@
               <v-icon> {{ item.icon }} </v-icon>
               <span v-text="$t(item.title)"></span>
             </a>
+            <v-menu
+              bottom
+              origin="center center"
+              transition="scale-transition"
+              :close-on-content-click="false"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <span
+                  :class="`navItem ${$style.navItem} ${$style.profileMenu}`"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon> mdi-account </v-icon>
+                  <span v-text="$t('trans_profile')"></span>
+                </span>
+              </template>
+              <v-list>
+                <v-list-item>
+                  <v-checkbox
+                    v-model="welcome"
+                    :class="$style.profileCBX"
+                    :label="$t('trans_enableWelcome')"
+                    @change="handleSetWelcome"
+                  />
+                </v-list-item>
+                <v-list-item>
+                  <a
+                    :class="`navItem ${$style.navItem}`"
+                    :href="`#/${$store.state.lang}/logout`"
+                  >
+                    <v-icon> mdi-power </v-icon>
+                    <span v-text="$t('exit')"></span>
+                  </a>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </div>
           <div v-else></div>
           <div :class="$style.selectors">
@@ -130,6 +166,7 @@
 import Vue from "vue";
 import * as api from "./api";
 import { NAVIGATION } from "@/config";
+import axios from "axios";
 
 export default {
   data() {
@@ -143,7 +180,8 @@ export default {
       sbFontBlack: false,
       nav: [],
       menuActive: false,
-      edit: false
+      edit: false,
+      welcome: false
     };
   },
   computed: {
@@ -160,6 +198,10 @@ export default {
             : NAVIGATION.filter(x => x.title != "adminPanel");
       },
       immediate: true
+    },
+
+    "$store.state.showWelcomeCBX"(arg) {
+      this.welcome = arg;
     },
     edit: {
       handler(arg) {
@@ -180,6 +222,15 @@ export default {
     }
   },
   methods: {
+    async handleSetWelcome(arg) {
+      this.$store.commit("setShowWelcome", arg);
+      try {
+        await axios.post("ServerSettings/SetShowWelcome", { Show: arg });
+      } catch (e) {
+        this.$message.error("err_some_error");
+      }
+    },
+
     handleLogoClick() {
       const path = this.auth
         ? `/${this.$store.state.lang}/dashboard`
@@ -354,6 +405,16 @@ export default {
   color: #000 !important;
 }
 
+.profileMenu {
+  margin-left: 20px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.profileCBX {
+  font-size: 18px !important;
+}
+
 @media all and (max-width: 1220px) {
   .menu {
     display: block !important;
@@ -387,7 +448,8 @@ export default {
     width: 100%;
   }
 
-  .navigationWrap > *:first-child > * {
+  .navigationWrap > *:first-child > a,
+  .navigationWrap > *:first-child > span {
     display: flex;
     padding: 20px;
     white-space: nowrap;

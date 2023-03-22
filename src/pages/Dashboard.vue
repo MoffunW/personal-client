@@ -467,6 +467,7 @@ export default {
     try {
       const { data } = await axios.get("ServerSettings/GetShowWelcome");
       this.$store.commit("setShowWelcome", data);
+      this.$store.commit("setShowWelcomeCBX", data);
     } catch (e) {
       this.$message.error("err_some_error");
     }

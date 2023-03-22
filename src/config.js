@@ -62,10 +62,10 @@ export const NAVIGATION = [
     title: "profile",
     path: "profile",
     icon: "mdi-account"
-  }*/,
+  },
   {
     title: "exit",
     path: "logout",
     icon: "mdi-power"
-  }
+  }*/
 ];

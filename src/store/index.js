@@ -18,7 +18,8 @@ export default new Vuex.Store({
     editMode: false,
     showEditWidgets: true,
     exportsSettings: {},
-    showWelcome: false
+    showWelcome: false,
+    showWelcomeCBX: false
   },
   mutations: {
     setRememberMe(state, arg) {
@@ -83,6 +84,10 @@ export default new Vuex.Store({
 
     setShowWelcome(state, arg) {
       state.showWelcome = arg;
+    },
+
+    setShowWelcomeCBX(state, arg) {
+      state.showWelcomeCBX = arg;
     }
   }
 });
