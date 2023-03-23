@@ -112,7 +112,12 @@ export default {
             dateStart: this.link.dateSelector.rangedDate[0],
             dateEnd: this.link.dateSelector.rangedDate[1]
           }
-        : { dateStart: this.link.dateSelector.date, dateEnd: null };
+        : {
+            dateStart: this.link.dateSelector.date
+              ? this.link.dateSelector.date
+              : this.link.dateSelector.modelDate[0],
+            dateEnd: null
+          };
     },
     slice() {
       if (

@@ -914,6 +914,16 @@ h4 {
   }
 }
 
+/* 404 */
+.text404 {
+  color: $treeSelectedBackground;
+}
+
+.bg404 {
+  background-color: $primary;
+}
+
+
 /* DARK */
 html.dark,
 body.dark,
@@ -1070,6 +1080,16 @@ body.dark .fileWrapActive {
   border-color: $darkMain !important;
   background-color: transparent;
 }
+
+/* 404 */
+body.dark .text404 {
+  color: $darkMain;
+}
+
+body.dark .bg404 {
+  background-color: transparent;
+}
+
 
 /* CONTRAST */
 body.contrast * {
