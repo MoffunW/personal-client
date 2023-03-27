@@ -32,6 +32,7 @@
             @change="arg => $store.commit('setRememberMe', arg)"
           /-->
           <a
+            v-if="$store.state.serverSettings.recoveryAccess"
             :href="`#/${$store.state.lang}/restore`"
             v-text="$t('forgotPassword')"
           ></a>
@@ -58,6 +59,7 @@
             tile
             @click="handleLogin"
             :loading="loading"
+            :disabled="!$store.state.serverSettings.authorizationsInForm"
           >
             {{ $t("signIn") }}
           </v-btn>

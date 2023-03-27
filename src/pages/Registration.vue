@@ -70,6 +70,7 @@
             tile
             @click="handleRegistration"
             :loading="loading"
+            :disabled="!this.$store.state.serverSettings.registration"
           >
             {{ $t("registrationSubmit") }}
           </v-btn>
@@ -139,9 +140,14 @@ export default {
       this.$store.state.serverSettings.redirectAddress
         ? this.$store.state.serverSettings.redirectAddress
         : null;
-    if (_) window.location.replace(_);
-    if (!this.$store.state.serverSettings.registration)
+    if (_) {
+      window.location.replace(_);
+      return;
+    }
+    if (!this.$store.state.serverSettings.registration) {
       this.$router.push("404");
+      return;
+    }
     this.$dummyField();
   }
 };

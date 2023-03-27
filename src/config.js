@@ -1,5 +1,7 @@
 //export const SERVER_URL = "http://192.168.1.164:81/api/v1/";
 
+//export const SERVER_URL = "http://73a2-213-222-245-173.ngrok.io/api/v1/";
+
 //export const SERVER_URL = "https://lkisu.uneco.ru/api/v1/";
 
 export const SERVER_URL = "/api/v1/";

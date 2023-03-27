@@ -34,6 +34,7 @@
             tile
             @click="handleRestore"
             :loading="loading"
+            :disabled="!this.$store.state.serverSettings.recoveryAccess"
           >
             {{ $t("resetPasswordSubmit") }}
           </v-btn>
@@ -78,7 +79,14 @@ export default {
       this.$store.state.serverSettings.redirectAddress
         ? this.$store.state.serverSettings.redirectAddress
         : null;
-    if (_) window.location.replace(_);
+    if (_) {
+      window.location.replace(_);
+      return;
+    }
+    if (!this.$store.state.serverSettings.recoveryAccess) {
+      this.$router.push("404");
+      return;
+    }
   }
 };
 </script>
