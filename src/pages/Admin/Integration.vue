@@ -11,6 +11,7 @@
               v-model="fields.TokenRegistration"
               prepend-icon="mdi-code-json"
               :label="$t('trans__TokenRegistration')"
+              @change="handleChange('TokenRegistration')"
             />
             <v-textarea
               :label="$t('trans__IntegrationGUID')"
@@ -39,19 +40,17 @@
           prepend-icon="mdi-form-select"
           :label="$t('trans__FormRegistration')"
         />
-
         <v-switch
           v-model="fields.RecoveryAccess"
           prepend-icon="mdi-form-select"
           :label="$t('trans__canRecoverPassword')"
         />
-
         <v-switch
           v-model="fields.AuthorizationsInForm"
           prepend-icon="mdi-form-select"
           :label="$t('trans__canAuthorizeByForm')"
+          @change="handleChange('AuthorizationsInForm')"
         />
-
         <v-btn
           class="primaryBtn"
           :class="$style.button"
@@ -93,13 +92,21 @@ export default {
     };
   },
   methods: {
+    async handleChange(arg) {
+      if (!this.fields.AuthorizationsInForm && !this.fields.TokenRegistration) {
+        await this.$nextTick();
+        this.fields[arg] = true;
+      }
+    },
+
     async saveData() {
       if (!this.$refs.form.validate()) return;
       let formData = new FormData();
       formData.append("PubKey", this.fields.PubKey);
       formData.append("FormRegistration", this.fields.FormRegistration);
       formData.append("TokenRegistration", this.fields.TokenRegistration);
-      formData.append("RedirectAddress", this.fields.RedirectAddress);
+      if (this.fields.RedirectAddress && this.fields.RedirectAddress.length)
+        formData.append("RedirectAddress", this.fields.RedirectAddress);
       formData.append("RecoveryAccess", this.fields.RecoveryAccess);
       formData.append("AuthorizationsInForm", this.fields.AuthorizationsInForm);
       this.loading = true;
@@ -129,7 +136,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$store.state.serverSettings.redirectAddress);
     this.getData();
   }
 };
