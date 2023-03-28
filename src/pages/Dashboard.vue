@@ -317,11 +317,39 @@ export default {
       }
     },
 
+    getItemProps(arg) {
+      const cols = 3;
+      let _ = {
+        x: 0,
+        y: 0
+      };
+      let maxH = [];
+      if (this.layout.length) {
+        let [...arr] = this.layout;
+        let tmp = [];
+        while (arr.length) tmp.push(arr.splice(0, cols));
+
+        tmp
+          .slice(-1)
+          .pop()
+          .forEach(x => {
+            _.x = (x.x + x.w) % cols;
+            _.y = x.y;
+            maxH.push(x.h);
+          });
+      }
+      if (_.x + arg.minWidth > cols) {
+        _.x = 0;
+        _.y = _.y + Math.max(...maxH);
+      }
+      return _;
+    },
+
     async handleAddWidget(arg) {
       this.addingWidget = true;
       const obj = this.widgetsList.find(x => x.id === arg);
       if (!obj) return;
-      const length = this.layout.length;
+      const _ = this.getItemProps(obj);
       let el = {
         id: null,
         widgetParams: {
@@ -333,11 +361,11 @@ export default {
           minWidth: obj.minWidth,
           settings: {}
         },
-        x: 0,
-        y: 0,
+        x: _.x,
+        y: _.y,
         w: obj.minWidth,
         h: obj.minHeight,
-        i: length,
+        i: this.layout.length,
         preserveAspectRatio: true
       };
       try {
