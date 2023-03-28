@@ -4,7 +4,7 @@
 
 //export const SERVER_URL = "https://lkisu.uneco.ru/api/v1/";
 
-//export const SERVER_URL = "/api/v1/";
+export const SERVER_URL = "/api/v1/";
 
 export const TOKEN_KEY = "auth.access";
 
