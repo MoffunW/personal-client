@@ -130,44 +130,6 @@ Vue.prototype.$changeLang = arg => {
 
 Vue.config.productionTip = false;
 
-(async () => {
-  let _ = await import(
-    `./assets/themes/${process.env.VUE_APP_THEME}/manifest.json`
-  );
-  const favicon = await import(
-    `./assets/themes/${process.env.VUE_APP_THEME}/icons/favicon.png`
-  );
-  const [icon192, icon512] = await Promise.all([
-    import(
-      `./assets/themes/${process.env.VUE_APP_THEME}/icons/android-chrome-192x192.png`
-    ),
-    import(
-      `./assets/themes/${process.env.VUE_APP_THEME}/icons/android-chrome-512x512.png`
-    )
-  ]);
-  document.title = _.default.name;
-  let el = document.querySelector('link[rel="manifest"]');
-  if (el) el.remove();
-  el = document.querySelector("link[rel~='icon']");
-  if (!el) {
-    el = document.createElement("link");
-    el.rel = "icon";
-    document.head.appendChild(el);
-  }
-  el.href = favicon.default;
-  _.default.icons[0].src = icon192.default;
-  _.default.icons[1].src = icon512.default;
-  el = document.createElement("link");
-  el.setAttribute("rel", "manifest");
-  el.setAttribute(
-    "href",
-    `data:application/manifest+json, ${encodeURIComponent(
-      JSON.stringify(_.default)
-    )}`
-  );
-  document.querySelector("head").appendChild(el);
-})();
-
 new Vue({
   store,
   router,

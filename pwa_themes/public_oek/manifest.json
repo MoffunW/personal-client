@@ -1,14 +1,14 @@
 {
-  "name": "ЛК ИСУ АО «ОЭК»",
-  "short_name": "ЛК ИСУ АО «ОЭК»",
+  "name": "Personal Account",
+  "short_name": "Cabinet PWA",
   "icons": [
     {
-      "src": "./img/icons/android-chrome-192x192.png",
+      "src": "./img/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "./img/icons/android-chrome-512x512.png",
+      "src": "./img/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
@@ -16,5 +16,5 @@
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fff",
-  "theme_color": "#157bbf"
+  "theme_color": "#ee7300"
 }

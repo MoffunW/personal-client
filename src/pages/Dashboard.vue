@@ -328,7 +328,6 @@ export default {
         let [...arr] = this.layout;
         let tmp = [];
         while (arr.length) tmp.push(arr.splice(0, cols));
-
         tmp
           .slice(-1)
           .pop()

@@ -244,6 +244,7 @@ export default {
       import(`./assets/themes/${process.env.VUE_APP_THEME}/style.scss`);
       if (!this.$store.state.serverSettings) await api.getServerConfig();
       await api.getTranslations();
+      document.title = this.$t("trans__appTitle");
       const obj = this.$store.state.serverSettings;
       if (obj.themes.length) {
         this.lang = this.$store.state.lang;
