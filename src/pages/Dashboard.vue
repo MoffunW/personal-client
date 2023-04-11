@@ -482,7 +482,7 @@ export default {
         return;
       this.$store.commit("setSelectedTreeNode", arg);
       this.getTypes();
-      this.getGrid(false);
+      this.getGrid();
     },
 
     handleScroll(e) {
