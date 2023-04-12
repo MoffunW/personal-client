@@ -130,6 +130,13 @@ Vue.prototype.$changeLang = arg => {
 
 Vue.config.productionTip = false;
 
+(async () => {
+  let _ = await import(
+    `../pwa_themes/public_${process.env.VUE_APP_THEME}/manifest.json`
+  );
+  if (_ && _.name) document.title = _.name;
+})();
+
 new Vue({
   store,
   router,

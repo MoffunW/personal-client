@@ -1,6 +1,6 @@
 {
-  "name": "Personal Account",
-  "short_name": "Cabinet PWA",
+  "name": "ЛК ИСУ АО «ОЭК»",
+  "short_name": "ЛК ИСУ АО «ОЭК»",
   "icons": [
     {
       "src": "./img/android-chrome-192x192.png",

@@ -73,6 +73,11 @@
 export default {
   data() {
     return {
+      /*
+      ,
+        arg =>
+          !arg || !arg.match(/[*;'`"\\/]+/) || this.$t("trans__wrongSymbol")
+      */
       rules: [arg => !!arg || this.$t("fieldIsRequired")],
       remember: this.$store.state.rememberMe,
       login: null,
