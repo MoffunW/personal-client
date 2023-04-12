@@ -147,7 +147,7 @@ export default {
   },
   data() {
     return {
-      rules: [arg => !!arg || this.$t("fieldIsRequired")],
+      rules: [...this.$testRules],
       data: {
         dT_Start: "0000-00-00T00:00:00Z",
         dT_End: "0000-00-00T00:00:00Z",

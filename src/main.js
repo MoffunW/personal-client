@@ -128,6 +128,13 @@ Vue.prototype.$changeLang = arg => {
   window.location.reload();
 };
 
+Vue.prototype.$testRules = [
+  arg => !!arg || Vue.prototype.$t("fieldIsRequired"),
+  arg =>
+    !arg || !arg.match(/[*;'`"\\/]+/) || Vue.prototype.$t("trans__wrongSymbol"),
+  arg => !arg || !arg.includes("--") || Vue.prototype.$t("trans__wrongSymbol")
+];
+
 Vue.config.productionTip = false;
 
 (async () => {

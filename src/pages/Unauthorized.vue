@@ -6,7 +6,7 @@
         <v-text-field
           v-model="login"
           :label="$t('login')"
-          :rules="rules"
+          :rules="$testRules"
           :small="true"
           hide-details="auto"
           prepend-icon="mdi mdi-account"
@@ -15,7 +15,7 @@
         <v-text-field
           v-model="password"
           :label="$t('password')"
-          :rules="rules"
+          :rules="$testRules"
           :small="true"
           :type="showPass ? 'text' : 'password'"
           hide-details="auto"
@@ -73,12 +73,7 @@
 export default {
   data() {
     return {
-      /*
-      ,
-        arg =>
-          !arg || !arg.match(/[*;'`"\\/]+/) || this.$t("trans__wrongSymbol")
-      */
-      rules: [arg => !!arg || this.$t("fieldIsRequired")],
+      rules: this.$testRules,
       remember: this.$store.state.rememberMe,
       login: null,
       password: null,

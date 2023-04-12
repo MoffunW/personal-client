@@ -8,7 +8,7 @@
         <v-text-field
           :class="$style.field"
           :label="$t('trans__Host')"
-          :rules="rules"
+          :rules="$testRules"
           :small="true"
           v-model="fields.Host"
           hide-details="auto"

@@ -45,7 +45,7 @@
         <div class="mirtTableRow" :class="$style.row">
           <div :class="$style.td" v-text="item.number"></div>
           <div :class="$style.td">
-            <v-text-field v-model="item.fio" />
+            <v-text-field v-model="item.fio" :rules="$testRules" />
           </div>
           <div :class="$style.td">
             <v-text-field
@@ -158,7 +158,8 @@ export default {
             if (arg.length < 6) return this.$t("trans__min6Chars");
             return true;
           } else return true;
-        }
+        },
+        ...this.$testRules
       ],
       showTable: false,
       showPasswords: {},

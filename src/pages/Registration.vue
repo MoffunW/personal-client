@@ -8,7 +8,7 @@
         <v-text-field
           v-model="account"
           :label="$t('personalAccount')"
-          :rules="rules"
+          :rules="$testRules"
           :small="true"
           hide-details="auto"
           prepend-icon="mdi mdi-badge-account-horizontal-outline"
@@ -16,7 +16,7 @@
         <v-text-field
           v-model="serialNumber"
           :label="$t('serialNumber')"
-          :rules="rules"
+          :rules="$testRules"
           :small="true"
           hide-details="auto"
           prepend-icon="mdi mdi-numeric"
@@ -32,7 +32,7 @@
         <v-text-field
           v-model="password"
           :label="$t('password')"
-          :rules="rules"
+          :rules="$testRules"
           :small="true"
           :type="showPass ? 'text' : 'password'"
           hide-details="auto"

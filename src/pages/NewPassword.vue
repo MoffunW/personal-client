@@ -65,7 +65,8 @@ export default {
       rules: [
         arg => !!arg || this.$t("fieldIsRequired"),
         arg => !arg || arg.length >= 6 || this.$t("trans_min6sym"),
-        arg => !arg || arg.length <= 25 || this.$t("trans_max25sym")
+        arg => !arg || arg.length <= 25 || this.$t("trans_max25sym"),
+        ...this.$testRules
       ],
       showPass: false,
       showNewPass: false,
