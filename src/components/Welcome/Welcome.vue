@@ -100,6 +100,7 @@ export default {
     async handleShow(arg) {
       try {
         await axios.post("ServerSettings/SetShowWelcome", { Show: !arg });
+        this.$store.commit("setShowWelcomeCBX", !arg);
       } catch (e) {
         this.$message.error("err_some_error");
       }
@@ -275,5 +276,11 @@ export default {
 
 .buttonsWrap > *:last-child {
   margin: 0 !important;
+}
+
+@media all and (max-width: 718px) {
+  .itemText {
+    height: 192px;
+  }
 }
 </style>

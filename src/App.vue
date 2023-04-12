@@ -199,7 +199,6 @@ export default {
       },
       immediate: true
     },
-
     "$store.state.showWelcomeCBX"(arg) {
       this.welcome = arg;
     },
@@ -224,6 +223,7 @@ export default {
   methods: {
     async handleSetWelcome(arg) {
       this.$store.commit("setShowWelcome", arg);
+      this.$store.commit("setShowWelcomeCBX", arg);
       try {
         await axios.post("ServerSettings/SetShowWelcome", { Show: arg });
       } catch (e) {

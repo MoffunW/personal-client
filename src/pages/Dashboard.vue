@@ -49,7 +49,17 @@
           <v-progress-circular indeterminate size="64" />
         </v-overlay>
         <div v-else class="gridWrap">
-          <div v-if="$store.state.editMode" class="adjustmentsWrap">
+          <div
+            v-if="$store.state.editMode"
+            class="adjustmentsWrap"
+            :class="
+              `${
+                hideBadge
+                  ? 'adjustmentsWrap'
+                  : `adjustmentsWrap ${$style.adjustmentsWrap}`
+              }`
+            "
+          >
             <v-select
               :class="$style.widgetSelect"
               v-model="selectedWidget"
@@ -311,7 +321,11 @@ export default {
         });
         this.layout = arr;
         await this.$nextTick();
-        if (arg) this.gridKey = Date.now();
+        if (arg) {
+          this.gridKey = Date.now();
+          this.processScroll(true);
+          this.processScroll();
+        }
       } catch (e) {
         if (e.response) this.$message.error(this.$t(e.response.data));
       }
@@ -420,6 +434,8 @@ export default {
         this.resize(obj);
         await this.$nextTick();
         this.gridKey = Date.now();
+        this.processScroll(true);
+        this.processScroll();
       }
       this.handleGridChanged(index, updateGrid);
     },
@@ -486,8 +502,27 @@ export default {
     },
 
     handleScroll(e) {
+      console.log(
+        this.oldScroll,
+        e.target.scrollTop,
+        this.oldScroll < e.target.scrollTop
+      );
       this.hideBadge = this.oldScroll < e.target.scrollTop;
       this.oldScroll = e.target.scrollTop;
+    },
+
+    async processScroll(arg = false) {
+      await this.$nextTick();
+      const _ = document.querySelector(`.gridWrap`);
+      if (_) {
+        if (!arg) {
+          _.addEventListener("scroll", this.handleScroll);
+          this.observer = new ResizeObserver(this.getContainerWidth).observe(_);
+        } else {
+          _.removeEventListener("scroll", this.handleScroll);
+          if (this.observer) this.observer.unobserve(_);
+        }
+      }
     }
   },
   async mounted() {
@@ -498,16 +533,10 @@ export default {
     } catch (e) {
       this.$message.error("err_some_error");
     }
-    await this.$nextTick();
-    const _ = document.querySelector(`.gridWrap`);
-    if (_) _.addEventListener("scroll", this.handleScroll);
-    if (_)
-      this.observer = new ResizeObserver(this.getContainerWidth).observe(_);
+    this.processScroll();
   },
   beforeDestroy() {
-    const _ = document.querySelector(`.gridWrap`);
-    if (_) _.removeEventListener("scroll", this.handleScroll);
-    if (this.observer) this.observer.unobserve(_);
+    this.processScroll(true);
   }
 };
 </script>
@@ -620,17 +649,22 @@ export default {
     right: 10px;
     padding-right: 0;
     overflow: auto;
+    z-index: 10;
   }
 
   .badge {
     display: flex !important;
-    top: 80px;
+    top: 80px !important;
     z-index: 2;
   }
 
   .hideBadge {
-    top: 0;
+    top: 0 !important;
     z-index: -1;
+  }
+
+  .adjustmentsWrap {
+    top: 64px !important;
   }
 }
 </style>
