@@ -502,11 +502,6 @@ export default {
     },
 
     handleScroll(e) {
-      console.log(
-        this.oldScroll,
-        e.target.scrollTop,
-        this.oldScroll < e.target.scrollTop
-      );
       this.hideBadge = this.oldScroll < e.target.scrollTop;
       this.oldScroll = e.target.scrollTop;
     },

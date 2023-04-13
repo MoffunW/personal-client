@@ -155,6 +155,7 @@ export default {
         });
         if (!data) this.$message.error(this.$t("trans__ErrorGetReportForm"));
         this.formData = data;
+        this.reportsExts = this.selectedItem.typeextension;
         this.showModal = true;
       } catch (e) {
         if (e.response) this.$message.error(this.$t(e.response.data));
@@ -233,15 +234,6 @@ export default {
   },
   async mounted() {
     if (!this.auth) return;
-    try {
-      this.loading = true;
-      const { data } = await axios.get("Report/GetReportFileTypeExtension");
-      this.reportsExts = data;
-    } catch (e) {
-      if (e.response) this.$message.error(this.$t(e.response.data));
-    } finally {
-      this.loading = false;
-    }
     this.getData();
   }
 };
