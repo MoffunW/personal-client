@@ -36,12 +36,7 @@
       </template>
       <template slot="content">
         <!-- Content -->
-        <div
-          :class="$style.contentWrap"
-          v-if="
-            data && data.cur && data.cur.length && data.pot && data.pot.length
-          "
-        >
+        <div :class="$style.contentWrap">
           <div :class="$style.content">
             <v-tabs
               class="tabsWrap"
@@ -50,9 +45,11 @@
               show-arrows
               :centered="false"
             >
-              <v-tab v-for="item in items" :key="item.name">
-                {{ item.name }}
-              </v-tab>
+              <template v-for="item in items">
+                <v-tab v-if="chkShow(item)" :key="item.name">
+                  {{ item.name }}
+                </v-tab>
+              </template>
             </v-tabs>
 
             <v-tabs-items class="tabsItems" v-model="tab" touchless>
@@ -145,6 +142,18 @@ export default {
     };
   },
   methods: {
+    chkShow(arg) {
+      if (!this.data) return false;
+      return (
+        (arg.component === "CurrencyTransformers" &&
+          this.data.cur &&
+          this.data.cur[0]) ||
+        (arg.component === "VoltageTransformers" &&
+          this.data.pot &&
+          this.data.pot[0])
+      );
+    },
+
     async getData() {
       this.loading = true;
       try {

@@ -27,17 +27,21 @@ export default {
   },
   computed: {
     head() {
-      return Object.keys(this.data.cur[0]).map(x => this.$t(`trans__Tfs_${x}`));
+      return this.data && this.data.cur && this.data.cur[0]
+        ? Object.keys(this.data.cur[0]).map(x => this.$t(`trans__Tfs_${x}`))
+        : [];
     },
     body() {
-      return this.data.cur.map((x, index) => {
-        return {
-          id: index,
-          val: Object.keys(x).map((y, i) => {
-            return { id: i, val: x[y] };
+      return this.data && this.data.cur && this.data.cur[0]
+        ? this.data.cur.map((x, index) => {
+            return {
+              id: index,
+              val: Object.keys(x).map((y, i) => {
+                return { id: i, val: x[y] };
+              })
+            };
           })
-        };
-      });
+        : [];
     }
   }
 };

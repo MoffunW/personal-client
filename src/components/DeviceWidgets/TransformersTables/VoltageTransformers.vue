@@ -27,17 +27,21 @@ export default {
   },
   computed: {
     head() {
-      return Object.keys(this.data.pot[0]).map(x => this.$t(`trans__Tfs_${x}`));
+      return this.data && this.data.pot && this.data.pot[0]
+        ? Object.keys(this.data.pot[0]).map(x => this.$t(`trans__Tfs_${x}`))
+        : [];
     },
     body() {
-      return this.data.pot.map((x, index) => {
-        return {
-          id: index,
-          val: Object.keys(x).map((y, i) => {
-            return { id: i, val: x[y] };
+      return this.data && this.data.pot && this.data.pot[0]
+        ? this.data.pot.map((x, index) => {
+            return {
+              id: index,
+              val: Object.keys(x).map((y, i) => {
+                return { id: i, val: x[y] };
+              })
+            };
           })
-        };
-      });
+        : [];
     }
   }
 };
