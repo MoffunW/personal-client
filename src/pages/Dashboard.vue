@@ -140,6 +140,18 @@
 </template>
 
 <script>
+/*function debounce(fn, delay) {
+  var timeoutID = null;
+  return function() {
+    clearTimeout(timeoutID);
+    var args = arguments;
+    var that = this;
+    timeoutID = setTimeout(function() {
+      fn.apply(that, args);
+    }, delay);
+  };
+}*/
+
 import axios from "axios";
 import VueGridLayout from "vue-grid-layout";
 
@@ -194,7 +206,8 @@ export default {
       hideBadge: false,
       addingWidget: false,
       loading: false,
-      showModal: false
+      showModal: false,
+      lyi: { old: [], new: [] }
     };
   },
   computed: {
@@ -325,6 +338,10 @@ export default {
           this.gridKey = Date.now();
           this.processScroll(true);
           this.processScroll();
+          if (arg === "add") {
+            const _ = document.querySelector(`.gridWrap`);
+            if (_) _.scrollTop = _.scrollHeight;
+          }
         }
       } catch (e) {
         if (e.response) this.$message.error(this.$t(e.response.data));
@@ -391,7 +408,7 @@ export default {
           StateGUID: this.stateGUID
         });
         this.setGUID(data.stateGUID);
-        this.getGrid();
+        this.getGrid("add");
         this.selectedWidget = null;
       } catch (e) {
         return;
