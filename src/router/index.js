@@ -61,6 +61,6 @@ const routes = [
   { path: "*", component: () => import("../pages/404.vue") }
 ];
 
-const router = new VueRouter({ routes });
+const router = new VueRouter({ base: process.env.VUE_APP_BASE_URL, routes });
 
 export default router;

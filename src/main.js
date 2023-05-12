@@ -11,16 +11,6 @@ import App from "@/App.vue";
 import "@/registerServiceWorker";
 import "@mdi/font/css/materialdesignicons.css";
 
-/*
-var link = document.querySelector("link[rel~='icon']");
-if (!link) {
-    link = document.createElement('link');
-    link.rel = 'icon';
-    document.head.appendChild(link);
-}
-link.href = 'https://stackoverflow.com/favicon.ico';
-*/
-
 Vue.prototype.$user = new __User();
 
 Vue.prototype.$fixChartDates = arg => {
