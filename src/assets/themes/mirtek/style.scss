@@ -611,7 +611,8 @@ h4 {
   padding: 10px 0;
 }
 
-.treeWrap > * {
+.treeWrap > *,
+.noDataCanvas > * {
   border: $treeSelectedBackground 1px solid;
   background: #fff;
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
@@ -866,6 +867,10 @@ h4 {
   background-color: $primary !important;
 }
 
+.widgetPrevTile {
+  background-color: $borderDefault;
+}
+
 /* FILE */
 .fileWrapActive {
   border-color: $darkActive !important;
@@ -952,7 +957,8 @@ body.dark *::-webkit-scrollbar-thumb {
   border: 1px solid $darkBackground;
 }
 
-body.dark .treeWrap > * {
+body.dark .treeWrap > *,
+body.dark .noDataCanvas > * {
   border-color: $darkBackground;
   background: $darkBackground !important;
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
@@ -1027,6 +1033,10 @@ body.dark .compareTooltipTable tr:first-child td {
 
 body.dark .reportItemSelected::before {
   background-color: $darkActive;
+}
+
+body.dark .widgetPrevTile {
+  background-color: $treeSelectedColor;
 }
 
 /* Vector Diagram */

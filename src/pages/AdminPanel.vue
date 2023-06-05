@@ -26,7 +26,8 @@ export default {
     UsersSettings: () => import("@/pages/Admin/UsersSettings"),
     MailSettings: () => import("@/pages/Admin/MailSettings"),
     LicenseSettings: () => import("@/pages/Admin/LicenseSettings"),
-    Integration: () => import("@/pages/Admin/Integration")
+    Integration: () => import("@/pages/Admin/Integration"),
+    Widgets: () => import("@/pages/Admin/Widgets")
   },
   watch: {
     "$store.state.role": {
@@ -54,6 +55,10 @@ export default {
         {
           name: this.$t("trans__LicenseIntegration"),
           component: "Integration"
+        },
+        {
+          name: this.$t("trans__defaultWidgets"),
+          component: "Widgets"
         }
       ]
     };

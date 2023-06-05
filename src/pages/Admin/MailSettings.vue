@@ -62,6 +62,15 @@
           hide-details="auto"
           prepend-icon="mdi mdi-server"
         />
+        <v-text-field
+          :class="$style.field"
+          :label="$t('trans__MailSender')"
+          :rules="senderRules"
+          :small="true"
+          v-model="fields.DisplayName"
+          hide-details="auto"
+          prepend-icon="mdi mdi-account"
+        />
         <v-checkbox
           :class="$style.checkbox"
           v-model="fields.EnableSSL"
@@ -115,6 +124,9 @@ export default {
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(arg) ||
           this.$t("fieldInvalidEmail")
       ],
+      senderRules: [
+        arg => !arg || arg.length <= 25 || this.$t("trans_max25sym")
+      ],
       fields: {
         Host: null,
         Port: null,
@@ -123,7 +135,8 @@ export default {
         EnableSSL: false,
         SendFrom: null,
         UseEmailConfirmation: false,
-        ServerAddress: null
+        ServerAddress: null,
+        DisplayName: null
       },
       valid: true,
       showPass: false,
@@ -134,6 +147,7 @@ export default {
     async sendData() {
       if (!this.$refs.form.validate()) return;
       this.loading = true;
+      if (!this.fields.DisplayName) delete this.fields.DisplayName;
       try {
         await axios.post("AdminSection/SetMailSettings", this.fields);
       } catch (e) {

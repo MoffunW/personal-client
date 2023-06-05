@@ -84,7 +84,7 @@
             </div>
           </div>
           <grid-layout
-            v-if="layout"
+            v-if="layout && layout.length"
             ref="grid"
             :class="$style.gridWrap"
             :style="
@@ -133,6 +133,9 @@
               </div>
             </grid-item>
           </grid-layout>
+          <div v-else-if="showNoData" :class="`noDataCanvas ${$style.noData}`">
+            <div v-text="$t('widgetsEmptyNotificationNote')"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -207,7 +210,8 @@ export default {
       addingWidget: false,
       loading: false,
       showModal: false,
-      lyi: { old: [], new: [] }
+      lyi: { old: [], new: [] },
+      showNoData: false
     };
   },
   computed: {
@@ -319,9 +323,15 @@ export default {
     },
 
     async getGrid(arg = true) {
+      this.showNoData = false;
       try {
+        const q =
+          this.$store.state.selectedTreeNode.isFolder ||
+          this.$store.state.selectedTreeNode.isFolder === false
+            ? `&isFolder=${this.$store.state.selectedTreeNode.isFolder}`
+            : "";
         const { data } = await axios.get(
-          `Device/GetUserWidgets?nodeId=${this.$store.state.selectedTreeNode.id}`
+          `Device/GetUserWidgets?nodeId=${this.$store.state.selectedTreeNode.id}${q}`
         );
         this.setGUID(data.stateGUID);
         const arr = [];
@@ -333,7 +343,7 @@ export default {
           arr.push(obj);
         });
         this.layout = arr;
-        await this.$nextTick();
+        if (this.$refs.grid) await this.$nextTick();
         if (arg) {
           this.gridKey = Date.now();
           this.processScroll(true);
@@ -345,6 +355,8 @@ export default {
         }
       } catch (e) {
         if (e.response) this.$message.error(this.$t(e.response.data));
+      } finally {
+        this.showNoData = true;
       }
     },
 
@@ -641,6 +653,22 @@ export default {
   font-size: 80px !important;
   color: #fff !important;
   background-color: transparent !important;
+}
+
+.noData {
+  position: relative;
+  height: 100%;
+}
+
+.noData > * {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media all and (max-width: 1100px) {
