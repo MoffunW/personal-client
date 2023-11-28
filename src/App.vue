@@ -82,6 +82,17 @@
                 <v-list-item>
                   <a
                     :class="`navItem ${$style.navItem}`"
+                    class="navItem"
+                    @click.prevent="downloadUserGuide"
+                  >
+                    <v-icon> mdi-download </v-icon>
+                    <span v-text="$t('trans__downloadUserGuide')"></span>
+                  </a>
+                </v-list-item>
+
+                <v-list-item>
+                  <a
+                    :class="`navItem ${$style.navItem}`"
                     :href="`#/${$store.state.lang}/logout`"
                   >
                     <v-icon> mdi-power </v-icon>
@@ -237,6 +248,15 @@ export default {
         : `/${this.$store.state.lang}/login`;
       if (this.$router.currentRoute.fullPath === path) return;
       this.$router.push({ path });
+    },
+    downloadUserGuide() {
+      const link = document.createElement("a");
+      document.body.append(link);
+      link.href = "files/User_guide.pdf";
+      // link.href = window.URL.createObjectURL(arg.data);
+      link.download = "User_guide.pdf";
+      link.click();
+      link.remove();
     }
   },
   async mounted() {
@@ -330,13 +350,18 @@ export default {
 .navigationWrap > *:first-child * {
   transition: all 0s ease-in-out 0s;
 }
+.navigation > .navItem span {
+  margin-left: 5px;
+}
 
 .navItem {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
 }
-
+.navItem > span {
+  margin-left: 9px;
+}
 .navItem + * {
   margin-left: 20px;
 }
