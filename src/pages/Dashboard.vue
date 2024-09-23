@@ -247,10 +247,15 @@ export default {
       let img = this.$store.state.devicesImgs[arg.type]
         ? this.$store.state.devicesImgs[arg.type]
         : this.defaultImage;
+
       const el = document.createElement("div");
+
       el.setAttribute("data-index", arg.id);
       el.setAttribute("title", arg.text);
       el.classList.add("treeItem");
+
+      if (!arg.hasChilds) el.classList.add("withoutChild");
+
       if (arg.selected) el.classList.add("treeSelected");
       if (arg.expanded) el.classList.add("treeExpanded");
       if (arg.level) {
@@ -265,12 +270,15 @@ export default {
           : `<div class="treeLink"></div>`;
         el.innerHTML += `</div>`;
       }
-      el.innerHTML += `<img src="${img}" />
-      <div class="treeText">${arg.text}</div>`;
+
       if (arg.hasChilds)
         el.innerHTML += `<div class="treeExpand">
-        <div></div>
-      </div>`;
+    <div></div>
+  </div>`;
+
+      el.innerHTML += `<img src="${img}" />
+      <div class="treeText">${arg.text}</div>`;
+
       return el;
     },
 
