@@ -211,7 +211,8 @@ export default {
       loading: false,
       showModal: false,
       lyi: { old: [], new: [] },
-      showNoData: false
+      showNoData: false,
+      numClick: 0
     };
   },
   computed: {

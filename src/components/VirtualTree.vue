@@ -4,7 +4,12 @@
       <v-progress-circular indeterminate size="64" />
     </v-overlay>
     <div v-else :class="$style.tree">
-      <div :class="$style.wrapper" ref="wrapper" @click="e => handleClick(e)">
+      <div
+        :class="$style.wrapper"
+        ref="wrapper"
+        @click="handleClick"
+        @dblclick="handlerDoubleClick"
+      >
         <div ref="viewport"></div>
       </div>
     </div>
@@ -198,7 +203,15 @@ export default {
       }
     },
 
+    handlerDoubleClick(e) {
+      const el = e.target.closest(".treeItem");
+      if (!el) return;
+      this.getChilds(el);
+    },
     handleClick(e, notSelectItem = false) {
+      this.numClick = e.detail;
+      if (this.numClick > 1) return;
+
       this.scalableStart =
         (this.el.scrollTop / (this.el.scrollHeight - this.el.clientHeight)) *
         (this.$options.items.length - this.capacity);
