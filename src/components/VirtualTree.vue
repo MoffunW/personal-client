@@ -50,7 +50,8 @@ export default {
       observer: null,
       showTree: false,
       childsCache: null,
-      scalableStart: 0
+      scalableStart: 0,
+      numClick: 0
     };
   },
   computed: {
@@ -222,8 +223,11 @@ export default {
         this.getChilds(el);
         return;
       }
-      if (!notSelectItem) this.setRowSelected(el);
+
       setTimeout(() => {
+        if (this.numClick > 1) return;
+        if (!notSelectItem) this.setRowSelected(el);
+
         const index = this.$options.items.findIndex(
           x => x.id === el.dataset.index
         );
@@ -232,7 +236,7 @@ export default {
         this.$options.items.forEach(x => (x.selected = false));
         obj.selected = true;
         this.refreshTree();
-      }, 0);
+      }, 200);
     },
 
     destroy() {
