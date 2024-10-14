@@ -442,6 +442,8 @@ export default {
   right: 0;
   bottom: 0;
   overflow-y: auto;
+  padding-right: 8px;
+  padding-left: 1px;
 }
 
 .wrapper {

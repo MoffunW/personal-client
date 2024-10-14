@@ -35,6 +35,7 @@
       class="treeWrap"
       :class="showTree ? [$style.tree, $style.treeActive] : $style.tree"
     >
+      <SidebarHeader />
       <virtual-tree
         ref="tree"
         width="250"
@@ -165,6 +166,7 @@ export default {
     GridItem: VueGridLayout.GridItem,
     VirtualTree: () => import("@/components/VirtualTree"),
     /* DeviceWidgets */
+    SidebarHeader: () => import("@/components/Sidebar/SidebarHeader"),
     AboutDevice: () => import("@/components/DeviceWidgets/AboutDevice"),
     CurrentReadingsDay: () =>
       import("@/components/DeviceWidgets/CurrentReadingsDay"),
