@@ -170,7 +170,7 @@
         v-text="`${$t('version')} ${$store.state.serverSettings.buildVersion}`"
       ></div>
     </div>
-    <SearchModal />
+    <SearchModal class="search-modal" />
   </v-app>
 </template>
 
@@ -304,6 +304,11 @@ export default {
 };
 </script>
 
+<style scoped lang="scss">
+.search-modal {
+  background-color: red;
+}
+</style>
 <style module>
 .root {
   position: relative;

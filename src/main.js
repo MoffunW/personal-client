@@ -10,6 +10,19 @@ import store from "@/store";
 import App from "@/App.vue";
 import "@/registerServiceWorker";
 import "@mdi/font/css/materialdesignicons.css";
+import PrimeVue from "primevue/config";
+
+import "primevue/resources/primevue.min.css";
+
+import "primevue/resources/themes/lara-light-blue/theme.css";
+import "primevue/resources/primevue.min.css";
+import "primeicons/primeicons.css";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+
+Vue.use(PrimeVue);
+Vue.component("DataTable", DataTable);
+Vue.component("Column", Column);
 
 Vue.prototype.$user = new __User();
 

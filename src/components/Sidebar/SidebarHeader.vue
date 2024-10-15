@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar-header">
     <SidebarFilter />
-    <SidebarSearch />
+    <SidebarSearch @click="$store.commit('setSearchOpen', true)" />
   </div>
 </template>
 
@@ -10,7 +10,8 @@ export default {
   components: {
     SidebarSearch: () => import("@/components/Sidebar/SidebarSearch.vue"),
     SidebarFilter: () => import("@/components/Sidebar/SidebarFilter.vue")
-  }
+  },
+  methods: {}
 };
 </script>
 

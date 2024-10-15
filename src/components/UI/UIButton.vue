@@ -1,5 +1,10 @@
 <template>
-  <button v-ripple class="button" :class="{ accent: accent }">
+  <button
+    @click="$emit('click')"
+    v-ripple
+    class="button"
+    :class="{ accent: accent }"
+  >
     {{ text }}
   </button>
 </template>

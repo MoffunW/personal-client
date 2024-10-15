@@ -19,7 +19,8 @@ export default new Vuex.Store({
     showEditWidgets: true,
     exportsSettings: {},
     showWelcome: false,
-    showWelcomeCBX: false
+    showWelcomeCBX: false,
+    searchOpen: true
   },
   mutations: {
     setRememberMe(state, arg) {
@@ -88,6 +89,9 @@ export default new Vuex.Store({
 
     setShowWelcomeCBX(state, arg) {
       state.showWelcomeCBX = arg;
+    },
+    setSearchOpen(state, arg) {
+      state.searchOpen = arg;
     }
   }
 });

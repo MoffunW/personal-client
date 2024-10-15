@@ -1,5 +1,5 @@
 <template>
-  <button v-ripple class="search">
+  <button @click="$emit('click')" v-ripple class="search">
     <svg
       width="12"
       height="12"
