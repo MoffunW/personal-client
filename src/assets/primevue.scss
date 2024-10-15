@@ -1,0 +1,37 @@
+.p-datatable .p-datatable-thead > tr > th {
+  padding: 10px;
+  border-left: 1px solid #c7c7c7;
+  font-size: 16px;
+  height: 36px;
+}
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 10px;
+  font-size: 14px;
+  height: 36px;
+}
+.p-datatable-wrapper {
+  border: 1px solid #c7c7c7;
+}
+
+.p-paginator {
+  border: 1px solid #c7c7c7 !important;
+  border-top: none !important;
+  height: 36px;
+  & > * {
+    height: 36px !important;
+  }
+}
+.p-datatable .p-paginator-bottom > * {
+  height: 14px !important;
+}
+.p-paginator .p-dropdown {
+  position: absolute;
+  right: 0;
+  height: 23px !important;
+}
+.p-dropdown-label.p-inputtext {
+  padding: 0px 2px 0 !important;
+}
+.p-dropdown-items-wrapper {
+  z-index: 10;
+}
