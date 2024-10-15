@@ -32,6 +32,9 @@
 
 :root {
   --mainColor: #ee7300;
+  --mainColorDim: #e9a247;
+  --textColor: #000;
+  --textColorInversed: #fff;
 }
 
 /* Vars */
@@ -1312,4 +1315,8 @@ body.contrast .digital > span:last-child {
 .body.contrast .vectorColor,
 body.contrast .vectorColorText {
   fill: #000;
+}
+
+.round {
+  border-radius: 100%;
 }

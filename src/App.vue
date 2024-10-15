@@ -170,6 +170,7 @@
         v-text="`${$t('version')} ${$store.state.serverSettings.buildVersion}`"
       ></div>
     </div>
+    <SearchModal />
   </v-app>
 </template>
 
@@ -178,8 +179,10 @@ import Vue from "vue";
 import * as api from "./api";
 import { NAVIGATION } from "@/config";
 import axios from "axios";
+import SearchModal from "@/components/SearchModal.vue";
 
 export default {
+  components: { SearchModal },
   data() {
     return {
       lang: null,
