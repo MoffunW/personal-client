@@ -684,7 +684,8 @@ export default {
 @media all and (max-width: 1100px) {
   .tree {
     position: absolute;
-    top: 120px;
+    /*top: 120px;*/
+    top: 60px;
     bottom: 0;
     left: -350px;
     right: 100%;
