@@ -16,7 +16,7 @@
         <div class="search">
           <div class="search__wrapper">
             <div class="search__text">Поиск:</div>
-            <SearchAutocomplete />
+            <SearchAutocomplete v-model="searchText" @search="handleSearch" />
           </div>
 
           <UIButton
@@ -24,6 +24,7 @@
             class="search-modal__search"
             accent
             text="Найти"
+            :disabled="searchText.length < 3 || lastSearch === searchText"
           />
         </div>
       </div>
@@ -54,29 +55,43 @@ import ResultTable from "@/components/ResultTable.vue";
 import { getQueryString } from "@/utils/network";
 import axios from "axios";
 
+const LAST_SEARCHES = "lastSearches";
+
 export default {
   components: {
     UIButton,
     ResultTable,
     SearchAutocomplete
   },
+  data() {
+    return {
+      searchText: "",
+      lastSearch: ""
+    };
+  },
   methods: {
-    getSearchResults() {
-      // await axios.post("v1/Search/TreeSearch", {
-      //   findText: this.findText,
-      //   page: this.currentPage,
-      //   lines: this.linesPerPage
-      // });
+    setLastSearches(search) {
+      this.lastSearch = search;
+      const localValue = localStorage.getItem(LAST_SEARCHES);
+      const savedItems = localValue ? JSON.parse(localValue) : [];
+      const newValue = savedItems.includes(search)
+        ? savedItems
+        : [...savedItems, search];
 
+      localStorage.setItem(LAST_SEARCHES, JSON.stringify(newValue));
+    },
+    getSearchResults(page, lines) {
       const q = getQueryString({
-        findText: "111",
-        page: 0,
-        lines: 10
+        findText: this.searchText,
+        page: page,
+        lines: lines
       });
+      this.setLastSearches(this.searchText);
+
       return axios.get(`Search/TreeSearch?${q}`);
     },
-    handleSearch() {
-      console.log("handleSearch", this.$refs.resultTable);
+    handleSearch(selectedOption = null) {
+      if (selectedOption) this.searchText = selectedOption;
       this.$refs.resultTable.refresh();
     },
     closeModal() {
@@ -116,9 +131,10 @@ export default {
   &__body {
     display: flex;
     flex-direction: column;
-    flex: 1 1 auto;
+    flex: 1;
     border-top: 1px solid #c7c7c7;
     padding: 15px 20px;
+    overflow-y: hidden;
   }
   &__table {
     margin-top: 13px;

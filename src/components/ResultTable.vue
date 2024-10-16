@@ -26,13 +26,6 @@
       </div>
     </template>
 
-    <template #loading>
-      <div class="loading">
-        <v-progress-circular color="primary" indeterminate />
-        <div class="loading__text">Загрузка</div>
-      </div>
-    </template>
-
     <!-- DATA -->
     <Column
       v-for="(item, index) in shownHeaders"
@@ -90,7 +83,6 @@ export default {
   },
   methods: {
     async onRowClick(e) {
-      console.log(e, "e");
       const _ = e.data;
       const q = getQueryString({
         mRID: _.mRIDd,
@@ -101,32 +93,28 @@ export default {
         const res = await axios.get(`Search/TreeSearchNodePath?${q}`);
         this.$store.commit("setSearchOpen", false);
         this.$store.commit("setNewPathSearch", res.data);
-        console.log(res, "res");
       } catch (error) {
         console.error(error);
       }
-    },
-    handleClick(e) {
-      console.log(e);
     },
     getHeader(field) {
       return field;
     },
     getImage(imageName) {
-      console.log(imageName);
-      let img = this.$store.state.devicesImgs["D_1"]
-        ? this.$store.state.devicesImgs["D_1"]
+      let img = this.$store.state.devicesImgs[imageName]
+        ? this.$store.state.devicesImgs[imageName]
         : this.defaultImage;
-      console.log(img, "img");
 
       return img;
     },
     async refresh() {
       this.loading = true;
       try {
-        const res = await this.getItems();
+        const res = await this.getItems(this.currentPage, this.linesPerPage);
         const data = res.data;
-        this.items = data.nodes;
+        const nodes = data.nodes;
+
+        this.items = nodes ? nodes : [];
 
         this.countNodes = data.countNodes;
         const pages = Math.ceil(data.countNodes / this.linesPerPage);

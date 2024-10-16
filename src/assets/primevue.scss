@@ -46,3 +46,7 @@
 .p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
   background: var(--mainColorLowOpacity);
 }
+
+.p-datatable-flex-scrollable {
+  height: calc(100% - 33px);
+}

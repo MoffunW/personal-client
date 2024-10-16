@@ -38,5 +38,9 @@ export default {
     color: var(--textColorInversed);
     border-color: var(--mainColor);
   }
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 }
 </style>
