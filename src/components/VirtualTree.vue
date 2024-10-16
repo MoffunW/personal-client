@@ -60,6 +60,14 @@ export default {
     }
   },
   watch: {
+    "$store.state.newPathSearch": {
+      handler(newVal) {
+        if (!newVal) return;
+        this.openByFullPath(newVal.map(node => node.mRID));
+
+        this.$store.commit("setNewPathSearch", null);
+      }
+    },
     "$store.state.auth": {
       handler(arg) {
         if (arg) this.start();
@@ -83,6 +91,15 @@ export default {
       localStorage.setItem("path", JSON.stringify(arr.reverse()));
     },
 
+    async openByFullPath(path) {
+      const pathWithoutSelected = path.slice(0, path.length - 1);
+      localStorage.setItem("path", JSON.stringify(pathWithoutSelected));
+      localStorage.setItem("selected", path[path.length - 1]);
+      this.destroy();
+      await this.$nextTick();
+      this.start();
+    },
+
     async restoreTree(arg) {
       if (!arg) {
         const firstNode = this.viewport.querySelector(".treeItem");
@@ -96,10 +113,11 @@ export default {
           await this.getChilds(el);
           el.remove();
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       }
       const selected = localStorage.getItem("selected");
+
       if (!selected) return;
       const item = this.$options.items.findIndex(x => x.id == selected);
       if (!item) return;
@@ -200,7 +218,7 @@ export default {
           this.collapseNode(obj.id);
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     },
 
@@ -210,15 +228,17 @@ export default {
       this.getChilds(el);
     },
     handleClick(e, notSelectItem = false) {
+      if (!e.target) return;
       this.numClick = e.detail;
       if (this.numClick > 1) return;
 
       this.scalableStart =
         (this.el.scrollTop / (this.el.scrollHeight - this.el.clientHeight)) *
         (this.$options.items.length - this.capacity);
-      const expand = e.target.closest(".treeExpand");
       const el = e.target.closest(".treeItem");
       if (!el) return;
+
+      const expand = e.target?.closest(".treeExpand");
       if (expand) {
         this.getChilds(el);
         return;

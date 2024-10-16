@@ -35,3 +35,14 @@
 .p-dropdown-items-wrapper {
   z-index: 10;
 }
+
+.p-datatable.p-datatable-striped .p-datatable-tbody > tr {
+  &:hover {
+    transition: 0.1s linear background;
+    background: var(--mainColorHigherOpacity) !important;
+    cursor: pointer;
+  }
+}
+.p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
+  background: var(--mainColorLowOpacity);
+}

@@ -4,7 +4,6 @@
     class="table"
     :value="items"
     :loading="loading"
-    :highlightOnSelect="true"
     :rowsPerPageOptions="linesPerPageOptions"
     :rows="linesPerPage"
     :totalRecords="countNodes"
@@ -16,6 +15,9 @@
     paginator
     paginatorTemplate="PrevPageLink CurrentPageReport NextPageLink RowsPerPageDropdown"
     :currentPageReportTemplate="`${currentPage + 1}/${totalPages}`"
+    @row-click="onRowClick"
+    :selection="selectedRow"
+    selectionMode="single"
   >
     <!-- TODO: provide uniqiue dataKey -->
     <template #empty>
@@ -33,8 +35,8 @@
 
     <!-- DATA -->
     <Column
-      v-for="item in shownHeaders"
-      :key="item"
+      v-for="(item, index) in shownHeaders"
+      :key="index"
       :field="item"
       :title="item"
     >
@@ -48,7 +50,7 @@
           -
         </template>
         <template v-else>
-          <div class="centered" v-if="item === 'imageAndName'">
+          <div class="centered" v-if="item === 'node'">
             <img :src="getImage(data.image)" alt="" />
             {{ data.name }}
           </div>
@@ -60,6 +62,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import { getQueryString } from "@/utils/network";
+
 export default {
   name: "ResultTable",
   props: {
@@ -76,13 +81,31 @@ export default {
       totalPages: 1,
       linesPerPage: 50,
       countNodes: 0,
+      selectedRow: null,
 
-      shownHeaders: ["imageAndName", "type", "value"],
+      shownHeaders: ["node", "type", "value"],
       linesPerPageOptions: [10, 50, 100, 150],
       defaultImage: require("@/assets/defaultTreeImg.png")
     };
   },
   methods: {
+    async onRowClick(e) {
+      console.log(e, "e");
+      const _ = e.data;
+      const q = getQueryString({
+        mRID: _.mRIDd,
+        Image: _.image,
+        ParentId: _.parentID
+      });
+      try {
+        const res = await axios.get(`Search/TreeSearchNodePath?${q}`);
+        this.$store.commit("setSearchOpen", false);
+        this.$store.commit("setNewPathSearch", res.data);
+        console.log(res, "res");
+      } catch (error) {
+        console.error(error);
+      }
+    },
     handleClick(e) {
       console.log(e);
     },

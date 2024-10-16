@@ -34,6 +34,8 @@
 :root {
   --mainColor: #ee7300;
   --mainColorDim: #e9a247;
+  --mainColorLowOpacity: rgba(238, 115, 0, 0.1);
+  --mainColorHigherOpacity: rgba(238, 115, 0, 0.3);
   --textColor: #000;
   --textColorInversed: #fff;
 }
