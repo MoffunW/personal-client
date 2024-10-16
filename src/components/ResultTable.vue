@@ -22,7 +22,7 @@
     <!-- TODO: provide uniqiue dataKey -->
     <template #empty>
       <div v-if="!loading && items.length === 0" class="table--empty">
-        Empty
+        {{ $t("search_empty") }}
       </div>
     </template>
 
@@ -33,7 +33,6 @@
       :field="item"
       :title="item"
     >
-      <!--TODO: Refactor this mess to be universal-->
       <template #header>
         <span :title="item">{{ item }}</span>
       </template>
@@ -43,11 +42,11 @@
           -
         </template>
         <template v-else>
-          <div class="centered" v-if="item === 'node'">
+          <div class="centered" v-if="item === 'search_node'">
             <img :src="getImage(data.image)" alt="" />
             {{ data.name }}
           </div>
-          <span v-else>{{ data[item] }}</span>
+          <span v-else>{{ data[item.replace("search_", "")] }}</span>
         </template>
       </template>
     </Column>
@@ -76,13 +75,14 @@ export default {
       countNodes: 0,
       selectedRow: null,
 
-      shownHeaders: ["node", "type", "value"],
+      shownHeaders: ["search_node", "search_type", "search_value"],
       linesPerPageOptions: [10, 50, 100, 150],
       defaultImage: require("@/assets/defaultTreeImg.png")
     };
   },
   methods: {
     async onRowClick(e) {
+      console.log(e, "e");
       const _ = e.data;
       const q = getQueryString({
         mRID: _.mRIDd,

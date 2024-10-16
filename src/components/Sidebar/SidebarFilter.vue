@@ -1,6 +1,6 @@
 <template>
   <div class="filter">
-    <input class="filter__input" placeholder="Фильтр по наименованию" />
+    <input class="filter__input" :placeholder="$t('search_filterByName')" />
     <button class="filter__button" v-ripple>
       <svg
         width="12"
@@ -14,8 +14,6 @@
           fill="var(--mainColor)"
         />
       </svg>
-      <!-- <v-icon size="18">{{ mdiFilter }}</v-icon> -->
-      <!-- <v-icon size="18">mdi-filter</v-icon> -->
     </button>
   </div>
 </template>

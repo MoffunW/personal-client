@@ -7,7 +7,9 @@
   >
     <div class="wrapper">
       <div class="search-modal__header">
-        <div class="search-modal__title">ПОИСК</div>
+        <div class="search-modal__title">
+          {{ $t("search_search") }}
+        </div>
         <button @click="closeModal" v-ripple class="search-modal__close round">
           <v-icon color="#fff">mdi-close</v-icon>
         </button>
@@ -15,7 +17,7 @@
       <div class="search-modal__inputs">
         <div class="search">
           <div class="search__wrapper">
-            <div class="search__text">Поиск:</div>
+            <div class="search__text">{{ $t("search_search") }}:</div>
             <SearchAutocomplete v-model="searchText" @search="handleSearch" />
           </div>
 
@@ -23,13 +25,14 @@
             @click="handleSearch"
             class="search-modal__search"
             accent
-            text="Найти"
+            :text="$t('search_find')"
             :disabled="searchText.length < 3 || lastSearch === searchText"
           />
         </div>
       </div>
       <div class="search-modal__body">
-        <div class="search-modal__body-header">Результаты</div>
+        <div class="search-modal__body-header">{{ $t("search_results") }}</div>
+
         <ResultTable
           class="search-modal__table"
           ref="resultTable"
@@ -40,7 +43,7 @@
         <UIButton
           @click="closeModal"
           class="search-modal__cancel"
-          text="Отменить"
+          :text="$t('search_cancel')"
         />
       </div>
     </div>
@@ -122,6 +125,9 @@ export default {
     background: var(--mainColorDim);
     color: var(--textColorInversed);
     padding: 16px;
+  }
+  &__title {
+    text-transform: uppercase;
   }
   &__inputs {
     display: flex;
