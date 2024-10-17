@@ -20,7 +20,7 @@ export default new Vuex.Store({
     exportsSettings: {},
     showWelcome: false,
     showWelcomeCBX: false,
-    searchOpen: true,
+    searchOpen: false,
     newPathSearch: null
   },
   mutations: {
