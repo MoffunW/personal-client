@@ -34,7 +34,7 @@
       :title="item"
     >
       <template #header>
-        <span :title="item">{{ item }}</span>
+        <span :title="item">{{ `${$t(item)}` }}</span>
       </template>
 
       <template #body="{ data }">
