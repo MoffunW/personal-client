@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="search-modal__body">
-        <div class="search-modal__body-header">{{ $t("search_results") }}</div>
+        <div class="search-modal__body-header">{{ $t("search_result") }}</div>
 
         <ResultTable
           class="search-modal__table"
