@@ -160,4 +160,9 @@ export default {
     }
   }
 }
+body.dark {
+  .search-options {
+    background: #333;
+  }
+}
 </style>

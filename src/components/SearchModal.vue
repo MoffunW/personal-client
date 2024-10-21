@@ -167,6 +167,27 @@ export default {
     gap: 10px;
   }
 }
+$bgDark: #333;
+body.dark {
+  .search-modal {
+    &__cancel {
+      background: #ddd;
+      color: #000 !important;
+    }
+    &__header {
+      // background: $bgDark;
+    }
+    &__body {
+      background: $bgDark;
+    }
+    &__footer {
+      background: $bgDark;
+    }
+    &__inputs {
+      background: $bgDark;
+    }
+  }
+}
 </style>
 <style lang="scss">
 .v-dialog {
