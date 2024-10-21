@@ -52,6 +52,9 @@ body.dark {
     background: var(--mainColorLowOpacity) !important;
   }
 }
+.p-datatable.p-datatable-striped
+  .p-datatable-tbody
+  > tr:not(.p-datatable-emptymessage) {
   &:hover {
     transition: 0.1s linear background;
     background: var(--mainColorHigherOpacity) !important;
