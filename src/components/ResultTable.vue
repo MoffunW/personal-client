@@ -7,6 +7,7 @@
     :rowsPerPageOptions="linesPerPageOptions"
     :rows="linesPerPage"
     :totalRecords="countNodes"
+    @page="onChange"
     lazy
     scrollable
     stripedRows
@@ -124,10 +125,22 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    onChange(e) {
+      if (typeof e.page === "number") this.currentPage = e.page;
+      if (typeof e.rows === "number") {
+        this.currentPage = (this.currentPage * this.linesPerPage) / e.rows;
+        this.linesPerPage = e.rows;
+      }
     }
   },
-  mounted() {
-    // this.init();
+  watch: {
+    linesPerPage() {
+      this.refresh();
+    },
+    currentPage() {
+      this.refresh();
+    }
   }
 };
 </script>
