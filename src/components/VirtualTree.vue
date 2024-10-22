@@ -95,9 +95,7 @@ export default {
       const pathWithoutSelected = path.slice(0, path.length - 1);
       localStorage.setItem("path", JSON.stringify(pathWithoutSelected));
       localStorage.setItem("selected", path[path.length - 1]);
-      this.destroy();
-      await this.$nextTick();
-      this.start();
+      this.restoreTree(pathWithoutSelected);
     },
 
     async restoreTree(arg) {
@@ -110,7 +108,7 @@ export default {
         try {
           let el = document.createElement("span");
           el.dataset.index = x;
-          await this.getChilds(el);
+          await this.getChilds(el, false);
           el.remove();
         } catch (e) {
           console.error(e);
@@ -189,7 +187,7 @@ export default {
       this.refreshTree();
     },
 
-    async getChilds(arg) {
+    async getChilds(arg, collapseOpened = true) {
       if (arg.classList.contains("treeLoading")) return;
       try {
         const index = this.$options.items.findIndex(
@@ -214,8 +212,10 @@ export default {
           }
           this.expandNode(obj.id);
         } else {
-          obj.expanded = false;
-          this.collapseNode(obj.id);
+          if (collapseOpened) {
+            obj.expanded = false;
+            this.collapseNode(obj.id);
+          }
         }
       } catch (e) {
         console.error(e);
