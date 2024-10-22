@@ -60,10 +60,10 @@
     flex: 1 0 26px;
     transition: 0.1s linear background;
     &.active {
-      background: #ee730040;
+      background: var(--mainColorHigherOpacity);
     }
     &:hover {
-      background: #ee730040;
+      background: var(--mainColorHigherOpacity);
     }
   }
 }

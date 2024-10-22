@@ -23,9 +23,11 @@
   border: 1px solid var(--mainColor);
   height: 26px;
   width: 26px;
-  transition: 0.1s linear background;
+  &.active {
+    background: var(--mainColorHigherOpacity);
+  }
   &:hover {
-    background: #ee730040;
+    background: var(--mainColorHigherOpacity);
   }
 }
 </style>

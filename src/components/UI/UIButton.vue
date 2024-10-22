@@ -33,6 +33,14 @@ export default {
   font-size: 15px;
   line-height: 17px !important;
   font-weight: 400 !important;
+  transition: 0.1s linear background;
+  &.active {
+    background: var(--mainColorHigherOpacity);
+  }
+  &:hover {
+    background: var(--mainColorHigherOpacity);
+  }
+
   &.accent {
     background: var(--mainColor);
     color: var(--textColorInversed);
