@@ -18,7 +18,11 @@
         <div class="search">
           <div class="search__wrapper">
             <div class="search__text">{{ $t("search_search") }}:</div>
-            <SearchAutocomplete v-model="searchText" @search="handleSearch" />
+            <SearchAutocomplete
+              v-model="searchText"
+              @search="handleSearch"
+              @input="handleTimeoutSearch"
+            />
           </div>
 
           <UIButton
@@ -69,7 +73,8 @@ export default {
   data() {
     return {
       searchText: "",
-      lastSearch: ""
+      lastSearch: "",
+      searchTimer: null
     };
   },
   methods: {
@@ -99,6 +104,18 @@ export default {
     },
     closeModal() {
       this.$store.commit("setSearchOpen", false);
+    },
+    handleTimeoutSearch() {
+      // Clear the previous timer
+      clearTimeout(this.searchTimer);
+
+      // If the search text is the same as the previous search, don't start the timer
+      if (this.searchText === this.lastSearch) return;
+
+      // Set a new timer, searching after 3 seconds if the user stops typing
+      this.searchTimer = setTimeout(() => {
+        this.handleSearch();
+      }, 3000);
     }
   }
 };
