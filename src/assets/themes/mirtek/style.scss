@@ -23,7 +23,6 @@ $active: #eff8ff;
 $darkBackground: #333;
 $darkActive: #4a4a4a;
 $error: #ff5252;
-$primary: #008abf;
 $even: #eff8ff;
 $borderDefault: #dcdfe6;
 $borderDark: #cecece;
@@ -68,7 +67,7 @@ body.dark .logo-en {
 
 body * {
   scrollbar-width: thin;
-  scrollbar-color: $primary $darkMain;
+  scrollbar-color: var(--mainColor) $darkMain;
 }
 
 body *::-webkit-scrollbar {
@@ -81,7 +80,7 @@ body *::-webkit-scrollbar-track {
 }
 
 body *::-webkit-scrollbar-thumb {
-  background-color: $primary;
+  background-color: var(--mainColor);
   border-radius: 5px;
   border: 1px solid $darkMain;
 }
@@ -157,22 +156,22 @@ body *::-webkit-scrollbar-thumb {
 }*/
 
 .v-progress-circular__overlay {
-  stroke: $primary;
+  stroke: var(--mainColor);
 }
 
 .v-text-field .v-input__slot::before,
 .v-text-field .v-input__slot::after {
-  border-color: $primary !important;
+  border-color: var(--mainColor) !important;
 }
 
 .v-application .primary--text {
-  color: $primary !important;
-  caret-color: $primary !important;
+  color: var(--mainColor) !important;
+  caret-color: var(--mainColor) !important;
 }
 
 .v-application .primary--text .v-input__slot::before,
 .v-application .primary--text .v-input__slot::after {
-  border-color: $primary !important;
+  border-color: var(--mainColor) !important;
 }
 
 .error--text {
@@ -204,11 +203,11 @@ body *::-webkit-scrollbar-thumb {
 }
 
 .v-list-item--active::before {
-  background-color: $primary;
+  background-color: var(--mainColor);
 }
 
 .v-input--checkbox .v-icon.primary--text {
-  color: $primary !important;
+  color: var(--mainColor) !important;
 }
 
 .v-input .v-messages__message {
@@ -231,8 +230,8 @@ body *::-webkit-scrollbar-thumb {
 }
 
 .v-application .v-date-picker-table__current {
-  color: $primary !important;
-  caret-color: $primary !important;
+  color: var(--mainColor) !important;
+  caret-color: var(--mainColor) !important;
 }
 
 .v-application .v-date-picker-table__current.v-btn--active {
@@ -241,8 +240,8 @@ body *::-webkit-scrollbar-thumb {
 }
 
 .v-application .accent {
-  background-color: $primary !important;
-  border-color: $primary !important;
+  background-color: var(--mainColor) !important;
+  border-color: var(--mainColor) !important;
 }
 
 .v-menu__content {
@@ -259,8 +258,8 @@ body *::-webkit-scrollbar-thumb {
 
 .v-input__slider .v-slider__track-fill,
 .v-input__slider .v-slider__thumb {
-  background-color: $primary !important;
-  border-color: $primary !important;
+  background-color: var(--mainColor) !important;
+  border-color: var(--mainColor) !important;
 }
 
 .v-input__slider .v-slider--disabled .v-slider__track-fill,
@@ -319,17 +318,17 @@ body *::-webkit-scrollbar-thumb {
 }
 
 .carousel .v-carousel__controls .v-carousel__controls__item i {
-  color: $primary !important;
+  color: var(--mainColor) !important;
 }
 
 .carousel
   .v-carousel__controls
   .v-carousel__controls__item.v-item--active::before {
-  background-color: $primary !important;
+  background-color: var(--mainColor) !important;
 }
 
 .carousel .v-carousel__controls .v-carousel__controls__item.v-item--active i {
-  color: $primary !important;
+  color: var(--mainColor) !important;
 }
 
 .carousel .v-carousel__controls .v-carousel__controls__item i::before {
@@ -346,12 +345,12 @@ body *::-webkit-scrollbar-thumb {
   width: 26px;
   height: 7px;
   border-radius: 3px;
-  background-color: $primary;
+  background-color: var(--mainColor);
 }
 
 .numberInput .v-input__icon--prepend button::before,
 .numberInput .v-input__append-outer button::before {
-  color: $primary;
+  color: var(--mainColor);
 }
 
 .v-slide-group__prev.v-slide-group__prev--disabled > *,
@@ -364,18 +363,18 @@ body *::-webkit-scrollbar-thumb {
 
 .primaryBtn {
   color: #fff !important;
-  background-color: $primary !important;
+  background-color: var(--mainColor) !important;
 }
 
 .primaryBtnOutline {
-  border: $primary 1px solid !important;
+  border: var(--mainColor) 1px solid !important;
   background-color: transparent !important;
   transition: background-color 0.3s ease-in-out 0s, color 0.3s ease-in-out 0s !important;
 }
 
 .primaryBtnOutline:hover {
   color: #fff !important;
-  background-color: $primary !important;
+  background-color: var(--mainColor) !important;
 }
 
 .deleteBtn {
@@ -401,7 +400,7 @@ body *::-webkit-scrollbar-thumb {
 
 .primaryBtn.v-btn--loading {
   background-color: transparent !important;
-  outline: $primary 1px solid !important;
+  outline: var(--mainColor) 1px solid !important;
 }
 
 .deleteBtn.v-btn--loading {
@@ -410,7 +409,7 @@ body *::-webkit-scrollbar-thumb {
 }
 
 .modeSelectorActive::before {
-  color: $primary !important;
+  color: var(--mainColor) !important;
 }
 
 /* GRID */
@@ -486,12 +485,12 @@ a *,
 }
 
 a:hover {
-  color: $primary !important;
+  color: var(--mainColor) !important;
 }
 
 .navItem:hover > *,
 .navItem.active > * {
-  color: $primary !important;
+  color: var(--mainColor) !important;
 }
 
 h4 {
@@ -644,7 +643,6 @@ $active: #eff8ff;
 $darkBackground: #333;
 $darkActive: #4a4a4a;
 $error: #ff5252;
-$primary: #ee7300;
 $even: #fce8d6;
 $borderDefault: #dcdfe6;
 $borderDark: #cecece;
@@ -893,7 +891,7 @@ body.dark .treeText {
 
 .treeItem.treeLoading .treeExpand > div {
   border-radius: 50%;
-  border: $primary 2px solid;
+  border: var(--mainColor) 2px solid;
   border-top-color: transparent;
   background: none;
   animation: loader 3s linear infinite;
@@ -976,7 +974,7 @@ body.dark .treeText {
 }
 
 .reportItemSelected > div:last-child:hover > *::before {
-  color: $primary !important;
+  color: var(--mainColor) !important;
 }
 
 /* Vector Diagram */
@@ -1026,7 +1024,7 @@ body.dark .treeText {
 }
 
 .dialogHeader {
-  background-color: $primary !important;
+  background-color: var(--mainColor) !important;
 }
 
 .widgetPrevTile {
@@ -1069,7 +1067,7 @@ body.dark .treeText {
 }
 
 .bg404 {
-  background-color: $primary;
+  background-color: var(--mainColor);
 }
 
 /* DARK */
@@ -1105,7 +1103,7 @@ body.dark * {
 
 body.dark * {
   scrollbar-width: thin;
-  scrollbar-color: $primary $darkBackground;
+  scrollbar-color: var(--mainColor) $darkBackground;
 }
 
 body.dark *::-webkit-scrollbar {
@@ -1118,7 +1116,7 @@ body.dark *::-webkit-scrollbar-track {
 }
 
 body.dark *::-webkit-scrollbar-thumb {
-  background-color: $primary;
+  background-color: var(--mainColor);
   border-radius: 5px;
   border: 1px solid $darkBackground;
 }
@@ -1134,7 +1132,7 @@ body.dark .noDataCanvas > * {
 body.dark .treeItem.treeSelected,
 body.dark .treeItem.treeSelected * {
   color: #fff !important;
-  border-left-color: $primary;
+  border-left-color: var(--mainColor);
 }
 
 body.dark .card,
@@ -1249,7 +1247,7 @@ body.contrast .treeItem:hover * {
 body.contrast .treeItem.treeSelected,
 body.contrast .treeItem.treeSelected * {
   color: #fff !important;
-  border-left-color: $primary;
+  border-left-color: var(--mainColor);
 }
 
 body.contrast .noData,
@@ -1268,7 +1266,7 @@ body.contrast .navigationWrapActive .navItem:hover * {
 }
 
 body.contrast .navigationWrapActive .navItem.active * {
-  color: $primary !important;
+  color: var(--mainColor) !important;
 }
 
 body.contrast .primaryBtn *,

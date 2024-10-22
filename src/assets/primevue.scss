@@ -45,8 +45,12 @@ body.dark {
   .p-datatable .p-datatable-tbody > tr,
   .p-datatable .p-datatable-thead > tr > th,
   .p-paginator .p-dropdown,
-  .p-datatable .p-paginator-bottom {
+  .p-datatable .p-paginator-bottom,
+  .p-dropdown-items-wrapper {
     background: #333 !important;
+  }
+  .p-dropdown-item.p-highlight {
+    background: #444 !important;
   }
   .p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
     background: var(--mainColorLowOpacity) !important;
