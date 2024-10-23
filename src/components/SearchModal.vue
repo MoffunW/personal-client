@@ -113,7 +113,8 @@ export default {
       clearTimeout(this.searchTimer);
 
       // If the search text is the same as the previous search, don't start the timer
-      if (this.searchText === this.lastSearch) return;
+      if (this.searchText === this.lastSearch || this.searchText.length < 3)
+        return;
 
       // Set a new timer, searching after 3 seconds if the user stops typing
       this.searchTimer = setTimeout(() => {
