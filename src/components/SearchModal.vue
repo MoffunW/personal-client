@@ -83,6 +83,12 @@ export default {
       return this.searchText === this.lastSearch;
     }
   },
+  watch: {
+    "$store.state.searchOpen"(newVal) {
+      if (newVal) this.searchText = this.lastSearch;
+      else clearTimeout(this.searchTimer);
+    }
+  },
   methods: {
     setLastSearches(search) {
       this.lastSearch = search;
