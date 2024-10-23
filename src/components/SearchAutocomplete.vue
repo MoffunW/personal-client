@@ -8,7 +8,7 @@
       :maxlength="30"
     />
 
-    <button class="search__close" @click="closeSearch">
+    <button class="search__close" @click="clearInput">
       <v-icon size="16" color="#000">mdi-close</v-icon>
     </button>
     <div class="search-options" v-if="filteredSearches.length">
@@ -64,9 +64,10 @@ export default {
       this.$emit("input", value);
       this.setLastSearches();
     },
-    closeSearch() {
+    clearInput() {
       this.$emit("input", "");
       this.updateValue(""); // Optionally clear the input when closing
+      this.$refs.input.focus();
     },
     emitSearch(val = "") {
       this.$emit("search", val);
