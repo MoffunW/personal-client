@@ -155,6 +155,7 @@ export default {
     display: flex;
     align-items: center;
     padding: 10px 20px;
+    background: var(--bgColor);
   }
   &__body {
     display: flex;
@@ -163,6 +164,7 @@ export default {
     border-top: 1px solid #c7c7c7;
     padding: 15px 20px;
     overflow-y: hidden;
+    background: var(--bgColor);
   }
   &__table {
     margin-top: 13px;
@@ -172,12 +174,17 @@ export default {
     position: relative;
     padding: 12px 20px;
     border-top: 1px solid #c7c7c7;
+    background: var(--bgColor);
   }
   &__search {
     height: 26px;
     padding: 5px 25px;
     font-size: 14px;
     margin-left: 20px;
+  }
+  &__cancel {
+    background: var(--bgColorInversed);
+    color: #000 !important;
   }
 }
 .search {
@@ -189,29 +196,10 @@ export default {
     gap: 10px;
   }
 }
-$bgDark: #333;
-body.dark {
-  .search-modal {
-    &__cancel {
-      background: #ddd;
-      color: #000 !important;
-    }
-    &__header {
-      // background: $bgDark;
-    }
-    &__body {
-      background: $bgDark;
-    }
-    &__footer {
-      background: $bgDark;
-    }
-    &__inputs {
-      background: $bgDark;
-    }
-  }
-}
 </style>
 <style lang="scss">
+// NOTE: this makes dialog be on side of sidebar
+// and right under header
 .v-dialog {
   position: absolute;
   top: 80px;

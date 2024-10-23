@@ -173,10 +173,6 @@ export default {
     }
   }
 }
-body.dark {
-  .search-options {
-    background: #333;
-  }
 
 .tooltip {
   opacity: 0;
