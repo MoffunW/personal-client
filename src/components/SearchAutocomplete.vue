@@ -22,10 +22,8 @@
         class="search-options__item"
         :key="index"
       >
-        <button @click="selectOption(query)">
-          <div class="search-options__item-text">
-            {{ query }}
-          </div>
+        <button class="search-options__item-text" @click="selectOption(query)">
+          {{ query }}
         </button>
         <button @click="deleteOption(query)">
           <v-icon size="16" color="#000">mdi-close</v-icon>
@@ -156,6 +154,7 @@ export default {
     padding: 13px 10px;
     z-index: 9990999;
     gap: 5px;
+    overflow-x: hidden;
     &:hover {
       display: block;
     }
@@ -165,9 +164,19 @@ export default {
       align-items: center;
       font-weight: 300 !important;
       font-size: 14px !important;
-      width: 100%;
       &-text {
-        flex: 1;
+        text-align: start;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 90%;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        white-space: normal;
+        hyphens: auto;
+        word-break: break-all;
+
+        flex: 1 0 auto;
         cursor: pointer;
       }
     }
