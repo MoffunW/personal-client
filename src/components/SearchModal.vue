@@ -63,6 +63,7 @@ import { getQueryString } from "@/utils/network";
 import axios from "axios";
 
 const LAST_SEARCHES = "lastSearches";
+const MIN_LENGTH = "lastSearches";
 
 export default {
   components: {
@@ -76,6 +77,11 @@ export default {
       lastSearch: "",
       searchTimer: null
     };
+  },
+  computed: {
+    sameSearch() {
+      return this.searchText === this.lastSearch;
+    }
   },
   methods: {
     setLastSearches(search) {
@@ -99,8 +105,10 @@ export default {
 
       return axios.get(`Search/TreeSearch?${q}`);
     },
+
     handleSearch(selectedOption = null) {
-      if (!selectedOption && this.searchText.length < 3) return;
+      if (this.sameSearch) return;
+      if (!selectedOption && this.searchText.length < MIN_LENGTH) return;
       if (selectedOption) this.searchText = selectedOption;
       this.setLastSearches(this.searchText);
 
@@ -110,17 +118,10 @@ export default {
       this.$store.commit("setSearchOpen", false);
     },
     handleTimeoutSearch() {
-      // Clear the previous timer
       clearTimeout(this.searchTimer);
+      if (this.sameSearch || this.searchText.length < MIN_LENGTH) return;
 
-      // If the search text is the same as the previous search, don't start the timer
-      if (this.searchText === this.lastSearch || this.searchText.length < 3)
-        return;
-
-      // Set a new timer, searching after 3 seconds if the user stops typing
-      this.searchTimer = setTimeout(() => {
-        this.handleSearch();
-      }, 3000);
+      this.searchTimer = setTimeout(() => this.handleSearch(), 3000);
     }
   }
 };
