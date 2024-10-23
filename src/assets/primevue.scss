@@ -33,6 +33,8 @@
   position: absolute;
   right: 0;
   height: 23px !important;
+  display: flex;
+  align-items: center;
 }
 .p-dropdown-label.p-inputtext {
   padding: 0px 2px 0 !important;
