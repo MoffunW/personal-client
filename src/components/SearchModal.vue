@@ -100,6 +100,7 @@ export default {
       return axios.get(`Search/TreeSearch?${q}`);
     },
     handleSearch(selectedOption = null) {
+      if (this.searchText.length < 3) return;
       if (selectedOption) this.searchText = selectedOption;
       this.setLastSearches(this.searchText);
 
