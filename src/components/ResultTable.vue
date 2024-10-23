@@ -119,7 +119,7 @@ export default {
 
         this.countNodes = data.countNodes;
         const pages = Math.ceil(data.countNodes / this.linesPerPage);
-        this.totalPages = pages;
+        this.totalPages = pages < 1 ? 1 : pages;
       } catch (error) {
         console.error(error);
       } finally {
