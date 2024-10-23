@@ -1,12 +1,17 @@
 <template>
-  <div class="search">
+  <div class="search" :class="{ invalid: value.length < 3 }">
     <input
+      ref="input"
       class="search__input"
       :value="value"
       @input="updateValue($event.target.value)"
       @keydown.enter="$emit('search')"
       :maxlength="30"
+      title="Must be at least 3 symbols"
     />
+    <div v-if="value.length < 3" class="tooltip">
+      {{ $t("search_atLeast3Symbols") }}
+    </div>
 
     <button class="search__close" @click="clearInput">
       <v-icon size="16" color="#000">mdi-close</v-icon>
@@ -100,9 +105,13 @@ export default {
   flex: 1 1 auto;
   border: 0.5px solid var(--mainColor);
   padding-right: 10px;
+
   &:has(:focus-within) {
     .search-options {
       display: block;
+    }
+    .invalid {
+      border-color: #ff0000;
     }
   }
 
@@ -114,6 +123,9 @@ export default {
     font-family: "Roboto", sans-serif;
     font-weight: 300 !important;
     line-height: 14px;
+    &:focus + .tooltip {
+      opacity: 1;
+    }
     &::placeholder {
       font-family: "Roboto", sans-serif;
       font-weight: 300 !important;
@@ -165,5 +177,23 @@ body.dark {
   .search-options {
     background: #333;
   }
+
+.tooltip {
+  opacity: 0;
+  position: absolute;
+  height: 25px;
+  top: -30px;
+  left: 0;
+  display: block;
+  padding: 5px 10px;
+  z-index: 9991000;
+  border-radius: 4px;
+  background: var(--bgColor);
+  color: var(--textColor);
+  border: 1px solid var(--mainColorHighOpacity);
+  font-size: 12px;
+  transition: 0.1s linear opacity;
+  user-select: none;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14);
 }
 </style>
