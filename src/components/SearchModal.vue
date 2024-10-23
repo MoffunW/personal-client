@@ -95,11 +95,14 @@ export default {
         lines: lines
       });
       this.setLastSearches(this.searchText);
+      this.handleTimeoutSearch();
 
       return axios.get(`Search/TreeSearch?${q}`);
     },
     handleSearch(selectedOption = null) {
       if (selectedOption) this.searchText = selectedOption;
+      this.setLastSearches(this.searchText);
+
       this.$refs.resultTable.refresh();
     },
     closeModal() {
