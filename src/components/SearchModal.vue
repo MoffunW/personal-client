@@ -80,6 +80,7 @@ export default {
   },
   computed: {
     sameSearch() {
+      if (!this.lastSearch) return false;
       return this.searchText === this.lastSearch;
     }
   },
