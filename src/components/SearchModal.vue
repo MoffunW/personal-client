@@ -3,6 +3,7 @@
     height="100vh"
     style="height: 100vh; padding-left: 400px"
     class="search-modal"
+    content-class="search-modal"
     v-model="$store.state.searchOpen"
   >
     <div class="wrapper">
@@ -208,7 +209,8 @@ export default {
 <style lang="scss">
 // NOTE: this makes dialog be on side of sidebar
 // and right under header
-.v-dialog {
+
+.search-modal.v-dialog {
   position: absolute;
   top: 80px;
   overflow-y: unset !important;
@@ -225,7 +227,7 @@ export default {
   }
 }
 @media all and (max-width: 1100px) {
-  .v-dialog {
+  .search-modal.v-dialog {
     width: calc(100% - 0px) !important;
     left: 0px;
     top: 0;
