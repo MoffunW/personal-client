@@ -83,7 +83,6 @@ export default {
   },
   methods: {
     async onRowClick(e) {
-      console.log(e, "e");
       const _ = e.data;
       const q = getQueryString({
         mRID: _.mRIDd,
@@ -157,5 +156,6 @@ export default {
 .centered {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 </style>
