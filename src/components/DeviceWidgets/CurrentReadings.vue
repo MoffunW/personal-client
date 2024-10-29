@@ -318,7 +318,6 @@ export default {
     if (!this.auth) return;
     this.loading = true;
     try {
-      console.log(this.device);
       const { data } = await axios.get(
         `Device/UnitsDevice?DeviceID=${this.device.id}&DeviceType=${this.device.deviceType}`
       );

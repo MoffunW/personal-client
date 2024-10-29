@@ -165,8 +165,6 @@ export default {
     },
 
     getPhiForRightStart(powerFactor, activePower, reactivePower) {
-      //console.log(powerFactor, activePower, reactivePower);
-
       if (activePower >= 0 && reactivePower >= 0)
         return this.radToDeg(Math.acos(powerFactor));
       if (activePower < 0 && reactivePower >= 0)
