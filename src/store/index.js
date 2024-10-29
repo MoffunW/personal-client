@@ -21,7 +21,8 @@ export default new Vuex.Store({
     showWelcome: false,
     showWelcomeCBX: false,
     searchOpen: false,
-    newPathSearch: null
+    newPathSearch: null,
+    filterValue: null
   },
   mutations: {
     setRememberMe(state, arg) {
@@ -96,6 +97,9 @@ export default new Vuex.Store({
     },
     setNewPathSearch(state, path) {
       state.newPathSearch = path;
+    },
+    setFilterValue(state, filter) {
+      state.filterValue = filter;
     }
   }
 });

@@ -51,7 +51,8 @@ export default {
       showTree: false,
       childsCache: null,
       scalableStart: 0,
-      numClick: 0
+      numClick: 0,
+      filterValue: null
     };
   },
   computed: {
@@ -60,6 +61,29 @@ export default {
     }
   },
   watch: {
+    "$store.state.filterValue": {
+      handler(newVal) {
+        const rootNode = this.$options.items.slice(0, 1)[0];
+
+        //this.collapseNode(rootNode.id);
+
+        if (!newVal) {
+          this.filterValue = null;
+
+          this.$options.items = [rootNode];
+          this.$options.childsCache = { [rootNode.id]: [] };
+
+          let el = document.createElement("span");
+          el.dataset.index = rootNode.id;
+          this.getChilds(el);
+          el.remove();
+
+          return;
+        }
+        this.filterValue = newVal;
+        this.handleFilter();
+      }
+    },
     "$store.state.newPathSearch": {
       handler(newVal) {
         if (!newVal) return;
@@ -91,10 +115,66 @@ export default {
       localStorage.setItem("path", JSON.stringify(arr.reverse()));
     },
 
+    handleFilter() {
+      const rootNode = this.$options.items.slice(0, 1)[0];
+      this.collapseNode(rootNode.id);
+      this.$options.items[0].expanded = false;
+      this.$options.items[0].lastChild = true;
+
+      let el = document.createElement("span");
+      el.dataset.index = rootNode.id;
+
+      this.getChildsFiltered(el);
+    },
+    async getChildsFiltered(el, collapseOpened = true) {
+      if (el.classList.contains("treeLoading")) return;
+
+      try {
+        const index = this.$options.items.findIndex(
+          x => x.id === el.dataset.index
+        );
+        let obj = this.$options.items[index];
+        let lastParents = obj?.lastParents ? [...obj.lastParents] : [];
+        if (obj.level) lastParents.push(!!obj.lastChild);
+        if (!obj.expanded) {
+          setTimeout(() => el.classList.add("treeLoading"), 50);
+          obj.expanded = true;
+          //if (!this.$options.childsCache[obj.id]) {
+          const { data } = await axios.get(
+            `Device/DeviceListFilter?node=${obj.id}&filter_text=${this.filterValue}`
+          );
+          const key = data.parent ? data.parent : el.dataset.index;
+          data.values.map(x => {
+            x.level = obj.level ? obj.level + 1 : 1;
+            x.lastParents = lastParents;
+          });
+          this.$options.childsCache[key] = data.values;
+          //}
+          this.expandNode(obj.id);
+        } else {
+          if (collapseOpened) {
+            obj.expanded = false;
+            this.collapseNode(obj.id);
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      //await this.getChilds(el, false);
+      el.remove();
+    },
+
     async openByFullPath(path) {
       const pathWithoutSelected = path.slice(0, path.length - 1);
-      localStorage.setItem("path", JSON.stringify(pathWithoutSelected));
+
+      const selectedId = localStorage.getItem("selected");
+      const index = this.$options.items.findIndex(
+        item => item.id === selectedId
+      );
+      this.$options.items[index].selected = false;
+
       localStorage.setItem("selected", path[path.length - 1]);
+
       this.restoreTree(pathWithoutSelected);
     },
 
@@ -154,30 +234,29 @@ export default {
       );
     },
 
-    expandNode(arg) {
-      const index = this.$options.items.findIndex(x => x.id === arg);
-      this.$options.childsCache[arg][
-        this.$options.childsCache[arg].length - 1
+    expandNode(id) {
+      const index = this.$options.items.findIndex(x => x.id === id);
+      this.$options.childsCache[id][
+        this.$options.childsCache[id].length - 1
       ].lastChild = true;
       this.$options.items.splice(
         index + 1,
         0,
-        ...this.$options.childsCache[arg]
+        ...this.$options.childsCache[id]
       );
       this.refreshTree();
     },
 
-    collapseNode(arg) {
-      const index = this.$options.items.findIndex(x => x.id === arg);
+    collapseNode(id) {
+      const index = this.$options.items.findIndex(x => x.id === id);
       const level = this.$options.items[index].level
         ? +this.$options.items[index].level
         : 0;
       let i = index + 1;
       let counter = 0;
       while (
-        this.$options.items[i] &&
-        (this.$options.items[i].level ? +this.$options.items[i].level : 0) >
-          level
+        (this.$options.items[i]?.level ? +this.$options.items[i].level : 0) >
+        level
       ) {
         this.$options.items[i].expanded = false;
         i++;
@@ -187,22 +266,27 @@ export default {
       this.refreshTree();
     },
 
-    async getChilds(arg, collapseOpened = true) {
-      if (arg.classList.contains("treeLoading")) return;
+    async getChilds(el, collapseOpened = true) {
+      if (this.filterValue) {
+        this.getChildsFiltered(el, collapseOpened);
+        return;
+      }
+      if (el.classList.contains("treeLoading")) return;
       try {
         const index = this.$options.items.findIndex(
-          x => x.id === arg.dataset.index
+          x => x.id === el.dataset.index
         );
         let obj = this.$options.items[index];
         let lastParents = obj.lastParents ? [...obj.lastParents] : [];
         if (obj.level) lastParents.push(!!obj.lastChild);
         if (!obj.expanded) {
-          setTimeout(() => arg.classList.add("treeLoading"), 500);
+          setTimeout(() => el.classList.add("treeLoading"), 500);
           obj.expanded = true;
-          if (!this.$options.childsCache[obj.id]) {
+          if (!this.$options.childsCache[obj.id]?.length) {
             const { data } = await axios.get(
               `Device/DeviceList?node=${obj.id}`
             );
+
             const key = data.parent;
             data.values.map(x => {
               x.level = obj.level ? obj.level + 1 : 1;
@@ -210,7 +294,9 @@ export default {
             });
             this.$options.childsCache[key] = data.values;
           }
-          this.expandNode(obj.id);
+
+          if (this.$options.childsCache[obj.id]?.length)
+            this.expandNode(obj.id);
         } else {
           if (collapseOpened) {
             obj.expanded = false;
