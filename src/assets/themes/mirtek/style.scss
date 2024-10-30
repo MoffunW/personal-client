@@ -831,6 +831,9 @@ $textTransform: "none";
     visibility: visible;
   }
 }
+.treeItem.emptyMessage:hover {
+  background: none;
+}
 
 .treeItem.treeSelected {
   background-color: $treeSelectedBackground;

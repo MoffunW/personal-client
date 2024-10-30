@@ -259,6 +259,7 @@ export default {
       if (!arg.hasChilds) el.classList.add("withoutChild");
 
       if (arg.id === "empty_unique_id") {
+        el.classList.add("emptyMessage");
         el.innerHTML += `<div class="treeText">${arg.text}</div>`;
         return el;
       }
