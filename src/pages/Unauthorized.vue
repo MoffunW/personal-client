@@ -11,6 +11,8 @@
           hide-details="auto"
           prepend-icon="mdi mdi-account"
           autocomplete="off"
+          style="text-transform: unset !important"
+          @keyup.enter="handleLogin"
         />
         <v-text-field
           v-model="password"
@@ -23,6 +25,7 @@
           :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
           autocomplete="off"
           @click:append="showPass = !showPass"
+          @keyup.enter="handleLogin"
         />
         <div class="cbxWrap" :class="$style.cbxWrap">
           <!--v-checkbox
