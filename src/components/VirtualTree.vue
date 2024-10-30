@@ -236,14 +236,25 @@ export default {
 
     expandNode(id) {
       const index = this.$options.items.findIndex(x => x.id === id);
-      this.$options.childsCache[id][
-        this.$options.childsCache[id].length - 1
-      ].lastChild = true;
-      this.$options.items.splice(
-        index + 1,
-        0,
-        ...this.$options.childsCache[id]
-      );
+
+      if (index === -1) return;
+
+      const cachedItem = this.$options.childsCache[id];
+      if (this.filterValue?.length && !cachedItem.length) {
+        this.$options.items.splice(index + 1, 0, {
+          id: "empty_unique_id",
+          text: this.$t("filter_empty"),
+          level: 1,
+          hasChilds: false,
+          lastChild: true,
+          lastParents: [id]
+        });
+        this.refreshTree();
+        return;
+      }
+
+      cachedItem[cachedItem.length - 1].lastChild = true;
+      this.$options.items.splice(index + 1, 0, ...cachedItem);
       this.refreshTree();
     },
 
@@ -252,6 +263,7 @@ export default {
       const level = this.$options.items[index].level
         ? +this.$options.items[index].level
         : 0;
+
       let i = index + 1;
       let counter = 0;
       while (
