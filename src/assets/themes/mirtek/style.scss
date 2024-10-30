@@ -1242,6 +1242,9 @@ body.contrast * {
   text-transform: uppercase !important;
   color: #000 !important;
 }
+body.contrast input {
+  text-transform: none !important;
+}
 
 body.contrast .treeItem:hover,
 body.contrast .treeItem:hover * {
