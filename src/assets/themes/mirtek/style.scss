@@ -439,6 +439,9 @@ body *::-webkit-scrollbar-thumb {
     background-position: 0 0;
   }
 }
+html {
+  overflow: hidden;
+}
 
 /* Main */
 html,

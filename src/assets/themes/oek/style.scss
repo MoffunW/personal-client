@@ -467,6 +467,10 @@ body *::-webkit-scrollbar-thumb {
   }
 }
 
+html {
+  overflow: hidden;
+}
+
 /* Main */
 html,
 body {

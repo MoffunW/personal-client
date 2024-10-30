@@ -537,7 +537,7 @@ export default {
 
 <style module>
 .root {
-  height: 100%;
+  height: calc(100% - 44px);
   position: relative;
 }
 

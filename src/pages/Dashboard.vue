@@ -575,6 +575,14 @@ export default {
 };
 </script>
 
+<style>
+@media all and (max-width: 1100px) {
+  .gridWrap {
+    padding-top: 60px;
+  }
+}
+</style>
+
 <style module>
 .root {
   display: flex;
