@@ -11,7 +11,6 @@
           hide-details="auto"
           prepend-icon="mdi mdi-account"
           autocomplete="off"
-          style="text-transform: unset !important"
           @keyup.enter="handleLogin"
         />
         <v-text-field
