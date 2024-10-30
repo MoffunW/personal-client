@@ -100,16 +100,16 @@ export default {
     }
   },
   methods: {
-    setPath(arg) {
-      localStorage.setItem("selected", arg);
+    setPath(nodeId) {
+      localStorage.setItem("selected", nodeId);
       const arr = [];
       const cache = this.$options.childsCache;
       let _ = "🔔";
       while (_) {
-        _ = Object.keys(cache).find(x =>
-          cache[x].find(y => y.id == (arg ? arg : _)) ? x : null
+        _ = Object.keys(cache).find(id =>
+          cache[id].find(child => child.id == (nodeId ? nodeId : _)) ? id : null
         );
-        arg = null;
+        nodeId = null;
         if (_) arr.push(_);
       }
       localStorage.setItem("path", JSON.stringify(arr.reverse()));
@@ -160,22 +160,30 @@ export default {
       } catch (e) {
         console.error(e);
       }
-      //await this.getChilds(el, false);
       el.remove();
     },
 
     async openByFullPath(path) {
       const pathWithoutSelected = path.slice(0, path.length - 1);
+      const lastItemId = path[path.length - 1];
 
-      const selectedId = localStorage.getItem("selected");
-      const index = this.$options.items.findIndex(
-        item => item.id === selectedId
+      const el = document.createElement("span");
+      el.dataset.index = lastItemId;
+
+      await this.restoreTree(pathWithoutSelected);
+
+      this.setPath(lastItemId);
+      this.$emit(
+        "change",
+        this.$options.items.find(x => x.id === lastItemId)
       );
-      this.$options.items[index].selected = false;
+      const selected = this.viewport.querySelector(".treeItem.treeSelected");
+      if (selected) selected.classList.remove("treeSelected");
 
-      localStorage.setItem("selected", path[path.length - 1]);
-
-      this.restoreTree(pathWithoutSelected);
+      const newSelectedEl = this.viewport.querySelector(
+        `[data-index="${lastItemId}"]`
+      );
+      newSelectedEl.classList.add("treeSelected");
     },
 
     async restoreTree(arg) {
@@ -289,7 +297,7 @@ export default {
           x => x.id === el.dataset.index
         );
         let obj = this.$options.items[index];
-        let lastParents = obj.lastParents ? [...obj.lastParents] : [];
+        let lastParents = obj?.lastParents ? [...obj?.lastParents] : [];
         if (obj.level) lastParents.push(!!obj.lastChild);
         if (!obj.expanded) {
           setTimeout(() => el.classList.add("treeLoading"), 500);
@@ -323,6 +331,7 @@ export default {
     handlerDoubleClick(e) {
       const el = e.target.closest(".treeItem");
       if (!el) return;
+      if (el.classList.contains("emptyMessage")) return;
       this.getChilds(el);
     },
     handleClick(e, notSelectItem = false) {
@@ -335,6 +344,7 @@ export default {
         (this.$options.items.length - this.capacity);
       const el = e.target.closest(".treeItem");
       if (!el) return;
+      if (el.classList.contains("emptyMessage")) return;
 
       const expand = e.target?.closest(".treeExpand");
       if (expand) {
