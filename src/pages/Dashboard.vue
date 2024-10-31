@@ -694,9 +694,12 @@ export default {
   justify-content: center;
 }
 
+.tree {
+  position: relative;
+}
 @media all and (max-width: 1100px) {
   .tree {
-    position: absolute;
+    position: absolute !important;
     /*top: 120px;*/
     top: 60px;
     bottom: 0;
