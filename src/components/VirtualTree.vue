@@ -115,8 +115,9 @@ export default {
       localStorage.setItem("path", JSON.stringify(arr.reverse()));
     },
 
-    handleFilter() {
-      const rootNode = this.$options.items.slice(0, 1)[0];
+    async handleFilter() {
+      //const rootNode = this.$options.items.slice(0, 1)[0];
+      const rootNode = this.$options.items[0];
       this.collapseNode(rootNode.id);
       this.$options.items[0].expanded = false;
       this.$options.items[0].lastChild = true;
@@ -124,16 +125,14 @@ export default {
       let el = document.createElement("span");
       el.dataset.index = rootNode.id;
 
-      this.getChildsFiltered(el);
+      await this.getChildsFiltered(el);
     },
     async getChildsFiltered(el, collapseOpened = true) {
       if (el.classList.contains("treeLoading")) return;
 
       try {
-        const index = this.$options.items.findIndex(
-          x => x.id === el.dataset.index
-        );
-        let obj = this.$options.items[index];
+        const obj = this.$options.items.find(x => x.id === el.dataset.index);
+        //let obj = this.$options.items[index];
         let lastParents = obj?.lastParents ? [...obj.lastParents] : [];
         if (obj.level) lastParents.push(!!obj.lastChild);
         if (!obj.expanded) {
@@ -157,15 +156,29 @@ export default {
             this.collapseNode(obj.id);
           }
         }
+
+        const selectedId = localStorage.getItem("selected");
+        const selectedElement = this.getElementById(selectedId);
+        if (selectedElement) selectedElement.classList.add("treeSelected");
       } catch (e) {
         console.error(e);
       }
       el.remove();
     },
 
+    getElementById(id) {
+      const node = this.viewport.querySelector(`[data-index="${id}"]`);
+      return node ?? null;
+    },
+
     async openByFullPath(path) {
       const pathWithoutSelected = path.slice(0, path.length - 1);
       const lastItemId = path[path.length - 1];
+
+      if (this.filterValue.length) {
+        this.restoreItem(lastItemId, selected);
+        return;
+      }
 
       const el = document.createElement("span");
       el.dataset.index = lastItemId;
@@ -202,11 +215,12 @@ export default {
           console.error(e);
         }
       }
-      const selected = localStorage.getItem("selected");
 
+      const selected = localStorage.getItem("selected");
       if (!selected) return;
-      const item = this.$options.items.findIndex(x => x.id == selected);
+      const item = this.$options.items.find(x => x.id == selected);
       if (!item) return;
+
       this.restoreItem(item, selected);
       if (this.$store.state.selectedTreeNode)
         this.$emit("restored", this.$store.state.selectedTreeNode);
