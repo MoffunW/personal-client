@@ -93,7 +93,13 @@ export default {
     "$store.state.newPathSearch": {
       handler(newVal) {
         if (!newVal) return;
-        this.openByFullPath(newVal.map(node => node.mRID));
+        const path = newVal.map(node => node.mRID);
+        const pathWithoutSelected = path.slice(0, path.length - 1);
+        if (
+          JSON.stringify(pathWithoutSelected) === localStorage.getItem("path")
+        )
+          return;
+        this.openByFullPath();
 
         this.$store.commit("setNewPathSearch", null);
       }
@@ -182,13 +188,13 @@ export default {
         allSelected.forEach(el => el.classList.remove("treeSelected"));
 
       const selectedId = localStorage.getItem("selected");
-      const selectedElement = this.getElementById(selectedId);
+      //const selectedElement = this.getElementById(selectedId);
       const index = this.$options.items.findIndex(
         item => item.id === selectedId
       );
 
       if (index !== -1) this.$options.items[index].selected = true;
-      if (selectedElement) selectedElement.classList.add("treeSelected");
+      //if (selectedElement) selectedElement.classList.add("treeSelected");
       //}, 0);
     },
 
@@ -296,6 +302,7 @@ export default {
       arg.classList.add("treeSelected");
       if (!arg && !arg.dataset.index) return;
       if (!this.filterValue?.length) this.setPath(arg.dataset.index);
+      arg.classList.add("treeSelected");
       this.$emit(
         "change",
         this.$options.items.find(x => x.id === arg.dataset.index)

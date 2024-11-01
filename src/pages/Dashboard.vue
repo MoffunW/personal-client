@@ -535,11 +535,7 @@ export default {
     async handleChange(arg) {
       this.showTree = false;
       this.layout = [];
-      if (
-        this.$store.state.selectedTreeNode &&
-        this.$store.state.selectedTreeNode.id === arg.id
-      )
-        return;
+      if (this.$store.state.selectedTreeNode?.id === arg.id) return;
       this.$store.commit("setSelectedTreeNode", arg);
       this.getTypes();
       this.getGrid();
