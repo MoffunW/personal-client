@@ -240,7 +240,7 @@ export default {
 
         const selectedItem = this.getItemById(lastItemId);
         if (selectedItem) this.$emit("change", selectedItem);
-        else this.$message.error("search_nodeNotFoundCauseFilter");
+        else this.$message.error("search_nodeNotFoundCauseFilterError");
       }, 250);
       //this.setRowSelected(newSelectedEl);
     },
