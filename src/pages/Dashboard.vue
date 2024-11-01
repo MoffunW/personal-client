@@ -41,6 +41,7 @@
         width="250"
         :renderItem="renderItem"
         @change="handleChange"
+        @clear="handleClear"
         @restored="getTypes"
       />
     </div>
@@ -530,6 +531,11 @@ export default {
       } catch (e) {
         if (e.response) this.$message.error(this.$t(e.response.data));
       }
+    },
+
+    handleClear() {
+      this.layout = [];
+      this.$store.commit("setSelectedTreeNode", null);
     },
 
     async handleChange(arg) {

@@ -63,7 +63,7 @@ export default {
   watch: {
     "$store.state.filterValue": {
       async handler(newVal) {
-        const rootNode = this.$options.items.slice(0, 1)[0];
+        const rootNode = this.$options.items[0];
 
         //this.collapseNode(rootNode.id);
 
@@ -77,9 +77,11 @@ export default {
           el.dataset.index = rootNode.id;
           this.getChilds(el);
           el.remove();
+
           const localPath = localStorage.getItem("path");
-          const selected = localStorage.getItem("selected");
           let path = localPath ? JSON.parse(localPath) : [];
+          const selected = localStorage.getItem("selected");
+
           path = [...path, selected];
           this.openByFullPath(path);
 
@@ -87,19 +89,45 @@ export default {
         }
         localStorage.setItem("filter_value", newVal);
         this.filterValue = newVal;
+
         await this.handleFilter();
+        setTimeout(() => {
+          if (
+            this.viewport.querySelectorAll(".treeItem.treeSelected").length ===
+            0
+          ) {
+            this.$emit("clear");
+          } else {
+            const selectedId = localStorage.getItem("selected");
+            if (!selectedId) return;
+
+            const selectedItem = this.getItemById(selectedId);
+            if (!selectedItem) return;
+            if (this.$store.state.selectedTreeNode.id !== selectedId) {
+              this.$emit("change", selectedItem);
+            }
+          }
+        }, 50);
       }
     },
     "$store.state.newPathSearch": {
       handler(newVal) {
         if (!newVal) return;
+
         const path = newVal.map(node => node.mRID);
         const pathWithoutSelected = path.slice(0, path.length - 1);
-        if (
-          JSON.stringify(pathWithoutSelected) === localStorage.getItem("path")
-        )
+
+        localStorage.setItem("path", JSON.stringify(pathWithoutSelected));
+
+        const localPath = JSON.parse(localStorage.getItem("path"));
+        const localSelected = localStorage.getItem("selected");
+        const temp = [...localPath, localSelected];
+        if (JSON.stringify(path) === JSON.stringify(temp)) {
           return;
-        this.openByFullPath();
+        }
+        this.openByFullPath(path);
+
+        //this.refreshSelected();
 
         this.$store.commit("setNewPathSearch", null);
       }
@@ -165,13 +193,13 @@ export default {
           this.$options.childsCache[key] = data.values;
           //}
           this.expandNode(obj.id);
+          this.refreshSelected();
         } else {
           if (collapseOpened) {
             obj.expanded = false;
             this.collapseNode(obj.id);
           }
         }
-        this.refreshSelected();
       } catch (e) {
         console.error(e);
       }
@@ -188,13 +216,14 @@ export default {
         allSelected.forEach(el => el.classList.remove("treeSelected"));
 
       const selectedId = localStorage.getItem("selected");
-      //const selectedElement = this.getElementById(selectedId);
       const index = this.$options.items.findIndex(
         item => item.id === selectedId
       );
 
       if (index !== -1) this.$options.items[index].selected = true;
-      //if (selectedElement) selectedElement.classList.add("treeSelected");
+
+      const selectedElement = this.getElementById(selectedId);
+      if (selectedElement) selectedElement.classList.add("treeSelected");
       //}, 0);
     },
 
@@ -203,7 +232,7 @@ export default {
       return node ?? null;
     },
     getItemById(id) {
-      return this.$options.items.find(x => x.id === id) ?? null;
+      return this.$options.items.find(item => item.id === id) ?? null;
     },
     clearSelected() {
       const selected = this.viewport.querySelector(".treeItem.treeSelected");
@@ -243,10 +272,16 @@ export default {
 
         const newSelectedEl = this.getElementById(lastItemId);
         if (newSelectedEl) newSelectedEl.classList.add("treeSelected");
+        localStorage.setItem("selected", lastItemId);
 
         const selectedItem = this.getItemById(lastItemId);
-        if (selectedItem) this.$emit("change", selectedItem);
-        else this.$message.error("search_nodeNotFoundCauseFilterError");
+        if (
+          selectedItem &&
+          this.$store.state.selectedTreeNode.id !== lastItemId
+        )
+          this.$emit("change", selectedItem);
+        else if (!selectedItem)
+          this.$message.error("search_nodeNotFoundCauseFilterError");
       }, 250);
       //this.setRowSelected(newSelectedEl);
     },
@@ -385,7 +420,7 @@ export default {
 
           if (this.$options.childsCache[obj.id]?.length)
             this.expandNode(obj.id);
-          this.refreshSelected();
+          //this.refreshSelected();
         } else {
           if (collapseOpened) {
             obj.expanded = false;
