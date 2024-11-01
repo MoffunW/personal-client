@@ -330,6 +330,9 @@ export default {
 
     handlerDoubleClick(e) {
       const el = e.target.closest(".treeItem");
+      const node = this.$options.items.find(x => x.id === el.dataset.index);
+
+      if (!node || !node.hasChilds || !node.isFolder) return;
       if (!el) return;
       if (el.classList.contains("emptyMessage")) return;
       this.getChilds(el);
