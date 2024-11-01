@@ -62,7 +62,7 @@ export default {
   },
   watch: {
     "$store.state.filterValue": {
-      handler(newVal) {
+      async handler(newVal) {
         const rootNode = this.$options.items.slice(0, 1)[0];
 
         //this.collapseNode(rootNode.id);
@@ -77,11 +77,17 @@ export default {
           el.dataset.index = rootNode.id;
           this.getChilds(el);
           el.remove();
+          const localPath = localStorage.getItem("path");
+          const selected = localStorage.getItem("selected");
+          let path = localPath ? JSON.parse(localPath) : [];
+          path = [...path, selected];
+          this.openByFullPath(path);
 
           return;
         }
+        localStorage.setItem("filter_value", newVal);
         this.filterValue = newVal;
-        this.handleFilter();
+        await this.handleFilter();
       }
     },
     "$store.state.newPathSearch": {
@@ -116,7 +122,6 @@ export default {
     },
 
     async handleFilter() {
-      //const rootNode = this.$options.items.slice(0, 1)[0];
       const rootNode = this.$options.items[0];
       this.collapseNode(rootNode.id);
       this.$options.items[0].expanded = false;
@@ -127,12 +132,16 @@ export default {
 
       await this.getChildsFiltered(el);
     },
+
     async getChildsFiltered(el, collapseOpened = true) {
       if (el.classList.contains("treeLoading")) return;
 
       try {
-        const obj = this.$options.items.find(x => x.id === el.dataset.index);
-        //let obj = this.$options.items[index];
+        const index = this.$options.items.findIndex(
+          x => x.id === el.dataset.index
+        );
+        let obj = this.$options.items[index];
+        if (!obj) return;
         let lastParents = obj?.lastParents ? [...obj.lastParents] : [];
         if (obj.level) lastParents.push(!!obj.lastChild);
         if (!obj.expanded) {
@@ -156,53 +165,90 @@ export default {
             this.collapseNode(obj.id);
           }
         }
-
-        const selectedId = localStorage.getItem("selected");
-        const selectedElement = this.getElementById(selectedId);
-        if (selectedElement) selectedElement.classList.add("treeSelected");
+        this.refreshSelected();
       } catch (e) {
         console.error(e);
       }
       el.remove();
+    },
+    refreshSelected() {
+      //setTimeout(() => {
+      this.$options.items.forEach(item => (item.selected = false));
+
+      const allSelected = this.viewport.querySelectorAll(
+        ".treeItem.treeSelected"
+      );
+      if (allSelected)
+        allSelected.forEach(el => el.classList.remove("treeSelected"));
+
+      const selectedId = localStorage.getItem("selected");
+      const selectedElement = this.getElementById(selectedId);
+      const index = this.$options.items.findIndex(
+        item => item.id === selectedId
+      );
+
+      if (index !== -1) this.$options.items[index].selected = true;
+      if (selectedElement) selectedElement.classList.add("treeSelected");
+      //}, 0);
     },
 
     getElementById(id) {
       const node = this.viewport.querySelector(`[data-index="${id}"]`);
       return node ?? null;
     },
+    getItemById(id) {
+      return this.$options.items.find(x => x.id === id) ?? null;
+    },
+    clearSelected() {
+      const selected = this.viewport.querySelector(".treeItem.treeSelected");
+      if (selected) selected.classList.remove("treeSelected");
+
+      localStorage.setItem("selected", null);
+
+      const selectedItem = this.$options.items.find(item => item.selected);
+
+      if (selectedItem) selectedItem.selected = false;
+    },
 
     async openByFullPath(path) {
       const pathWithoutSelected = path.slice(0, path.length - 1);
       const lastItemId = path[path.length - 1];
 
-      if (this.filterValue.length) {
-        this.restoreItem(lastItemId, selected);
-        return;
-      }
-
       const el = document.createElement("span");
       el.dataset.index = lastItemId;
 
-      await this.restoreTree(pathWithoutSelected);
+      if (this.filterValue?.length) {
+        await this.restoreTree(null, false);
+      } else {
+        await this.restoreTree(pathWithoutSelected);
+        localStorage.setItem("path", JSON.stringify(pathWithoutSelected));
+      }
 
-      this.setPath(lastItemId);
-      this.$emit(
-        "change",
-        this.$options.items.find(x => x.id === lastItemId)
-      );
-      const selected = this.viewport.querySelector(".treeItem.treeSelected");
-      if (selected) selected.classList.remove("treeSelected");
+      setTimeout(() => {
+        this.$options.items.forEach(item => (item.selected = false));
+        const index = this.$options.items.findIndex(
+          item => item.id === lastItemId
+        );
+        if (index !== -1) this.$options.items[index].selected = true;
+        this.restoreItem(newSelectedEl, lastItemId);
 
-      const newSelectedEl = this.viewport.querySelector(
-        `[data-index="${lastItemId}"]`
-      );
-      newSelectedEl.classList.add("treeSelected");
+        localStorage.setItem("selected", lastItemId);
+        this.refreshSelected();
+
+        const newSelectedEl = this.getElementById(lastItemId);
+        if (newSelectedEl) newSelectedEl.classList.add("treeSelected");
+
+        const selectedItem = this.getItemById(lastItemId);
+        if (selectedItem) this.$emit("change", selectedItem);
+        else this.$message.error("search_nodeNotFoundCauseFilter");
+      }, 250);
+      //this.setRowSelected(newSelectedEl);
     },
 
-    async restoreTree(arg) {
+    async restoreTree(arg, selectTree = true) {
       if (!arg) {
         const firstNode = this.viewport.querySelector(".treeItem");
-        if (firstNode) this.handleClick({ target: firstNode }, true);
+        if (firstNode) this.handleClick({ target: firstNode }, selectTree);
         return;
       }
       for (let x of arg) {
@@ -249,7 +295,7 @@ export default {
       if (el) el.classList.remove("treeSelected");
       arg.classList.add("treeSelected");
       if (!arg && !arg.dataset.index) return;
-      this.setPath(arg.dataset.index);
+      if (!this.filterValue?.length) this.setPath(arg.dataset.index);
       this.$emit(
         "change",
         this.$options.items.find(x => x.id === arg.dataset.index)
@@ -311,6 +357,7 @@ export default {
           x => x.id === el.dataset.index
         );
         let obj = this.$options.items[index];
+        if (!obj) return;
         let lastParents = obj?.lastParents ? [...obj?.lastParents] : [];
         if (obj.level) lastParents.push(!!obj.lastChild);
         if (!obj.expanded) {
@@ -331,6 +378,7 @@ export default {
 
           if (this.$options.childsCache[obj.id]?.length)
             this.expandNode(obj.id);
+          this.refreshSelected();
         } else {
           if (collapseOpened) {
             obj.expanded = false;
@@ -351,7 +399,7 @@ export default {
       if (el.classList.contains("emptyMessage")) return;
       this.getChilds(el);
     },
-    handleClick(e, notSelectItem = false) {
+    handleClick(e, selectItem = true) {
       if (!e.target) return;
       this.numClick = e.detail;
       if (this.numClick > 1) return;
@@ -371,16 +419,17 @@ export default {
 
       setTimeout(() => {
         if (this.numClick > 1) return;
-        if (!notSelectItem) this.setRowSelected(el);
-
-        const index = this.$options.items.findIndex(
-          x => x.id === el.dataset.index
-        );
-        let obj = this.$options.items[index];
-        if (obj.selected) return;
-        this.$options.items.forEach(x => (x.selected = false));
-        obj.selected = true;
-        this.refreshTree();
+        if (selectItem) {
+          this.setRowSelected(el);
+          const index = this.$options.items.findIndex(
+            x => x.id === el.dataset.index
+          );
+          let obj = this.$options.items[index];
+          if (obj.selected) return;
+          this.$options.items.forEach(x => (x.selected = false));
+          obj.selected = true;
+          this.refreshTree();
+        }
       }, 200);
     },
 
