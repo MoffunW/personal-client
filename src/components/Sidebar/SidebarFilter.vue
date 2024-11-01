@@ -13,6 +13,10 @@
       title="Must be at least 3 symbols"
       @keydown.enter="handleFilter"
     />
+    <button v-ripple class="filter__close" @click="clearInput">
+      <v-icon size="16" color="#000">mdi-close</v-icon>
+    </button>
+
     <button
       :disabled="
         filterText.length < minLength &&
@@ -72,6 +76,11 @@ export default {
 
       this.setLastFilter();
       this.$store.commit("setFilterValue", this.filterText);
+    },
+    clearInput() {
+      this.filterText = "";
+      this.setLastFilter("");
+      this.$store.commit("setFilterValue", "");
     }
   }
 };
@@ -91,8 +100,13 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 7px;
-    width: 7px;
+    opacity: 0.7;
+    margin-right: 3px;
+    transition: 0.1s linear;
+    border-radius: 100%;
+    &:hover {
+      opacity: 1;
+    }
   }
 
   &__icon {
