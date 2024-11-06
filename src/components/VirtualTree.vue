@@ -277,7 +277,7 @@ export default {
         const selectedItem = this.getItemById(lastItemId);
         if (
           selectedItem &&
-          this.$store.state.selectedTreeNode.id !== lastItemId
+          this.$store.state.selectedTreeNode?.id !== lastItemId
         )
           this.$emit("change", selectedItem);
         else if (!selectedItem)
