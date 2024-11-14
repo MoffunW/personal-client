@@ -10,7 +10,6 @@
       class="filter__input"
       :placeholder="$t('search_filterByName')"
       :maxlength="30"
-      title="Must be at least 3 symbols"
       @keydown.enter="handleFilter"
     />
     <button v-ripple class="filter__close" @click="clearInput">

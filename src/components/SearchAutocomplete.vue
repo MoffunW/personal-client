@@ -7,7 +7,6 @@
       @input="updateValue($event.target.value)"
       @keydown.enter="$emit('search')"
       :maxlength="30"
-      title="Must be at least 3 symbols"
     />
     <div v-if="value.length < 3" class="tooltip">
       {{ $t("search_atLeast3Symbols") }}
