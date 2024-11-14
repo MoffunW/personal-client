@@ -43,9 +43,15 @@
           -
         </template>
         <template v-else>
-          <div class="centered" v-if="item === 'search_node'">
+          <div
+            :title="data.name"
+            class="centered"
+            v-if="item === 'search_node'"
+          >
             <img :src="getImage(data.image)" alt="" />
-            {{ data.name }}
+            <div class="overflow">
+              {{ data.name }}
+            </div>
           </div>
           <span v-else>{{ data[item.replace("search_", "")] }}</span>
         </template>
@@ -152,10 +158,19 @@ export default {
     justify-content: center;
     width: 100%;
   }
+  & td {
+    overflow: hidden;
+  }
 }
 .centered {
   display: flex;
   align-items: center;
   gap: 10px;
+  overflow: hidden;
+}
+.overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
