@@ -106,6 +106,9 @@ export default {
             if (this.$store.state.selectedTreeNode.id !== selectedId) {
               this.$emit("change", selectedItem);
             }
+            this.setScroll(
+              document.querySelector(`[data-index="${selectedId}"]`)
+            );
           }
         }, 50);
       }
@@ -265,12 +268,12 @@ export default {
           item => item.id === lastItemId
         );
         if (index !== -1) this.$options.items[index].selected = true;
+        const newSelectedEl = this.getElementById(lastItemId);
         this.restoreItem(newSelectedEl, lastItemId);
 
         localStorage.setItem("selected", lastItemId);
         this.refreshSelected();
 
-        const newSelectedEl = this.getElementById(lastItemId);
         if (newSelectedEl) newSelectedEl.classList.add("treeSelected");
         localStorage.setItem("selected", lastItemId);
 
@@ -283,7 +286,6 @@ export default {
         else if (!selectedItem)
           this.$message.error("search_nodeNotFoundCauseFilterError");
       }, 250);
-      //this.setRowSelected(newSelectedEl);
     },
 
     async restoreTree(arg, selectTree = true) {
@@ -308,26 +310,33 @@ export default {
       const item = this.$options.items.find(x => x.id == selected);
       if (!item) return;
 
-      this.restoreItem(item, selected);
+      const element = this.getElementById(selected);
+      this.restoreItem(element, selected);
       if (this.$store.state.selectedTreeNode)
         this.$emit("restored", this.$store.state.selectedTreeNode);
     },
 
-    restoreItem(arg, id) {
+    setScroll(element) {
+      if (!element) return;
       let scrollTop = 0;
       switch (this.mode) {
         case "scalable":
           scrollTop =
-            arg * (this.itemHeight / (this.contentHeight / this.maxHeight));
+            element * (this.itemHeight / (this.contentHeight / this.maxHeight));
           break;
         default:
-          scrollTop = arg * this.itemHeight;
+          scrollTop = element.offsetTop;
       }
       this.el.scrollTop = scrollTop;
+    },
+
+    restoreItem(element, id) {
       const node = this.viewport.querySelector(`[data-index="${id}"]`);
       this.$store.state.selectedTreeNode && node
         ? node.classList.add("treeSelected")
         : this.handleClick({ target: node });
+
+      this.setScroll(element);
     },
 
     setRowSelected(arg) {
