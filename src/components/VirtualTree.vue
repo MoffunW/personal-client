@@ -103,7 +103,7 @@ export default {
 
             const selectedItem = this.getItemById(selectedId);
             if (!selectedItem) return;
-            if (this.$store.state.selectedTreeNode.id !== selectedId) {
+            if (this.$store.state.selectedTreeNode?.id !== selectedId) {
               this.$emit("change", selectedItem);
             }
             this.setScroll(
@@ -126,11 +126,12 @@ export default {
         const localSelected = localStorage.getItem("selected");
         const temp = [...localPath, localSelected];
         if (JSON.stringify(path) === JSON.stringify(temp)) {
+          const treeId = path[0];
+          const selectedItemId = path[path.length - 1];
+          this.openByFullPath([treeId, selectedItemId]);
           return;
         }
         this.openByFullPath(path);
-
-        //this.refreshSelected();
 
         this.$store.commit("setNewPathSearch", null);
       }
@@ -249,6 +250,7 @@ export default {
     },
 
     async openByFullPath(path) {
+      //const lastSavedSelected = localStorage.getItem("selected");
       const pathWithoutSelected = path.slice(0, path.length - 1);
       const lastItemId = path[path.length - 1];
 
@@ -256,7 +258,7 @@ export default {
       el.dataset.index = lastItemId;
 
       if (this.filterValue?.length) {
-        await this.restoreTree(null, false);
+        await this.restoreTree([path[0]], false);
       } else {
         await this.restoreTree(pathWithoutSelected);
         localStorage.setItem("path", JSON.stringify(pathWithoutSelected));
@@ -274,17 +276,27 @@ export default {
         localStorage.setItem("selected", lastItemId);
         this.refreshSelected();
 
-        if (newSelectedEl) newSelectedEl.classList.add("treeSelected");
-        localStorage.setItem("selected", lastItemId);
+        if (newSelectedEl) {
+          newSelectedEl.classList.add("treeSelected");
+          localStorage.setItem("selected", lastItemId);
+        }
 
         const selectedItem = this.getItemById(lastItemId);
+
         if (
           selectedItem &&
           this.$store.state.selectedTreeNode?.id !== lastItemId
-        )
+        ) {
           this.$emit("change", selectedItem);
-        else if (!selectedItem)
+        } else if (!selectedItem) {
+          this.$options.items = this.$options.items.map(item => {
+            item.selected = false;
+            return item;
+          });
+          this.refreshSelected();
           this.$message.error("search_nodeNotFoundCauseFilterError");
+          this.$emit("clear");
+        }
       }, 250);
     },
 
