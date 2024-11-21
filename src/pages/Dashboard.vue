@@ -45,7 +45,7 @@
         @restored="getTypes"
       />
     </div>
-    <div>
+    <div :class="$style.widgetsWrapper">
       <div ref="container">
         <v-overlay v-if="loading" :class="$style.overlay">
           <v-progress-circular indeterminate size="64" />
@@ -582,15 +582,7 @@ export default {
 };
 </script>
 
-<style>
-@media all and (max-width: 1100px) {
-  .gridWrap {
-    padding-top: 60px;
-  }
-}
-</style>
-
-<style module>
+<style module lang="scss">
 .root {
   display: flex;
   height: 100%;
@@ -725,6 +717,14 @@ export default {
     display: flex !important;
     top: 80px !important;
     z-index: 2;
+  }
+
+  .badge ~ .widgetsWrapper {
+    margin-top: 60px;
+    transition: all 0.3s ease-in-out 0s;
+  }
+  .hideBadge ~ .widgetsWrapper {
+    margin-top: 0;
   }
 
   .hideBadge {
