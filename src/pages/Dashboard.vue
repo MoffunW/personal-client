@@ -18,19 +18,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div
-      :class="
-        `${
-          hideBadge
-            ? `badge ${$style.badge} ${$style.hideBadge}`
-            : `badge ${$style.badge}`
-        }`
-      "
-      @click="showTree = !showTree"
-    >
-      <span v-text="$t('trans_showHideTree')"></span
-      ><v-icon> mdi-file-tree </v-icon>
-    </div>
+    
     <div
       class="treeWrap"
       :class="showTree ? [$style.tree, $style.treeActive] : $style.tree"
@@ -46,6 +34,19 @@
       />
     </div>
     <div :class="$style.widgetsWrapper">
+      <div
+        :class="
+          `${
+            hideBadge
+              ? `badge ${$style.badge} ${$style.hideBadge}`
+              : `badge ${$style.badge}`
+          }`
+        "
+        @click="showTree = !showTree"
+      >
+      <span v-text="$t('trans_showHideTree')"></span
+      ><v-icon> mdi-file-tree </v-icon>
+    </div>
       <div ref="container">
         <v-overlay v-if="loading" :class="$style.overlay">
           <v-progress-circular indeterminate size="64" />
@@ -704,7 +705,6 @@ export default {
     z-index: 1;
     transition: all 0.3s ease-in-out 0s;
   }
-
   .treeActive {
     left: 10px;
     right: 10px;
@@ -715,20 +715,25 @@ export default {
 
   .badge {
     display: flex !important;
-    top: 80px !important;
+    top: -50px !important;
     z-index: 2;
-  }
-
-  .badge ~ .widgetsWrapper {
-    margin-top: 60px;
     transition: all 0.3s ease-in-out 0s;
   }
-  .hideBadge ~ .widgetsWrapper {
+  .widgetsWrapper {
+    position: relative;
+  }
+
+  .widgetsWrapper:has(.badge) {
+    transition: all 0.3s ease-in-out 0s;
+    margin-top: 60px;
+  }
+  .widgetsWrapper:has(.hideBadge) {
     margin-top: 0;
   }
 
   .hideBadge {
-    top: 0 !important;
+    top: -70px !important;
+    opacity: 0;
     z-index: -1;
   }
 
