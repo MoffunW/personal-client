@@ -18,7 +18,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
+
     <div
       class="treeWrap"
       :class="showTree ? [$style.tree, $style.treeActive] : $style.tree"
@@ -44,9 +44,9 @@
         "
         @click="showTree = !showTree"
       >
-      <span v-text="$t('trans_showHideTree')"></span
-      ><v-icon> mdi-file-tree </v-icon>
-    </div>
+        <span v-text="$t('trans_showHideTree')"></span
+        ><v-icon> mdi-file-tree </v-icon>
+      </div>
       <div ref="container">
         <v-overlay v-if="loading" :class="$style.overlay">
           <v-progress-circular indeterminate size="64" />
@@ -549,7 +549,8 @@ export default {
     },
 
     handleScroll(e) {
-      this.hideBadge = this.oldScroll < e.target.scrollTop;
+      this.hideBadge =
+        this.oldScroll < e.target.scrollTop && e.target.scrollTop !== 0;
       this.oldScroll = e.target.scrollTop;
     },
 
@@ -636,6 +637,7 @@ export default {
 }
 
 .gridWrap {
+  height: calc(100% + 2px);
   user-select: text;
   margin: 0 auto;
   transform-origin: center top;
