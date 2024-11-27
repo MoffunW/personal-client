@@ -538,7 +538,7 @@ export default {
 
     handleScroll(e) {
       this.hideBadge =
-        this.oldScroll < e.target.scrollTop && e.target.scrollTop !== 0;
+        this.oldScroll < e.target.scrollTop && e.target.scrollTop > 550;
       this.oldScroll = e.target.scrollTop;
     },
 
@@ -705,24 +705,22 @@ export default {
 
   .badge {
     display: flex !important;
-    top: -50px !important;
     z-index: 2;
-    transition: all 0.3s ease-in-out 0s;
+    height: 40px;
+    padding: 0 20px;
+    transition: all 0.3s linear 0s;
+    margin-top: 5px;
   }
   .widgetsWrapper {
     position: relative;
   }
 
   .widgetsWrapper:has(.badge) {
-    transition: all 0.3s ease-in-out 0s;
-    margin-top: 60px;
-  }
-  .widgetsWrapper:has(.hideBadge) {
-    margin-top: 0;
+    transition: all 0.3s linear 0s;
   }
 
   .hideBadge {
-    top: -70px !important;
+    height: 0;
     opacity: 0;
     z-index: -1;
   }
