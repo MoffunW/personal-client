@@ -304,6 +304,12 @@ export default {
 };
 </script>
 
+<style>
+.v-application--wrap {
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+}
+</style>
 <style scoped lang="scss">
 .search-modal {
   background-color: red;
