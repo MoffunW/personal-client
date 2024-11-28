@@ -177,63 +177,101 @@ export default {
     },
 
     drawVectors() {
+      function isNotNullOrUndefined(array) {
+        return array.every(value => value !== undefined && value !== null);
+      }
+
       this.vectors = [];
       switch (this.data.numberOfPhases) {
         case 1:
           this.addVector(0, "U", "#ff7961");
-          this.addVector(
-            this.getPhiForTopStart(
-              Number(this.data.values.chartCosPhi.values[0]),
-              Number(this.data.values.totalActivePower.values[0]),
-              Number(this.data.values.totalReactivePower.values[0])
-            ),
-            "I",
-            "#f44336",
-            0.6
-          );
+          if (
+            isNotNullOrUndefined([
+              this.data.values.chartCosPhi.values[0],
+              this.data.values.totalActivePower.values[0],
+              this.data.values.totalReactivePower.values[0]
+            ])
+          )
+            this.addVector(
+              this.getPhiForTopStart(
+                Number(this.data.values.chartCosPhi.values[0]),
+                Number(this.data.values.totalActivePower.values[0]),
+                Number(this.data.values.totalReactivePower.values[0])
+              ),
+              "I",
+              "#f44336",
+              0.6
+            );
           break;
         case 3:
           this.addVector(0, "Ua", "#fff350");
-          this.addVector(
-            this.getPhiForRightStart(
-              Number(this.data.values.cosPhi.values[0]),
-              Number(this.data.values.activePower.values[0]),
-              Number(this.data.values.reactivePower.values[0])
-            ),
-            "Ia",
-            "#ffc107",
-            0.6
-          );
-          this.addVector(
-            Number(this.data.values.phaseAngleAB.values[0]),
-            "Ub",
-            "#bef67a"
-          );
-          this.addVector(
-            this.getPhiForRightStart(
-              Number(this.data.values.cosPhi.values[1]),
-              Number(this.data.values.activePower.values[1]),
-              Number(this.data.values.reactivePower.values[1])
-            ) + Number(this.data.values.phaseAngleAB.values[0]),
-            "Ib",
-            "#8bc34a",
-            0.6
-          );
-          this.addVector(
-            Number(this.data.values.phaseAngleAC.values[0]),
-            "Uc",
-            "#ff7961"
-          );
-          this.addVector(
-            this.getPhiForRightStart(
-              Number(this.data.values.cosPhi.values[2]),
-              Number(this.data.values.activePower.values[2]),
-              this.data.values.reactivePower.values[2]
-            ) + Number(this.data.values.phaseAngleAC.values[0]),
-            "Ic",
-            "#f44336",
-            0.6
-          );
+          if (
+            isNotNullOrUndefined([
+              this.data.values.cosPhi.values[0],
+              this.data.values.activePower.values[0],
+              this.data.values.reactivePower.values[0]
+            ])
+          )
+            this.addVector(
+              this.getPhiForRightStart(
+                Number(this.data.values.cosPhi.values[0]),
+                Number(this.data.values.activePower.values[0]),
+                Number(this.data.values.reactivePower.values[0])
+              ),
+              "Ia",
+              "#ffc107",
+              0.6
+            );
+
+          if (isNotNullOrUndefined([this.data.values.phaseAngleAB.values[0]]))
+            this.addVector(
+              Number(this.data.values.phaseAngleAB.values[0]),
+              "Ub",
+              "#bef67a"
+            );
+          if (
+            isNotNullOrUndefined([
+              this.data.values.cosPhi.values[1],
+              this.data.values.activePower.values[1],
+              this.data.values.reactivePower.values[1],
+              this.data.values.phaseAngleAB.values[0]
+            ])
+          )
+            this.addVector(
+              this.getPhiForRightStart(
+                Number(this.data.values.cosPhi.values[1]),
+                Number(this.data.values.activePower.values[1]),
+                Number(this.data.values.reactivePower.values[1])
+              ) + Number(this.data.values.phaseAngleAB.values[0]),
+              "Ib",
+              "#8bc34a",
+              0.6
+            );
+          if (isNotNullOrUndefined([this.data.values.phaseAngleAC.values[0]]))
+            this.addVector(
+              Number(this.data.values.phaseAngleAC.values[0]),
+              "Uc",
+              "#ff7961"
+            );
+
+          if (
+            isNotNullOrUndefined([
+              this.data.values.cosPhi.values[2],
+              this.data.values.activePower.values[2],
+              this.data.values.reactivePower.values[2],
+              this.data.values.phaseAngleAC.values[0]
+            ])
+          )
+            this.addVector(
+              this.getPhiForRightStart(
+                Number(this.data.values.cosPhi.values[2]),
+                Number(this.data.values.activePower.values[2]),
+                this.data.values.reactivePower.values[2]
+              ) + Number(this.data.values.phaseAngleAC.values[0]),
+              "Ic",
+              "#f44336",
+              0.6
+            );
           break;
       }
     },
