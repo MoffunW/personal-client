@@ -27,7 +27,10 @@
             <div v-text="fixDate(data.date)"></div>
             <div>
               <span v-text="$t('widgetChartView')"></span
-              ><v-switch v-model="widgetParams.showChart" />
+              ><v-switch
+                v-model="widgetParams.showChart"
+                :disabled="!showChartEnabled"
+              />
             </div>
           </div>
           <div>
@@ -81,6 +84,7 @@
                 v-if="data.values"
                 :data="data"
                 :date="fixDate(data.date)"
+                @isUsefull="handleIsUsefull"
               />
             </div>
           </div>
@@ -131,6 +135,8 @@ export default {
   },
   data() {
     return {
+      showChartEnabled: true,
+
       widgetParams: {
         name: this.params.settings.name ? this.params.settings.name : null,
         showChart: true
@@ -147,6 +153,10 @@ export default {
     };
   },
   methods: {
+    handleIsUsefull(isEnabled) {
+      this.showChartEnabled = isEnabled;
+      this.widgetParams.showChart = isEnabled;
+    },
     fixDate(arg) {
       if (!arg) return;
       const _ = arg.split("T");

@@ -180,6 +180,7 @@ export default {
       function isNotNullOrUndefined(array) {
         return array.every(value => value !== undefined && value !== null);
       }
+      let isAnyUsefullData = false;
 
       this.vectors = [];
       switch (this.data.numberOfPhases) {
@@ -191,7 +192,7 @@ export default {
               this.data.values.totalActivePower.values[0],
               this.data.values.totalReactivePower.values[0]
             ])
-          )
+          ) {
             this.addVector(
               this.getPhiForTopStart(
                 Number(this.data.values.chartCosPhi.values[0]),
@@ -202,6 +203,8 @@ export default {
               "#f44336",
               0.6
             );
+            isAnyUsefullData = true;
+          }
           break;
         case 3:
           this.addVector(0, "Ua", "#fff350");
@@ -211,7 +214,7 @@ export default {
               this.data.values.activePower.values[0],
               this.data.values.reactivePower.values[0]
             ])
-          )
+          ) {
             this.addVector(
               this.getPhiForRightStart(
                 Number(this.data.values.cosPhi.values[0]),
@@ -222,13 +225,18 @@ export default {
               "#ffc107",
               0.6
             );
+            isAnyUsefullData = true;
+          }
 
-          if (isNotNullOrUndefined([this.data.values.phaseAngleAB.values[0]]))
+          if (isNotNullOrUndefined([this.data.values.phaseAngleAB.values[0]])) {
             this.addVector(
               Number(this.data.values.phaseAngleAB.values[0]),
               "Ub",
               "#bef67a"
             );
+            isAnyUsefullData = true;
+          }
+
           if (
             isNotNullOrUndefined([
               this.data.values.cosPhi.values[1],
@@ -236,7 +244,7 @@ export default {
               this.data.values.reactivePower.values[1],
               this.data.values.phaseAngleAB.values[0]
             ])
-          )
+          ) {
             this.addVector(
               this.getPhiForRightStart(
                 Number(this.data.values.cosPhi.values[1]),
@@ -247,12 +255,18 @@ export default {
               "#8bc34a",
               0.6
             );
-          if (isNotNullOrUndefined([this.data.values.phaseAngleAC.values[0]]))
+
+            isAnyUsefullData = true;
+          }
+
+          if (isNotNullOrUndefined([this.data.values.phaseAngleAC.values[0]])) {
             this.addVector(
               Number(this.data.values.phaseAngleAC.values[0]),
               "Uc",
               "#ff7961"
             );
+            isAnyUsefullData = true;
+          }
 
           if (
             isNotNullOrUndefined([
@@ -261,7 +275,7 @@ export default {
               this.data.values.reactivePower.values[2],
               this.data.values.phaseAngleAC.values[0]
             ])
-          )
+          ) {
             this.addVector(
               this.getPhiForRightStart(
                 Number(this.data.values.cosPhi.values[2]),
@@ -272,8 +286,12 @@ export default {
               "#f44336",
               0.6
             );
+            isAnyUsefullData = true;
+          }
           break;
       }
+      if (!isAnyUsefullData) this.$emit("isUsefull", false);
+      else this.$emit("isUsefull", true);
     },
 
     addVector(angle, label, color, ratio = 1) {
